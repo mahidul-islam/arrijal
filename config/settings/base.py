@@ -6,6 +6,7 @@ from pathlib import Path
 import environ
 
 ROOT_DIR = Path(__file__).parents[2]
+ENV_DIR = Path(__file__).parents[3]
 # arrijal/)
 APPS_DIR = ROOT_DIR / "arrijal"
 env = environ.Env()
@@ -13,7 +14,7 @@ env = environ.Env()
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
-    env.read_env(str(ROOT_DIR / ".env"))
+    env.read_env(str(ENV_DIR / ".env"))
 
 # GENERAL
 # ------------------------------------------------------------------------------
