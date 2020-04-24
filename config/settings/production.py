@@ -132,6 +132,11 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'var/log/debug.log',
+        },
     },
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
