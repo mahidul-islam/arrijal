@@ -19,11 +19,11 @@ from pathlib import Path
 
 from django.core.wsgi import get_wsgi_application
 
-# Added copied from base.py 
+# Added copied from base.py
 from pathlib import Path
 import environ
-ROOT_DIR = Path(__file__).parents[2]
-ENV_DIR = Path(__file__).parents[3]
+ROOT_DIR = Path(__file__).parents[1]
+ENV_DIR = Path(__file__).parents[2]
 # arrijal/)
 APPS_DIR = ROOT_DIR / "arrijal"
 env = environ.Env()
