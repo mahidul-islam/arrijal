@@ -28,7 +28,7 @@ sys.path.append(str(app_path / "arrijal"))
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings.production"
 os.environ['DJANGO_SECRET_KEY'] = '23948*(&@#$*&(@#*$&(@#*$&fjlsajflsdfj'
-os.environ['DJANGO_ALLOWED_HOSTS'] = 'arrijal.company'
+os.environ['DJANGO_ALLOWED_HOSTS'] = 'arrijal.company www.arrijal.company'
 os.environ['DJANGO_ADMIN_URL'] = 'admin/'
 os.environ['DATABASE_URL'] = 'postgres://zihan:1234@127.0.0.1:5432/localcookiedb'
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.production")
