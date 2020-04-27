@@ -87,14 +87,6 @@ EMAIL_SUBJECT_PREFIX = env(
     "DJANGO_EMAIL_SUBJECT_PREFIX", default="[arrijal]"
 )
 
-# Gmail SMTP Server
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'mizihan84@gmail.com'
-EMAIL_HOST_PASSWORD = 'zihancse14'
-EMAIL_USE_TLS = False
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL regex.
@@ -103,13 +95,20 @@ ADMIN_URL = env("DJANGO_ADMIN_URL")
 # Anymail
 # ------------------------------------------------------------------------------
 # https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
-INSTALLED_APPS += ["anymail"]  # noqa F405
+# INSTALLED_APPS += ["anymail"]  # noqa F405
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
 # https://anymail.readthedocs.io/en/stable/esps
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-ANYMAIL = {}
+# ANYMAIL = {}
 
+# Gmail SMTP Server
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'mizihan84@gmail.com'
+EMAIL_HOST_PASSWORD = 'zihancse14'
+EMAIL_USE_TLS = False
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # LOGGING
 # ------------------------------------------------------------------------------
