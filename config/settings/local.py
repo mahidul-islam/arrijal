@@ -23,6 +23,21 @@ CACHES = {
     }
 }
 
+# DATABASES
+# ------------------------------------------------------------------------------
+# DATABASES["default"] = 'postgres://cookie:1234@127.0.0.1:5432/test2cookie'  # noqa F405
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'test2cookie',
+        'USER': 'cookie',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
