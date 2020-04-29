@@ -1,0 +1,51 @@
+{% load static i18n %}
+
+<!-- Header section -->
+<header class="header-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="site-logo">
+          <img src="{% static 'img/mylogo2.png' %}" alt="">
+        </div>
+        <div class="nav-switch">
+          <i class="fa fa-bars"></i>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-9">
+        <a href="" class="site-btn header-btn">Login</a>
+        <nav class="main-menu">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="blog.html">News</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Header section end -->
+
+
+<!-- Hero section -->
+<section class="hero-section set-bg" data-setbg="{% static 'img/bg.jpg' %}">
+  <div class="container">
+    <div class="hero-text text-white">
+      <h2>Get The Best Free Online Courses</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla <br> dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-10 offset-lg-1">
+        <form class="intro-newslatter">
+          <input type="text" placeholder="Name">
+          <input type="text" class="last-s" placeholder="E-mail">
+          <button class="site-btn">Sign Up Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Hero section end -->

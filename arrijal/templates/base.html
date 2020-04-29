@@ -3,7 +3,7 @@
 
 {% block base %}
 
-    <div class="mb-1">
+    <!-- <div class="mb-1">
       <nav class="navbar navbar-expand-md navbar-light bg-light">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -41,7 +41,9 @@
         </div>
       </nav>
 
-    </div>
+    </div> -->
+
+    {% include 'navbar.html' %}
 
     <div class="container">
 
@@ -52,11 +54,15 @@
       {% endif %}
 
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
+        <section class="spad">
+          <p>Use this document as a way to quick start any new project.</p>
+        </section>
       {% endblock content %}
 
     </div> <!-- /container -->
 
     {% block modal %}{% endblock modal %}
+
+    {% include 'footer.html' %}
 
 {% endblock %}
