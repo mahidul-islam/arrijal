@@ -147,6 +147,19 @@ ol {
 	color: #fff;
 }
 
+/* .text-black h1,
+.text-black h2,
+.text-black h3,
+.text-black h4,
+.text-black h5,
+.text-black h6,
+.text-black p,
+.text-black span,
+.text-black li,
+.text-black a {
+	color: #000;
+} */
+
 .rating i {
 	color: #fbb710;
 }
@@ -636,6 +649,7 @@ ol {
 }
 
 .signup-form input[type=text],
+.signup-form input[type=password], /* added by me */
 .signup-form input[type=email],
 .signup-form textarea,
 .contact-form input[type=text],
