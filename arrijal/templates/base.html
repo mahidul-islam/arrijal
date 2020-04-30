@@ -44,11 +44,6 @@
               </div>
             </div>
             <div class="col-lg-9 col-md-9">
-              {% if user.is_authenticated %}
-              <a href="{% url 'account_logout' %}" class="site-btn header-btn">LogOut</a>
-              {% else %}
-              <a href="{% url 'account_login' %}" class="site-btn header-btn">Login</a>
-              {% endif %}
               <nav class="main-menu">
                 <ul>
                   <li><a href="{% url 'home' %}">Home</a></li>
@@ -58,6 +53,11 @@
                     <li><a href="{% url 'users:detail' request.user.username %}">Profile</a></li>
                   {% endif %}
                   <li><a href="#">Contact</a></li>
+                  {% if user.is_authenticated %}
+                    <li><a href="{% url 'account_logout' %}" class="site-btn header-btn">LogOut</a></li>
+                  {% else %}
+                    <li><a href="{% url 'account_login' %}" class="site-btn header-btn pb-3">Login</a></li>
+                  {% endif %}
                 </ul>
               </nav>
             </div>
