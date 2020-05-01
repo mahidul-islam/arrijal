@@ -54,7 +54,7 @@
                   {% endif %}
                   <li><a href="#">Contact</a></li>
                   {% if user.is_authenticated %}
-                    <li><a href="{% url 'account_logout' %}" class="site-btn header-btn">LogOut</a></li>
+                    <li><a href="{% url 'account_logout' %}" class="site-btn header-btn pb-3">LogOut</a></li>
                   {% else %}
                     <li><a href="{% url 'account_login' %}" class="site-btn header-btn pb-3">Login</a></li>
                   {% endif %}
