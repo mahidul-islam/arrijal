@@ -26,7 +26,7 @@
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'users:detail' request.user.username %}">Profile</a></li>
                   {% endif %}
-                  <li><a href="#">Contact</a></li>
+                  <li><a href="{% url 'three:three' %}">Animation</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'account_logout' %}" class="site-btn header-btn pb-3">LogOut</a></li>
                   {% else %}

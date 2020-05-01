@@ -42,13 +42,17 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
 
     {% endblock %}
-
+    {% block pageSpecificCSS %} {% endblock pageSpecificCSS %}
+    {% block pageStyle %} {% endblock pageStyle %}
   </head>
 
   <body>
 
   {% block base %}
-  {% endblock %}
+  {% endblock base %}
+
+  {% block animation %}
+  {% endblock animation %}
 
     <!-- Le javascript
     ================================================== -->
@@ -85,5 +89,6 @@
       <script src="{% static 'js/main.js' %}"></script>
 
     {% endblock javascript %}
+    {% block pageSpecificJavascript %} {% endblock pageSpecificJavascript %}
   </body>
 </html>

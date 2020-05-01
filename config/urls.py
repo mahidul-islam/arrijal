@@ -5,6 +5,7 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
@@ -16,6 +17,7 @@ urlpatterns = [
     path("users/", include("arrijal.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("three/", include("three.urls", namespace="three")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
