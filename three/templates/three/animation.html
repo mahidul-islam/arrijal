@@ -4,6 +4,10 @@
 {% block spadof %}
 {% endblock %}
 
+{% block navbar %}
+	{% include 'navbar3.html' %}
+{% endblock %}
+
 {% block later %}
 
 <!-- categories section -->
@@ -45,13 +49,28 @@
 					<div class="categorie-item">
 						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
 						<div class="ci-text">
-							<h5>Illustration & Drawing</h5>
-							<p>Lorem ipsum dolor sit amet, consectetur</p>
-							<span>55 Courses</span>
+							<a href="{% url 'three:water' %}">
+								<h5>Water Atom</h5>
+							</a>
+							<p>1st atom of the periodic table</p>
+							<span>Size: bad de pm</span>
 						</div>
 					</div>
 				</div>
-
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:carbonDiOxide' %}">
+								<h5>Carbon Di Oxide</h5>
+							</a>
+							<p>Carbon Di Oxide</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
 			</div>
 		</div>
 	</section>
