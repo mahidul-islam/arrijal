@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block spadof %}
+{% endblock %}
+
+{% block later %}
+
+<!-- categories section -->
+	<section class="categories-section spad">
+		<div class="container">
+			<div class="section-title">
+				<h2>Our Animations</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+			</div>
+			<div class="row">
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'three:hydrogen' %}">
+                <h5>Hydrogen Atom</h5>
+              </a>
+							<p>1st atom of the periodic table</p>
+							<span>Size: 120pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'three:hydrogen' %}">
+                <h5>Experiment</h5>
+              </a>
+							<p>To Experiment views here as a test</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<h5>Illustration & Drawing</h5>
+							<p>Lorem ipsum dolor sit amet, consectetur</p>
+							<span>55 Courses</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!-- categories section end -->
+{% endblock later %}
+
+
+{% block pageSpecificJavascript %}
+  <script type="module" src="{% static 'js/three.js' %}"></script>
+{% endblock pageSpecificJavascript %}

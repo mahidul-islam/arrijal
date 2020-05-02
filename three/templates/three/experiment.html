@@ -1,6 +1,8 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
 
+{% block css %}{% endblock css %}
+
 {% block pageStyle %}
 <style>
   body { margin: 0; }
@@ -8,8 +10,11 @@
 </style>
 {% endblock pageStyle %}
 
+{% block javascript %}{% endblock javascript %}
+
 {% block pageSpecificJavascript %}
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/58/three.min.js" integrity="sha256-QJSG8BV0Pn4JD8zWKHmxyShXXywgZXg1vsmO/o7PFjA=" crossorigin="anonymous"></script> -->
-  <script type="text/javascript" src="{% static 'js/three.js' %}"></script>
-  <script type="text/javascript" src="{% static 'three/js/animation.js' %}"></script>
+  <script type="module" src="{% static 'js/three.js' %}"></script>
+  <!-- <script type="module" src="{% static 'three/js/another.js' %}"></script> -->
+  <script type="module" src="{% static 'three/js/animation.js' %}"></script>
 {% endblock pageSpecificJavascript %}
