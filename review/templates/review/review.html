@@ -18,14 +18,14 @@
       <div class="card-body">
         <h4 class="card-title">{{ review.title }}</h4>
         <p class="card-text">{{ review.description }}</p>
-        <p class="card-text">{{ review.date }}</p>        
+        <p class="card-text">{{ review.date }}</p>
      </div>
 
       <div class="card-footer">
         <form  method="post" action="review:review">
           {% csrf_token %}
           {% if user.is_authenticated %}
-          {% if user == u %}
+          {% if user == review.user %}
           <a class="btn btn-danger" href="{% url 'review:edit' review.id %}">Edit</a>
           <a class="btn btn-danger" href="{% url 'review:delete' review.id %}">Delete</a>
           {% endif %}
