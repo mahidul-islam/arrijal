@@ -45,8 +45,9 @@
 					</div>
 					<div class="widget-item">
 						<h4>Newsletter</h4>
-						<form class="footer-newslatter">
-							<input type="email" placeholder="E-mail">
+						<form class="footer-newslatter" method="post" action="{% url 'newsletter:subscribe' %}">
+							{% csrf_token %}
+							<input type="email" name="email" placeholder="E-mail">
 							<button class="site-btn">Subscribe</button>
 							<p>*We don’t spam</p>
 						</form>
