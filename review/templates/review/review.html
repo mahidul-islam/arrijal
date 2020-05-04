@@ -6,20 +6,21 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock pageStyle %}
 
-{% block content %}
+{% block spadof %} {% endblock spadof %}
+
+{% block later %}
 <!-- Page  -->
-<section class="blog-page spad pb-0">
+<section class="blog-page pb-0 spad">
   <div class="container">
     <div class="row">
-      <div class="col-lg-9">
-{% for review in review %}
+      <div class="col-lg-12">
+      {% for review in review %}
         <!-- blog post -->
         <div class="blog-post">
-          <img src="img/blog/3.jpg" alt="">
           <h3>{{ review.title }}</h3>
           <div class="blog-metas">
             <div class="blog-meta author">
-              <div class="post-author set-bg" data-setbg="img/authors/3.jpg"></div>
+              <div class="post-author set-bg" data-setbg="{% static 'img/authors/1.jpg' %}"></div>
               <a href="#">{{ review.user.username }}</a>
             </div>
 
@@ -40,84 +41,38 @@
           <p>{{ review.description }}</p>
           <a href="#" class="site-btn readmore">Read More</a>
         </div>
-{% endfor %}
+      {% endfor %}
         <div class="site-pagination">
           <span class="active">01.</span>
           <a href="#">02.</a>
           <a href="#">03</a>
         </div>
       </div>
-      <div class="col-lg-3 col-md-5 col-sm-9 sidebar">
-        <div class="sb-widget-item">
-          <form class="search-widget">
-            <input type="text" placeholder="Search">
-            <button><i class="fa fa-search"></i></button>
-          </form>
-        </div>
-        <div class="sb-widget-item">
-          <h4 class="sb-w-title">Categories</h4>
-          <ul>
-            <li><a href="#">Developement</a></li>
-            <li><a href="#">Social Media</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Events & Lifestyle</a></li>
-            <li><a href="#">Uncategorizes</a></li>
-          </ul>
-        </div>
-        <div class="sb-widget-item">
-          <h4 class="sb-w-title">Archives</h4>
-          <ul>
-            <li><a href="#">February 2018</a></li>
-            <li><a href="#">March 2018</a></li>
-            <li><a href="#">April 2018</a></li>
-            <li><a href="#">May 2018</a></li>
-            <li><a href="#">June 2018</a></li>
-          </ul>
-        </div>
-        <div class="sb-widget-item">
-          <h4 class="sb-w-title">Archives</h4>
-          <div class="tags">
-            <a href="#">education</a>
-            <a href="#">courses</a>
-            <a href="#">development</a>
-            <a href="#">design</a>
-            <a href="#">on line courses</a>
-            <a href="#">wp</a>
-            <a href="#">html5</a>
-            <a href="#">music</a>
-          </div>
-        </div>
-        <div class="sb-widget-item">
-          <div class="add">
-            <a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
+
 <!-- Page end -->
-{% if user.is_authenticated %}
-</br><h3 class="sb-w-title">Write a review :</h3></br>
-<form method="POST" class="form-horizontal" enctype="multipart/form-data" >
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+
+<section class="blog-page pb-0">
+  <div class="container spad">
+    {% if user.is_authenticated %}
+    </br><h3 class="sb-w-title">Write a review :</h3></br>
+    <form method="POST" class="signup-form form-horizontal" enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="site-btn">Save</button>
+    </form>
+      </div>
+    {% endif %}
+    {% if not user.is_authenticated %}
+      <div class="text-center pt-5 spad">
+        For writing a review - <a href="{% url 'account_signup' %}" class="site-btn">Register Now</a>
+      </div>
+    {% endif %}
   </div>
-{% endif %}
-{% if not user.is_authenticated %}
-<!-- banner section -->
-    <div class="text-left pt-5">
-      For writing a review - <a href="{% url 'account_signup' %}" class="site-btn">Register Now</a>
-    </div>
-<!-- banner section end -->
-{% endif %}
+</section>
+
 {% endblock %}
 {% block registerNow %}
 {% endblock %}
-
-{% block pageSpecificJavascript %}
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/58/three.min.js" integrity="sha256-QJSG8BV0Pn4JD8zWKHmxyShXXywgZXg1vsmO/o7PFjA=" crossorigin="anonymous"></script> -->
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-{% endblock pageSpecificJavascript %}
