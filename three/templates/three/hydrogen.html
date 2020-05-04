@@ -1,0 +1,149 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+<style>
+  body { margin: 0; }
+  canvas { display: block; }
+</style>
+{% endblock pageStyle %}
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+  <script type="text/javascript" src="{% static 'three/js/three.js' %}"></script>
+  <script type="module" src="{% static 'js/dat.gui.module.js' %}"></script>
+  <script type="module">
+  // import * as THREE from "{% static 'js/three.js' %}";
+
+  // import {GUI} from '{% static 'js/dat.gui.module.js' %}';
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  // const gui = new GUI();
+  camera.position.set(0, 30, 0);
+  camera.up.set(0, 0, 1);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight, false );
+  document.body.appendChild( renderer.domElement );
+
+  {
+    const color = 0xFFFFFF;
+    const intensity = 3;
+    const light = new THREE.PointLight(color, intensity);
+    scene.add(light);
+  }
+
+  // an array of objects whose rotation to update
+  const objects = [];
+
+  // use just one sphere for everything
+  const radius = 1;
+  const widthSegments = 6;
+  const heightSegments = 6;
+  const sphereGeometry = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
+
+  const solarSystem = new THREE.Object3D()
+  scene.add(solarSystem)
+  objects.push(solarSystem)
+
+  const earthOrbit = new THREE.Object3D()
+  earthOrbit.position.x = 10
+  solarSystem.add(earthOrbit)
+  objects.push(earthOrbit)
+
+  const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xEEEE00});
+  const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+  sunMesh.scale.set(5, 5, 5);  // make the sun large
+  solarSystem.add(sunMesh);
+  objects.push(sunMesh);
+
+  const earthMetarial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244})
+  const earthMesh = new THREE.Mesh(sphereGeometry, earthMetarial)
+  earthOrbit.add(earthMesh)
+  objects.push(earthMesh)
+
+  const moonOrbit = new THREE.Object3D()
+  moonOrbit.position.x = 2
+  earthOrbit.add(moonOrbit)
+  objects.push(moonOrbit)
+
+  const moonMetarial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222})
+  const moonMesh = new THREE.Mesh(sphereGeometry, moonMetarial)
+  moonMesh.scale.set(.5, .5, .5)
+  moonOrbit.add(moonMesh)
+  objects.push(moonMesh)
+
+  objects.forEach((node) =>{
+    const axes = new THREE.AxesHelper()
+    axes.material.depthTest = false;
+    axes.renderOrder = 1;
+    node.add(axes);
+  })
+  // class AxisGridHelper {
+  //   constructor(node, units = 10) {
+  //     const axes = new THREE.AxesHelper();
+  //     axes.material.depthTest = false;
+  //     axes.renderOrder = 2;  // after the grid
+  //     node.add(axes);
+  //
+  //     const grid = new THREE.GridHelper(units, units);
+  //     grid.material.depthTest = false;
+  //     grid.renderOrder = 1;
+  //     node.add(grid);
+  //
+  //     this.grid = grid;
+  //     this.axes = axes;
+  //     this.visible = false;
+  //   }
+  //   get visible() {
+  //     return this._visible;
+  //   }
+  //   set visible(v) {
+  //     this._visible = v;
+  //     this.grid.visible = v;
+  //     this.axes.visible = v;
+  //   }
+  // }
+  //
+  // function makeAxisGrid(node, label, units) {
+  //   const helper = new AxisGridHelper(node, units);
+  //   gui.add(helper, 'visible').name(label);
+  // }
+  //
+  // makeAxisGrid(solarSystem, 'solarSystem', 25);
+  // makeAxisGrid(sunMesh, 'sunMesh');
+  // makeAxisGrid(earthOrbit, 'earthOrbit');
+  // makeAxisGrid(earthMesh, 'earthMesh');
+  // makeAxisGrid(moonMesh, 'moonMesh');
+  //
+
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+    return needResize;
+  }
+
+  function render(time) {
+    time *= 0.001;
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+    objects.forEach((obj) => {
+      obj.rotation.y = time;
+    });
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  </script>
+{% endblock pageSpecificJavascript %}

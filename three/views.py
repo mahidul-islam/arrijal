@@ -9,6 +9,26 @@ from django.contrib import messages
 
 
 def three(request):
-    template = loader.get_template('three/three.html')
+    template = loader.get_template('three/animation.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def hydrogen(request):
+    template = loader.get_template('three/hydrogen.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def experiment(request):
+    template = loader.get_template('three/experiment.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def water(request):
+    template = loader.get_template('three/water.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def carbonDiOxide(request):
+    template = loader.get_template('three/carbonDiOxide.html')
     context = {}
     return HttpResponse(template.render(context, request))
