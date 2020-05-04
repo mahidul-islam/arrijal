@@ -2,7 +2,10 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from puput import PUPUT_APPS
+import os
 
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 import environ
 
 ROOT_DIR = Path(__file__).parents[2]
@@ -78,8 +81,28 @@ LOCAL_APPS = [
     "arrijal.users.apps.UsersConfig",
     # Your stuff: custom apps go here
 ]
+#PUPUT APPs
+PUPUT_APPS=[
+    'wagtail.core',
+    'wagtail.admin',
+    'wagtail.documents',
+    'wagtail.snippets',
+    'wagtail.users',
+    'wagtail.images',
+    'wagtail.embeds',
+    'wagtail.search',
+    'wagtail.sites',
+    'wagtail.contrib.redirects',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.sitemaps',
+    'wagtail.contrib.routable_page',
+    'taggit',
+    'modelcluster',
+    'django_social_share',
+    'puput',
+]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS+PUPUT_APPS
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -134,6 +157,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #middleware classes for puput
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 # STATIC
@@ -153,7 +179,7 @@ STATICFILES_FINDERS = [
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(APPS_DIR / "media")
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 
@@ -188,7 +214,8 @@ TEMPLATES = [
         },
     }
 ]
-
+#WAGTAIL site
+WAGTAIL_SITE_NAME = 'Puput blog'
 # https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
