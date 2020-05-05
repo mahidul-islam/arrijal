@@ -18,11 +18,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("three/", include("three.urls", namespace="three")),
-<<<<<<< HEAD
-    path("newsletter/", include("newsletters.urls", namespace="newsletter")),
-=======
     path("review/", include("review.urls", namespace="review")),
->>>>>>> test
+    path("newsletter/", include("newsletters.urls", namespace="newsletter")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
