@@ -22,11 +22,11 @@
                 <ul>
                   <li><a href="{% url 'home' %}">Home</a></li>
                   <li><a href="{% url 'about' %}">About us</a></li>
-                  <li><a href="#">Courses</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'users:detail' request.user.username %}">Profile</a></li>
                   {% endif %}
                   <li><a href="{% url 'three:three' %}">Animation</a></li>
+                  <li><a href="{% url 'review:review' %}">Reviews</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'account_logout' %}" class="site-btn header-btn pb-3">LogOut</a></li>
                   {% else %}
@@ -45,13 +45,11 @@
     {% endblock %}
 
     <div class="container">
-
     {% if messages %}
       {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
       {% endfor %}
     {% endif %}
-
 
     {% block spadof %}
     <section class="spad">
@@ -60,7 +58,6 @@
       {% endblock content %}
     </section>
     {% endblock spadof %}
-
     </div> <!-- /container -->
 
     {% block later %}{% endblock later %}
@@ -73,8 +70,11 @@
       <section class="banner-section spad">
       	<div class="container">
       		<div class="section-title mb-0 pb-2">
-      			<h2>Join Our Community Now!</h2>
-      			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+      			<h2>Join ArRijal Community Now!</h2>
+      			<p>We will send you mail on update of our work. (Which you can unsubscribe at any time.)
+              You can give us your much appreciated advice or send us ur good will at our
+              <a href="{% url 'review:review' %}">review page</a>.
+            </p>
       		</div>
       		<div class="text-center pt-5">
       			<a href="{% url 'account_signup' %}" class="site-btn">Register Now</a>
