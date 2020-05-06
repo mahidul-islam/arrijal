@@ -24,7 +24,7 @@ def review(request):
         page = int(request.GET.get('page', '1'))
     except:
         page = 1
-    paginator = Paginator(review, 3)
+    paginator = Paginator(review, 5)
     try:
         review = paginator.page(page)
     except PageNotAnInteger:
@@ -57,8 +57,13 @@ def edit(request,id):
     return HttpResponse(template.render(context,request))
 
 
-
 def delete(request,id):
     review = Review.objects.get(id=id)
     review.delete()
     return redirect('review:review')
+
+def readmore(request,id):
+    template = loader.get_template('review/readmore.html')
+    review = Review.objects.get(id=id)
+    context = {'review':review }
+    return HttpResponse(template.render(context,request))
