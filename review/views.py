@@ -10,10 +10,9 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 User = get_user_model()
 # Create your views here.
-
-
 
 def review(request):
     if request.user.is_authenticated:
@@ -21,6 +20,17 @@ def review(request):
         u= User.objects.get(username=name)
     template = loader.get_template('review/review.html')
     review = Review.objects.all()
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    paginator = Paginator(review, 3)
+    try:
+        review = paginator.page(page)
+    except PageNotAnInteger:
+        review = paginator.page(1)
+    except EmptyPage:
+        review = paginator.page(paginator.num_pages)
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -29,7 +39,7 @@ def review(request):
         return redirect('review:review')
     else:
         form = ReviewForm
-    context = {'form':form , 'review':review }
+    context = {'form':form , 'reviews':review }
     return HttpResponse(template.render(context,request))
 
 
