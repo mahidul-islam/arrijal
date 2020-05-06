@@ -29,11 +29,7 @@ def review(request):
         return redirect('review:review')
     else:
         form = ReviewForm
-
-    if request.user.is_authenticated:
-        context = {'form':form , 'review':review, 'u':u }
-    else:
-        context = {'form':form , 'review':review }
+    context = {'form':form , 'review':review }
     return HttpResponse(template.render(context,request))
 
 
