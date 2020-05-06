@@ -24,9 +24,8 @@ def review(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            form.save()
-        last=str(Review.objects.latest('id'))
-        Review.objects.filter(id=last).update(user=u)
+            instance=form.save()
+        Review.objects.filter(id=instance.id).update(user=u)
         return redirect('review:review')
     else:
         form = ReviewForm
