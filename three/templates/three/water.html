@@ -12,6 +12,7 @@
 {% block pageSpecificJavascript %}
   <script type="module" src="{% static 'js/three.js' %}"></script>
   <script type="module">
+    // import * as THREE from "{% static 'js/three.js' %}"
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
