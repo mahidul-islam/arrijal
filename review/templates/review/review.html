@@ -9,7 +9,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-      {% for review in review %}
+      {% for review in reviews %}
         <!-- blog post -->
         <div class="blog-post">
           <h3>{{ review.title }}</h3>
@@ -33,19 +33,53 @@
             {% endif %}
             {% endif %}
           </div>
-          <p>{{ review.description }}</p>
-          <a href="#" class="site-btn readmore">Read More</a>
+          <p>{{ review.description |safe|truncatewords:"100"|linebreaks }}</p>
+          <a href="{% url 'review:readmore' review.id %}" class="site-btn readmore">Read More</a>
         </div>
       {% endfor %}
-        <div class="site-pagination">
-          <span class="active">01.</span>
-          <a href="#">02.</a>
-          <a href="#">03</a>
-        </div>
+
+        <nav aria-label="Page navigation example">
+          {% if reviews.has_other_pages %}
+            <ul class="pagination justify-content-center site-pagination">
+
+               {% if reviews.has_previous %}
+                   <li class="page-item" >
+                       <a class="page-link" tabindex="-1" href="?page={{ reviews.previous_page_number }}">&laquo;</a>
+                   </li>
+               {% else %}
+                   <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+                   </li>
+               {% endif %}
+
+               {% for i in reviews.paginator.page_range %}
+                  {% if reviews.number == i %}
+                    <!-- <li class="page-item active"><span>{{ i }}  <span class="sr-only">(current)</span></span></li> -->
+                    <li class="page-item" >
+                        <a class="page-link" href="?page={{ i }}"> <span class="active">{{ i }}</span></a>
+                    </li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" tabindex="-1" href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+               {% endfor %}
+
+
+               {% if reviews.has_next %}
+                    <li class="page-item"><a class="page-link" tabindex="-1" href="?page={{ reviews.next_page_number }}">&raquo;</a></li>
+               {% else %}
+                    <li class="page-item disabled">
+                         <a class="page-link" href="#" tabindex="-1">&raquo;</a>
+                    </li>
+               {% endif %}
+
+            </ul>
+          {% endif %}
+        </nav>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- Page end -->
 

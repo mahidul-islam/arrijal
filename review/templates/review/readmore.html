@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block spadof %} {% endblock spadof %}
+
+{% block later %}
+<!-- Page  -->
+<section class="blog-page pb-90 spad">
+  <div class="container">
+        <!-- blog post -->
+        <div class="blog-post">
+          <h3>{{ review.title }}</h3>
+          <div class="blog-metas">
+            <div class="blog-meta author">
+              <div class="post-author set-bg" data-setbg="{% static 'img/authors/1.jpg' %}"></div>
+              <a href="#">{{ review.user.username }}</a>
+            </div>
+
+            <div class="blog-meta">
+              <a href="#">{{ review.date }}</a>
+            </div>
+            {% if user.is_authenticated %}
+            {% if user == review.user %}
+            <div class="blog-meta">
+              <a href="{% url 'review:edit' review.id %}">Edit</a>
+            </div>
+            <div class="blog-meta">
+              <a href="{% url 'review:delete' review.id %}">Delete</a>
+            </div>
+            {% endif %}
+            {% endif %}
+          </div>
+          <p>{{ review.description  }}</p>
+        </div>
+  </div>
+</section>
+<!-- Page end -->
+{% endblock %}
+{% block registerNow %}
+{% endblock %}
