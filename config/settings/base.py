@@ -4,9 +4,10 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
-
+import os
 ROOT_DIR = Path(__file__).parents[2]
 ENV_DIR = Path(__file__).parents[3]
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 # arrijal/)
 APPS_DIR = ROOT_DIR / "arrijal"
 env = environ.Env()
@@ -82,8 +83,26 @@ LOCAL_APPS = [
     "three",
     "review",
 ]
+Install=[
+  'blog',
+  'home',
+  'search',
+  'wagtail.contrib.forms',
+  'wagtail.contrib.redirects',
+  'wagtail.embeds',
+  'wagtail.sites',
+  'wagtail.users',
+  'wagtail.snippets',
+  'wagtail.documents',
+  'wagtail.images',
+  'wagtail.search',
+  'wagtail.admin',
+  'wagtail.core',
+
+ 'modelcluster',
+ 'taggit',]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS+Install
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -138,6 +157,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 # STATIC
@@ -153,11 +174,11 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
-
+WAGTAIL_SITE_NAME = 'My Example Site'
 # MEDIA
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(APPS_DIR / "media")
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = "/media/"
 
