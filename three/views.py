@@ -32,8 +32,3 @@ def carbonDiOxide(request):
     template = loader.get_template('three/carbonDiOxide.html')
     context = {}
     return HttpResponse(template.render(context, request))
-
-def oxygen(request):
-    template = loader.get_template('three/oxygen.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
