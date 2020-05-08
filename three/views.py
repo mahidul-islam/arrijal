@@ -23,12 +23,17 @@ def experiment(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def water(request):
-    template = loader.get_template('three/water.html')
+def tankofnet(request):
+    template = loader.get_template('three/tankofnet.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
 def carbonDiOxide(request):
     template = loader.get_template('three/carbonDiOxide.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def tank(request):
+    template = loader.get_template('three/tank.html')
     context = {}
     return HttpResponse(template.render(context, request))
