@@ -2,31 +2,12 @@
 {% load static %}
 {% block css %}{% endblock css %}
 {% block pageStyle %}
-<style>
-  body {
-    margin: 0;
-  }
-  #c {
-    width: 100vw;
-    height: 100vh;
-    display: block;
-  }
-  #info {
-    position: absolute;
-    left: 1em;
-    top: 1em;
-    background: rgba(0,0,0,.8);
-    padding: .5em;
-    color: white;
-    font-family: monospace;
-  }
-</style>
-
+<link rel="stylesheet" href="{% static 'three/css/animation.css' %}"/>
 {% endblock pageStyle %}
 
 {% block animation %}
 <canvas id="c"></canvas>
-<div id="info">
+<div id="back-button">
   <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
 </div>
 {% endblock %}
@@ -42,6 +23,7 @@ function main() {
 
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({canvas});
+  renderer.setClearColor(0xAAAAAA);
   const gui = new GUI();
 
   const fov = 40;

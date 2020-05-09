@@ -122,16 +122,25 @@ function main() {
   const carHeight = 1;
   const carLength = 8;
 
+  const carWidth2 = 4;
+  const carHeight2 = 1;
+  const carLength2 = 6;
+
   const tank = new THREE.Object3D();
   scene.add(tank);
 
   const bodyGeometry = new THREE.BoxBufferGeometry(carWidth, carHeight, carLength);
-  const bodyMaterial = new THREE.MeshPhongMaterial({color: 0x6688AA});
+  const bodyGeometry2 = new THREE.BoxBufferGeometry(carWidth2, carHeight2, carLength2);
+  const bodyMaterial = new THREE.MeshPhongMaterial({color: 0xCC2222});
   const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
+  const bodyMesh2 = new THREE.Mesh(bodyGeometry2, bodyMaterial);
   bodyMesh.position.y = 1.4;
+  bodyMesh2.position.y = 2.4;
   bodyMesh.castShadow = true;
   bodyMesh.receiveShadow = true;
+  bodyMesh2.receiveShadow = true;
   tank.add(bodyMesh);
+  tank.add(bodyMesh2);
 
   const wheelRadius = 1;
   const wheelThickness = .5;
@@ -141,12 +150,12 @@ function main() {
       wheelRadius,     // bottom radius
       wheelThickness,  // height of cylinder
       wheelSegments);
-  const wheelMaterial = new THREE.MeshPhongMaterial({color: 0x888888});
+  const wheelMaterial = new THREE.MeshPhongMaterial({color: 0x222222});
   const wheelPositions = [
     [-carWidth / 2 - wheelThickness / 2, -carHeight / 2,  carLength / 3],
     [ carWidth / 2 + wheelThickness / 2, -carHeight / 2,  carLength / 3],
-    [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, 0],
-    [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, 0],
+    // [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, 0],
+    // [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, 0],
     [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
     [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3],
   ];
@@ -176,19 +185,22 @@ function main() {
 
   // Create a sine-like wave
   const curve = new THREE.SplineCurve( [
-    new THREE.Vector2( -10, 0 ),
-    new THREE.Vector2( -5, 5 ),
-    new THREE.Vector2( 0, 0 ),
-    new THREE.Vector2( 5, -5 ),
-    new THREE.Vector2( 10, 0 ),
-    new THREE.Vector2( 5, 10 ),
-    new THREE.Vector2( -5, 10 ),
-    new THREE.Vector2( -10, -10 ),
-    new THREE.Vector2( -15, -8 ),
-    new THREE.Vector2( -10, 0 ),
+    new THREE.Vector2( 18, 18 ),
+    new THREE.Vector2( 18, -15 ),
+    new THREE.Vector2( -15, -15 ),
+    new THREE.Vector2( -15, 18 ),
+    new THREE.Vector2( 18, 18 ),
+    // new THREE.Vector2( 5, 10 ),
+    // new THREE.Vector2( -5, 10 ),
+    // new THREE.Vector2( -10, -10 ),
+    // new THREE.Vector2( -15, -8 ),
+    // new THREE.Vector2( -10, 0 ),
   ] );
 
   const points = curve.getPoints( 50 );
+  // for(let i=0;i<50;i++){
+  //   console.log(points[i])
+  // }
   const geometry = new THREE.BufferGeometry().setFromPoints( points );
   const material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
   const splineObject = new THREE.Line( geometry, material );
@@ -197,41 +209,38 @@ function main() {
   scene.add(splineObject);
 
   class AxisGridHelper {
-      constructor(node, units = 10) {
-        const axes = new THREE.AxesHelper();
-        axes.material.depthTest = false;
-        axes.renderOrder = 2;  // after the grid
-        node.add(axes);
+    constructor(node, units = 10) {
+      const axes = new THREE.AxesHelper();
+      axes.material.depthTest = false;
+      axes.renderOrder = 2;  // after the grid
+      node.add(axes);
 
-        const grid = new THREE.GridHelper(units, units);
-        grid.material.depthTest = false;
-        grid.renderOrder = 1;
-        node.add(grid);
+      const grid = new THREE.GridHelper(units, units);
+      grid.material.depthTest = false;
+      grid.renderOrder = 1;
+      node.add(grid);
 
-        this.grid = grid;
-        this.axes = axes;
-        this.visible = false;
-      }
-      get visible() {
-        return this._visible;
-      }
-      set visible(v) {
-        this._visible = v;
-        this.grid.visible = v;
-        this.axes.visible = v;
-      }
+      this.grid = grid;
+      this.axes = axes;
+      this.visible = false;
     }
-
-    function makeAxisGrid(node, label, units) {
-      const helper = new AxisGridHelper(node, units);
-      gui.add(helper, 'visible').name(label);
+    get visible() {
+      return this._visible;
     }
+    set visible(v) {
+      this._visible = v;
+      this.grid.visible = v;
+      this.axes.visible = v;
+    }
+  }
 
-    // makeAxisGrid(ao, 'solarSystem', 26);
-    // makeAxisGrid(amesh, 'sunMesh');
-    // makeAxisGrid(bo, 'earthOrbit');
-    // makeAxisGrid(bmesh, 'earthMesh');
-    // makeAxisGrid(cmesh, 'moonMesh');
+  function makeAxisGrid(node, label, units) {
+    const helper = new AxisGridHelper(node, units);
+    gui.add(helper, 'visible').name(label);
+  }
+
+  makeAxisGrid(tank, 'car', 20);
+  makeAxisGrid(wheelMeshes[3], 'One Wheel');
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
@@ -244,6 +253,9 @@ function main() {
     return needResize;
   }
 
+  const tankPosition = new THREE.Vector2();
+  const tankTarget = new THREE.Vector2();
+
   function render(time) {
     time *= 0.001;
 
@@ -255,6 +267,16 @@ function main() {
 
     objects.forEach((obj) => {
       obj.rotation.y = time;
+    });
+
+    // move tank
+    const tankTime = time * .05;
+    curve.getPointAt(tankTime % 1, tankPosition);
+    curve.getPointAt((tankTime + 0.01) % 1, tankTarget);
+    tank.position.set(tankPosition.x, 0, tankPosition.y);
+    tank.lookAt(tankTarget.x, 0, tankTarget.y);
+    wheelMeshes.forEach((obj) => {
+      obj.rotation.x = time * 3;
     });
 
     renderer.render(scene, camera);
