@@ -20,6 +20,7 @@ urlpatterns = [
     path("three/", include("three.urls", namespace="three")),
     path("review/", include("review.urls", namespace="review")),
     path("newsletter/", include("newsletters.urls", namespace="newsletter")),
+    path("chemistry/", include("chemistry.urls", namespace="chemistry")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

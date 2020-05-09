@@ -1,0 +1,36 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+<style>
+  body {
+    margin: 0;
+  }
+  #c {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+  }
+  #info {
+    position: absolute;
+    left: 1em;
+    top: 1em;
+    background: rgba(0,0,0,.8);
+    padding: .5em;
+    color: white;
+    font-family: monospace;
+  }
+</style>
+
+{% endblock pageStyle %}
+
+{% block animation %}
+<canvas id="c"></canvas>
+<div id="info"></div>
+{% endblock %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+<script type="module" src="{% static 'chemistry/js/tank.js' %}"></script>
+{% endblock pageSpecificJavascript %}

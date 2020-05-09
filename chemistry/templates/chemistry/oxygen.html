@@ -1,0 +1,91 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+<style>
+html,body{
+  margin: 0;
+  height: 100%;
+}
+#c{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+</style>
+{% endblock pageStyle %}
+{% block animation %}
+<canvas id="c"></canvas>
+{% endblock %}
+{% block javascript %}{% endblock javascript %}
+{% block pageSpecificJavascript %}
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+function main(){
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas});
+
+  const camera = new THREE.PerspectiveCamera(75,2,.1,5);
+  camera.position.z = 2;
+
+  const scene = new THREE.Scene();
+  {
+    const light = new THREE.DirectionalLight(0xFFFFFF,1);
+    light.position.set(1,2,4);
+    scene.add(light);
+  }
+  const width = 1;
+  const height =  1.0;
+  const depth =  1;
+  const widthSegments =  1;
+  const heightSegments = 1;
+  const depthSegments = 1;
+  const geometry = new THREE.BoxBufferGeometry(width, height, depth,
+    widthSegments, heightSegments, depthSegments);
+  function makeInstance(geometry,color,x){
+    const material = new THREE.MeshPhongMaterial({color});
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    cube.position.x=x;
+    return cube;
+  }
+  const cubes = [
+    makeInstance(geometry,0x44aa88,0),
+    makeInstance(geometry,0x8844aa,-2),
+    makeInstance(geometry,0xaa8844,2),
+  ]
+
+  function resizeRendererToDisplaySize(renderer){
+    const canvas = renderer.domElement;
+    const pixelRatio = window.devicePixelRatio;
+    const width = canvas.clientWidth * pixelRatio | 0;
+    const height = canvas.clientHeight * pixelRatio | 0;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if(needResize){
+      renderer.setSize(width,height,false);
+    }
+    return needResize;
+  }
+  function render(time) {
+    time *= 0.001;
+
+    if(resizeRendererToDisplaySize(renderer)){
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+    cubes.forEach((cube,ndx)=>{
+      const speed=.3+ndx*1.2;
+      cube.rotation.x = time*speed;
+      cube.rotation.y = time*speed;
+      cube.rotation.z = time*speed;
+    });
+    renderer.render(scene, camera)
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+}
+main();
+</script>
+{% endblock pageSpecificJavascript %}
