@@ -14,6 +14,15 @@
   #info {
     position: absolute;
     left: 1em;
+    top: 4em;
+    background: rgba(0,0,0,.8);
+    padding: .5em;
+    color: white;
+    font-family: monospace;
+  }
+  #back-button {
+    position: absolute;
+    left: 1em;
     top: 1em;
     background: rgba(0,0,0,.8);
     padding: .5em;
@@ -26,7 +35,10 @@
 
 {% block animation %}
 <canvas id="c"></canvas>
-    <div id="info"></div>
+<div id="back-button">
+  <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+</div>
+<div id="info"></div>
 {% endblock %}
 
 {% block javascript %}{% endblock javascript %}
@@ -273,7 +285,7 @@
           obj.rotation.x = time * 3;
         });
 
-        const camera = cameras[time * .25 % cameras.length | 0];
+        const camera = cameras[0]; //time * .25 % cameras.length | 0
         infoElem.textContent = camera.desc;
 
         renderer.render(scene, camera.cam);

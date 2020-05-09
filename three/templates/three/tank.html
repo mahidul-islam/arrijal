@@ -26,11 +26,264 @@
 
 {% block animation %}
 <canvas id="c"></canvas>
-<div id="info"></div>
+<div id="info">
+  <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+</div>
 {% endblock %}
 
 {% block javascript %}{% endblock javascript %}
 
 {% block pageSpecificJavascript %}
-<script type="module" src="{% static 'three/js/tank.js' %}"></script>
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+
+function main() {
+
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas});
+  renderer.setClearColor(0xAAAAAA);
+  renderer.shadowMap.enabled = true;
+  const gui = new GUI();
+
+  const fov = 40;
+  const aspect = 2;  // the canvas default
+  const near = 0.1;
+  const far = 1000;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera.position.set(8, 4, 10).multiplyScalar(3);
+  camera.lookAt(0, 0, 0);
+
+  const scene = new THREE.Scene();
+
+
+  {
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+    light.castShadow = true;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+
+    const d = 50;
+    light.shadow.camera.left = -d;
+    light.shadow.camera.right = d;
+    light.shadow.camera.top = d;
+    light.shadow.camera.bottom = -d;
+    light.shadow.camera.near = 1;
+    light.shadow.camera.far = 50;
+    light.shadow.bias = 0.001;
+  }
+  // {
+  //   const color = 0xFFFFFF;
+  //   const intensity = 3;
+  //   const light = new THREE.DirectionalLight(0xffffff, 1);
+  //   light.position.set(20, 50, 20)
+  //   scene.add(light);
+  // }
+  {
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 2, 4);
+    scene.add(light);
+  }
+
+  const objects = [];
+
+  const radius = 1;
+  const widthSegments = 10;
+  const heightSegments = 10;
+  const sphereGeometry = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
+  const ao = new THREE.Object3D();
+
+  ao.position.set(4,10,0)
+  ao.scale.set(.2,.2,.2)
+  scene.add(ao)
+  objects.push(ao)
+
+  const bo = new THREE.Object3D()
+  ao.add(bo)
+  objects.push(bo)
+  bo.position.x = 20
+
+  const co = new THREE.Object3D()
+  bo.add(co)
+  objects.push(co)
+  co.position.x = 5
+  const am = new THREE.MeshPhongMaterial({color: 0x898900})
+  const amesh = new THREE.Mesh(sphereGeometry, am)
+  // amesh.position.set(0,5,0)
+  amesh.scale.set(5,5,5)
+  amesh.castShadow = true
+  ao.add(amesh)
+
+  const bm = new THREE.MeshPhongMaterial({color: 0x890000})
+  const bmesh = new THREE.Mesh(sphereGeometry, bm)
+  bmesh.scale.set(1,1,1)
+  bmesh.castShadow = true
+  bo.add(bmesh)
+
+  const cm = new THREE.MeshPhongMaterial({color: 0x008988})
+  const cmesh = new THREE.Mesh(sphereGeometry, cm)
+  cmesh.scale.set(.5,.5,.5)
+  cmesh.castShadow = true
+  co.add(cmesh)
+
+
+
+  const groundGeometry = new THREE.PlaneBufferGeometry(50, 50);
+  const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
+  const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+  groundMesh.rotation.x = Math.PI * -.5;
+  groundMesh.receiveShadow = true;
+  scene.add(groundMesh);
+
+  const carWidth = 4;
+  const carHeight = 1;
+  const carLength = 8;
+
+  const tank = new THREE.Object3D();
+  scene.add(tank);
+
+  const bodyGeometry = new THREE.BoxBufferGeometry(carWidth, carHeight, carLength);
+  const bodyMaterial = new THREE.MeshPhongMaterial({color: 0x6688AA});
+  const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
+  bodyMesh.position.y = 1.4;
+  bodyMesh.castShadow = true;
+  bodyMesh.receiveShadow = true;
+  tank.add(bodyMesh);
+
+  const wheelRadius = 1;
+  const wheelThickness = .5;
+  const wheelSegments = 6;
+  const wheelGeometry = new THREE.CylinderBufferGeometry(
+      wheelRadius,     // top radius
+      wheelRadius,     // bottom radius
+      wheelThickness,  // height of cylinder
+      wheelSegments);
+  const wheelMaterial = new THREE.MeshPhongMaterial({color: 0x888888});
+  const wheelPositions = [
+    [-carWidth / 2 - wheelThickness / 2, -carHeight / 2,  carLength / 3],
+    [ carWidth / 2 + wheelThickness / 2, -carHeight / 2,  carLength / 3],
+    [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, 0],
+    [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, 0],
+    [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
+    [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3],
+  ];
+  const wheelMeshes = wheelPositions.map((position) => {
+    const mesh = new THREE.Mesh(wheelGeometry, wheelMaterial);
+    mesh.position.set(...position);
+    mesh.rotation.z = Math.PI * .5;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    bodyMesh.add(mesh);
+    return mesh;
+  });
+
+  // const targetGeometry = new THREE.SphereBufferGeometry(.5, 6, 3);
+  // const targetMaterial = new THREE.MeshPhongMaterial({color: 0x00FF00, flatShading: true});
+  // const targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
+  // const targetOrbit = new THREE.Object3D();
+  // const targetElevation = new THREE.Object3D();
+  // const targetBob = new THREE.Object3D();
+  // targetMesh.castShadow = true;
+  // scene.add(targetOrbit);
+  // targetOrbit.add(targetElevation);
+  // targetElevation.position.z = carLength * 2;
+  // targetElevation.position.y = 8;
+  // targetElevation.add(targetBob);
+  // targetBob.add(targetMesh);
+
+  // Create a sine-like wave
+  const curve = new THREE.SplineCurve( [
+    new THREE.Vector2( -10, 0 ),
+    new THREE.Vector2( -5, 5 ),
+    new THREE.Vector2( 0, 0 ),
+    new THREE.Vector2( 5, -5 ),
+    new THREE.Vector2( 10, 0 ),
+    new THREE.Vector2( 5, 10 ),
+    new THREE.Vector2( -5, 10 ),
+    new THREE.Vector2( -10, -10 ),
+    new THREE.Vector2( -15, -8 ),
+    new THREE.Vector2( -10, 0 ),
+  ] );
+
+  const points = curve.getPoints( 50 );
+  const geometry = new THREE.BufferGeometry().setFromPoints( points );
+  const material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+  const splineObject = new THREE.Line( geometry, material );
+  splineObject.rotation.x = Math.PI * .5;
+  splineObject.position.y = 0.05;
+  scene.add(splineObject);
+
+  class AxisGridHelper {
+      constructor(node, units = 10) {
+        const axes = new THREE.AxesHelper();
+        axes.material.depthTest = false;
+        axes.renderOrder = 2;  // after the grid
+        node.add(axes);
+
+        const grid = new THREE.GridHelper(units, units);
+        grid.material.depthTest = false;
+        grid.renderOrder = 1;
+        node.add(grid);
+
+        this.grid = grid;
+        this.axes = axes;
+        this.visible = false;
+      }
+      get visible() {
+        return this._visible;
+      }
+      set visible(v) {
+        this._visible = v;
+        this.grid.visible = v;
+        this.axes.visible = v;
+      }
+    }
+
+    function makeAxisGrid(node, label, units) {
+      const helper = new AxisGridHelper(node, units);
+      gui.add(helper, 'visible').name(label);
+    }
+
+    // makeAxisGrid(ao, 'solarSystem', 26);
+    // makeAxisGrid(amesh, 'sunMesh');
+    // makeAxisGrid(bo, 'earthOrbit');
+    // makeAxisGrid(bmesh, 'earthMesh');
+    // makeAxisGrid(cmesh, 'moonMesh');
+
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+    return needResize;
+  }
+
+  function render(time) {
+    time *= 0.001;
+
+    if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+
+    objects.forEach((obj) => {
+      obj.rotation.y = time;
+    });
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+
+main();
+
+</script>
 {% endblock pageSpecificJavascript %}
