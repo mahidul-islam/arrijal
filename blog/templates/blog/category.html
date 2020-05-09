@@ -10,7 +10,7 @@
 
                        {% if category.name == single_category.name %}
                        <div class="blog-post">
-                         {% for item in page.gallery_images.all %}
+                         {% for item in page.gallery_images.all|slice:":1" %}
 
                                  {% image item.image fill-1200x600 %}
                                  {% endfor %}
@@ -28,7 +28,8 @@
                                          {% for category in categories %}
 
 
-                                                 <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>,
+                                                 <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
+
 
 
                                          {% endfor %}
@@ -44,7 +45,7 @@
                              <a href="#">2 Comments</a>
                            </div>
                          </div>
-                         <p> {{ page.body|richtext }} </p>
+                         <p> {{ page.intro|richtext }} </p>
                          {% if page.tags.all.count %}
                            <div class="sb-widget-item">
                              <div class="tags">
@@ -55,7 +56,7 @@
                                    </div>
                          {% endif %}
                        </div>
-                         <a href="#" class="site-btn readmore">Read More</a>
+                         <a href="{% url 'blog:single_post' page.pk %}" class="site-btn readmore">Read More</a>
 
                        </div>
                          {% endif %}

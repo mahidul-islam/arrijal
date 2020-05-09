@@ -10,7 +10,7 @@
     {% for blogpage in blogpages %}
 
           <p>
-              <strong><a href="{% pageurl blogpage %}">{{ blogpage.title }}</a></strong><br />
+              <strong><a href="{% url 'blog:single_post' blogpage.pk %}">{{ blogpage.title }}</a></strong><br />
               <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
               {% if blogpage.author %}
                 <p>By {{ blogpage.author }}</p>
