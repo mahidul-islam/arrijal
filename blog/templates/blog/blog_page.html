@@ -1,4 +1,4 @@
-{% extends "base2.html" %}
+{% extends "base.html" %}
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
@@ -25,7 +25,7 @@
          {{ page.body|richtext }}
     {% for item in page.gallery_images.all %}
         <div style="float: left; margin: 10px">
-            {% image item.image fill-320x240 %}
+            {% image item.image fill-1200x500 %}
             <p>{{ item.caption }}</p>
         </div>
     {% endfor %}

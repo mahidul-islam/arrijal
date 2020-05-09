@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+{% load static i18n %}
+
+{% block content %}
+
+	<!-- Page info end -->
+
+
+	<!-- search section -->
+	<section class="search-section ss-other-page">
+		<div class="container">
+			<div class="search-warp">
+				<div class="section-title text-white">
+					<h2><span>Search your course</span></h2>
+				</div>
+				<div class="row">
+					<div class="col-lg-10 offset-lg-1">
+						<!-- search form -->
+						<form class="course-search-form">
+							<input type="text" placeholder="Course">
+							<input type="text" class="last-m" placeholder="Category">
+							<button class="site-btn btn-dark">Search Couse</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- search section end -->
+
+	<!-- Page  -->
+
+	<section class="blog-page spad pb-0">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-9">
+					<!-- blog post -->
+          {% block content2 %}
+          {% endblock content2 %}
+					<!-- blog post -->
+
+					<div class="site-pagination">
+						<span class="active">01.</span>
+						<a href="#">02.</a>
+						<a href="#">03</a>
+					</div>
+				</div>
+
+          <div class="col-lg-3 col-md-5 col-sm-9 sidebar">
+            <div class="sb-widget-item">
+              <form class="search-widget">
+                <input type="text" placeholder="Search">
+                <button><i class="fa fa-search"></i></button>
+              </form>
+            </div>
+            <div class="sb-widget-item">
+              <h4 class="sb-w-title">Categories</h4>
+              <ul>
+                 {% for category in categori %}
+
+                      <li> <a href="{% url 'blog:category-dao' category.pk %}"> {{ category.name }}</a></li>
+
+                  {% endfor %}
+
+              </ul>
+            </div>
+            <div class="sb-widget-item">
+              <h4 class="sb-w-title">Archives</h4>
+              <ul>
+                <li><a href="#">February 2018</a></li>
+                <li><a href="#">March 2018</a></li>
+                <li><a href="#">April 2018</a></li>
+                <li><a href="#">May 2018</a></li>
+                <li><a href="#">June 2018</a></li>
+              </ul>
+            </div>
+            <div class="sb-widget-item">
+              <h4 class="sb-w-title">Tags</h4>
+						{% for page in posts %}
+                <div class="tags">
+                  {% for tag in page.tags.all %}
+                  <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
+                  </a>
+                    {% endfor %}
+                    </div>
+              {% endfor %}
+            </div>
+            <div class="sb-widget-item">
+              <div class="add">
+                <a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>
+              </div>
+            </div>
+          </div>
+		<!--ekhane-->
+			</div>
+		</div>
+	</section>
+	<!-- Page end -->
+
+
+	<!-- banner section -->
+	<section class="banner-section spad">
+		<div class="container">
+			<div class="section-title mb-0 pb-2">
+				<h2>Join Our Community Now!</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+			</div>
+			<div class="text-center pt-5">
+				<a href="#" class="site-btn">Register Now</a>
+			</div>
+		</div>
+	</section>
+  {% endblock %}
+	<!-- banner section end -->

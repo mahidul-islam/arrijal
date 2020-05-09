@@ -24,6 +24,7 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     path("three/", include("three.urls", namespace="three")),
     path("review/", include("review.urls", namespace="review")),
+    path("blog/", include("blog.urls", namespace="blog")),
     path("newsletter/", include("newsletters.urls", namespace="newsletter")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

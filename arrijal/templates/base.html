@@ -27,6 +27,7 @@
                   {% endif %}
                   <li><a href="{% url 'three:three' %}">Animation</a></li>
                   <li><a href="{% url 'review:review' %}">Reviews</a></li>
+                    <li><a href="{% url 'blog:blog' %}">Blogs</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'account_logout' %}" class="site-btn header-btn pb-3">LogOut</a></li>
                   {% else %}
