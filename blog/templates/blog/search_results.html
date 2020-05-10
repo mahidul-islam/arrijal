@@ -1,0 +1,25 @@
+{% extends "blogbase.html" %}
+{% load wagtailcore_tags %}
+
+
+{% block content2 %}
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
+
+                    {% if result.search_description %}
+                        {{ result.search_description|safe }}
+
+                    {% endif %}
+                    
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif search_query %}
+        No results found
+    {% else %}
+        Please type something into the search box
+    {% endif %}
+{% endblock %}

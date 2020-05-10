@@ -5,63 +5,63 @@
 
 {% block content %}
 
-	<!-- Page info end -->
+<!-- Page info end -->
 
 
-	<!-- search section -->
+<!-- search section -->
 
-  <section class="blog-page spad pb-0">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-9">
+<section class="blog-page spad pb-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9">
 
-    {% if request.GET.tag|length %}
+        {% if request.GET.tag|length %}
         <h4>Showing pages tagged "{{ request.GET.tag }}"</h4>
-    {% endif %}
+        {% endif %}
 
-    {% for blogpage in blogpages %}
+        {% for blogpage in blogpages %}
 
-          <p>
-              <h4><a href="{% pageurl page %}">{{ blogpage.title }}</a></h4><br />
-              <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
-              {% if blogpage.owner %}
-                <p>By {{ blogpage.owner }}</p>
-              {% endif %}
-          </p>
+        <p>
+        <h4><a href="{% pageurl page %}">{{ blogpage.title }}</a></h4><br />
+        <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
+        {% if blogpage.owner %}
+        <p>By {{ blogpage.owner }}</p>
+        {% endif %}
+        </p>
 
-    {% empty %}
+        {% empty %}
         No pages found with that tag.
-    {% endfor %}
+        {% endfor %}
 
 
-    <div class="site-pagination">
-      <span class="active">01.</span>
-      <a href="#">02.</a>
-      <a href="#">03</a>
-    </div>
-    <a href="{% url 'blog:blog' %}" class="site-btn readmore">See Full Blog List</a>
-    </div>
-    <div class="col-lg-3 col-md-5 col-sm-9 sidebar">
-      <div class="sb-widget-item">
-        <form class="search-widget">
-          <input type="text" placeholder="Search">
-          <button><i class="fa fa-search"></i></button>
-        </form>
+        <div class="site-pagination">
+          <span class="active">01.</span>
+          <a href="#">02.</a>
+          <a href="#">03</a>
+        </div>
+        <a href="{% url 'blog:blog' %}" class="site-btn readmore">See Full Blog List</a>
       </div>
+      <div class="col-lg-3 col-md-5 col-sm-9 sidebar">
+        <div class="sb-widget-item">
+          <form class="search-widget">
+            <input type="text" placeholder="Search">
+            <button><i class="fa fa-search"></i></button>
+          </form>
+        </div>
 
-      <div class="sb-widget-item">
-        <div class="add">
-          <a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>
+        <div class="sb-widget-item">
+          <div class="add">
+            <a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>
+          </div>
         </div>
       </div>
-    </div>
 
     </div>
-    </div>
-    </section>
-    <!-- Page end -->
+  </div>
+</section>
+<!-- Page end -->
 
 
-    <!-- banner section -->
+<!-- banner section -->
 
-    {% endblock %}
+{% endblock %}
