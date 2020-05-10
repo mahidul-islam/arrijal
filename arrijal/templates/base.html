@@ -21,7 +21,6 @@
               <nav class="main-menu">
                 <ul>
                   <li><a href="{% url 'home' %}">Home</a></li>
-                  <li><a href="{% url 'about' %}">About us</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="{% url 'users:detail' request.user.username %}">Profile</a></li>
                   {% endif %}

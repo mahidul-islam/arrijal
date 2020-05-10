@@ -1,66 +1,67 @@
-{% extends "blogbase.html" %}
+{% extends "base.html" %}
 {% load static i18n %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
-{% block content2 %}
+{% block content %}
 
-					<div class="blog-post">
-
-
-            {% for item in page.gallery_images.all %}
+<div class="blog-post">
 
 
-                    {% image item.image fill-400x250 %}
+  {% for item in page.gallery_images.all %}
+
+
+  {% image item.image fill-400x250 %}
 
 
 
 
-                  {% endfor %}
+  {% endfor %}
 
-						<h3>{{ page.title }}</h3>
-						<div class="blog-metas">
-							<div class="blog-meta author">
-								<div class="post-author set-bg" data-setbg="img/authors/1.jpg"></div>
-								<a href="#">{{page.owner}}</a>
-							</div>
-							<div class="blog-meta">
-              {% with categories=page.categories.all %}
-                    {% if categories %}
-
-
-                            {% for category in categories %}
+  <h3>{{ page.title }}</h3>
+  <div class="blog-metas">
+    <div class="blog-meta author">
+      <div class="post-author set-bg" data-setbg="img/authors/1.jpg"></div>
+      <a href="#">{{page.owner}}</a>
+    </div>
+    <div class="blog-meta">
+      {% with categories=page.categories.all %}
+      {% if categories %}
 
 
-                                    <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
+      {% for category in categories %}
 
-                            {% endfor %}
 
-                    {% endif %}
-                {% endwith %}
+      <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
 
-							</div>
-							<div class="blog-meta">
-								<a href="#">{{page.date}}</a>
-							</div>
-							<div class="blog-meta">
-								<a href="#">2 Comments</a>
-							</div>
-						</div>
+      {% endfor %}
 
-            <p> {{ page.body|richtext }}</p>
-            {% if page.tags.all.count %}
-              <div class="sb-widget-item">
-                <div class="tags">
-                  {% for tag in page.tags.all %}
-                  <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
-                  </a>
-                    {% endfor %}
-                      </div>
-            {% endif %}
-          </div>
+      {% endif %}
+      {% endwith %}
 
-	</div>
+    </div>
+    <div class="blog-meta">
+      <a href="#">{{page.date}}</a>
+    </div>
+    <div class="blog-meta">
+      <a href="#">2 Comments</a>
+    </div>
+  </div>
+
+  <p> {{ page.body|richtext }}</p>
+  {% if page.tags.all.count %}
+  <div class="sb-widget-item">
+    <div class="tags">
+      {% for tag in page.tags.all %}
+      <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <p><a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to blog</a></p>
+
+</div>
 
 {% endblock %}
