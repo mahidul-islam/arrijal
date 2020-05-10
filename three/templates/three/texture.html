@@ -37,7 +37,6 @@ function main() {
 
   const scene = new THREE.Scene();
 
-
   {
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(0, 20, 0);
@@ -67,6 +66,42 @@ function main() {
   groundMesh.rotation.x = Math.PI * -.5;
   groundMesh.receiveShadow = true;
   scene.add(groundMesh);
+
+  const boxWidth = 1;
+  const boxHeight = 1;
+  const boxDepth = 1;
+  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+
+  const cubes = [];
+
+  const loader = new THREE.TextureLoader();
+
+  const material =  new THREE.MeshBasicMaterial({
+    map: loader.load('{% static "images/profile500.png" %}')
+  });
+
+  const materials = [
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-1.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-2.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-3.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-4.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-5.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-6.jpg' %}")}),
+  ];
+
+  const cube = new THREE.Mesh(geometry, material);
+  cube.scale.set(5,5,5);
+  cube.position.set(-5, 5, 12);
+  cube.castShadow = true;
+  scene.add(cube);
+  cubes.push(cube);
+
+  const cube2 = new THREE.Mesh(geometry, materials);
+  cube2.scale.set(5,5,5);
+  cube2.position.set(10, 5, -15);
+  cube2.castShadow = true;
+  scene.add(cube2);
+  cubes.push(cube2);
 
   class AxisGridHelper {
     constructor(node, units = 10) {
@@ -112,8 +147,17 @@ function main() {
     }
     return needResize;
   }
+
   function render(time) {
     time *= 0.001;
+
+    cubes.forEach((cube, ndx) => {
+      const speed = .2 + ndx * .1;
+      const rot = time * speed;
+      cube.rotation.x = rot;
+      cube.rotation.y = rot;
+    });
+
     if (resizeRendererToDisplaySize(renderer)) {
       const canvas = renderer.domElement;
       camera.aspect = canvas.clientWidth / canvas.clientHeight;
