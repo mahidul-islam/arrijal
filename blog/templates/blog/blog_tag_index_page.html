@@ -1,7 +1,37 @@
-{% extends "blogbase.html" %}
+{% extends "base.html" %}
 {% load wagtailcore_tags %}
+{% block body_class %}template-blogpage{% endblock %}
+{% load static i18n %}
 
 {% block content %}
+
+	<!-- Page info end -->
+
+
+	<!-- search section -->
+	<section class="search-section ss-other-page">
+		<div class="container">
+			<div class="search-warp">
+				<div class="section-title text-white">
+					<h2><span>Search your course</span></h2>
+				</div>
+				<div class="row">
+					<div class="col-lg-10 offset-lg-1">
+						<!-- search form -->
+						<form class="course-search-form">
+							<input type="text" placeholder="Course">
+							<input type="text" class="last-m" placeholder="Category">
+							<button class="site-btn btn-dark">Search Couse</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+  <section class="blog-page spad pb-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9">
 
     {% if request.GET.tag|length %}
         <h4>Showing pages tagged "{{ request.GET.tag }}"</h4>
@@ -10,10 +40,10 @@
     {% for blogpage in blogpages %}
 
           <p>
-              <strong><a href="{% url 'blog:single_post' blogpage.pk %}">{{ blogpage.title }}</a></strong><br />
+              <h4><a href="{% url 'blog:single_post' blogpage.pk %}">{{ blogpage.title }}</a></h4><br />
               <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
-              {% if blogpage.author %}
-                <p>By {{ blogpage.author }}</p>
+              {% if blogpage.owner %}
+                <p>By {{ blogpage.owner }}</p>
               {% endif %}
           </p>
 
@@ -21,4 +51,45 @@
         No pages found with that tag.
     {% endfor %}
 
-{% endblock %}
+
+    <div class="site-pagination">
+      <span class="active">01.</span>
+      <a href="#">02.</a>
+      <a href="#">03</a>
+    </div>
+    <a href="{% url 'blog:blog' %}" class="site-btn readmore">See Full Blog List</a>
+    </div>
+    <div class="col-lg-3 col-md-5 col-sm-9 sidebar">
+      <div class="sb-widget-item">
+        <form class="search-widget">
+          <input type="text" placeholder="Search">
+          <button><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+
+      <div class="sb-widget-item">
+        <div class="add">
+          <a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>
+        </div>
+      </div>
+    </div>
+    <!--ekhane-->
+    </div>
+    </div>
+    </section>
+    <!-- Page end -->
+
+
+    <!-- banner section -->
+    <section class="banner-section spad">
+    <div class="container">
+    <div class="section-title mb-0 pb-2">
+    <h2>Join Our Community Now!</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+    </div>
+    <div class="text-center pt-5">
+    <a href="#" class="site-btn">Register Now</a>
+    </div>
+    </div>
+    </section>
+    {% endblock %}

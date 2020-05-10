@@ -31,6 +31,7 @@ def singlepage(request,post_id):
     posts=BlogPage.objects.all()
     return render(request,'blog/blog_page.html',{'page':post,'categori':categories,'posts':posts})
 
-def blog_tag_index_page(request):
+def nothing(request):
     categories=BlogCategory.objects.all()
-    return render(request,'blog/blog_tag_index_page.html',{'categori':categories})
+    posts=BlogPage.objects.all()
+    return render(request,'blog/nothing.html',{'categori':categories,'posts':posts})
