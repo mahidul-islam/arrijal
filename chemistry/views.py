@@ -13,11 +13,6 @@ def chemistry(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def tankofnet(request):
-    template = loader.get_template('chemistry/tankofnet.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
-
 def tank(request):
     template = loader.get_template('chemistry/tank.html')
     context = {}

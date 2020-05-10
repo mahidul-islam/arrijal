@@ -22,15 +22,26 @@ html,body{
 <script type="module">
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+
 function main(){
   const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas});
+  const renderer = new THREE.WebGLRenderer({canvas: canvas});
+  renderer.setClearColor(0xAAAAAA);
+  renderer.shadowMap.enabled = true;
   const gui = new GUI();
 
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-  camera.position.set(0, 30, 0);
-  camera.up.set(0, 0, 1);
+  const fov = 40;
+  const aspect = 2;  // the canvas default
+  const near = 0.1;
+  const far = 1000;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera.position.set(8, 4, 10).multiplyScalar(3);
   camera.lookAt(0, 0, 0);
+
+  const controls = new OrbitControls(camera, canvas);
+  controls.target.set(0, 5, 0);
+  controls.update();
 
   const scene = new THREE.Scene();
   {
