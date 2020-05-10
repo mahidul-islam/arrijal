@@ -10,4 +10,7 @@ urlpatterns = [
     path("carbonDiOxide", views.carbonDiOxide, name="carbonDiOxide"),
     path("tankofnet", views.tankofnet, name="tankofnet"),
     path("tank", views.tank, name="experimentTank"),
+    path("guiexample", views.guiexample, name="guiexample"),
+    path("base", views.base, name="base"),
+    path("texture", views.texture, name="texture"),
 ]
