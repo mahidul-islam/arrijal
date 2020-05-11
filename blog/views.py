@@ -12,7 +12,10 @@ from wagtail.core.models import Page
 from wagtail.search.models import Query
 
 def blogpage(request):
+    tag1=' '
+    li=[]
     posts=BlogPage.objects.all()
+    posts2=BlogPage.objects.all()
     category=BlogCategory.objects.all()
 
     try:
@@ -27,7 +30,20 @@ def blogpage(request):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
 
-    return render(request,'blog/blog_index_page.html',{'posts':posts,'categori':category})
+    for page in posts2:
+        for tag in page.tags.all():
+            if tag1 != tag :
+                tag1=tag
+                li.append(tag1)
+
+
+    res = []
+    for i in li:
+         if i not in res:
+             res.append(i)
+             print(res)
+
+    return render(request,'blog/blog_index_page.html',{'posts':posts,'mylist':res,'categori':category})
 def search(request):
     # Search
     search_query = request.GET.get('query', None)
@@ -45,11 +61,11 @@ def search(request):
     return render(request, 'blog/search_results.html', {
         'search_query': search_query,
         'search_results': search_results,
-        'posts':posts,'categori':category
+        'posts2':posts,'categori':category
     })
 
 def category_dao(request,category_id):
     category=BlogCategory.objects.get(pk=category_id)
     categories=BlogCategory.objects.all()
-    posts=BlogPage.objects.all()
-    return render(request,'blog/category.html',{'single_category':category,'categori':categories,'posts':posts})
+    posts2=BlogPage.objects.all()
+    return render(request,'blog/category.html',{'single_category':category,'categori':categories,'posts2':posts2})

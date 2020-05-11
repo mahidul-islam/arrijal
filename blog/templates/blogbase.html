@@ -3,8 +3,9 @@
 
 {% block body_class %}template-blogpage{% endblock %}
 {% load static i18n %}
-
-{% block content %}
+{% block spadof %}
+{% endblock %}
+{% block later %}
 
 <!-- Page info end -->
 
@@ -58,14 +59,13 @@
 				</div>
 				<div class="sb-widget-item">
 					<h4 class="sb-w-title">Tags</h4>
-					{% for page in posts %}
+
 					<div class="tags">
-						{% for tag in page.tags.all %}
+						{% for tag in mylist %}
 						<a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
 						</a>
 						{% endfor %}
 					</div>
-					{% endfor %}
 				</div>
 				<div class="sb-widget-item">
 					<div class="add">

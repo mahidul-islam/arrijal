@@ -20,8 +20,8 @@
   <h3>{{ page.title }}</h3>
   <div class="blog-metas">
     <div class="blog-meta author">
-      <div class="post-author set-bg" data-setbg="img/authors/1.jpg"></div>
-      <a href="#">James Smith</a>
+      <div class="post-author set-bg" data-setbg="{% static 'img/authors/1.jpg' %}"></div>
+      <a href="#">{{page.owner}}</a>
     </div>
     <div class="blog-meta">
       {% with categories=page.categories.all %}
