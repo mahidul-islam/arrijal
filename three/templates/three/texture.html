@@ -109,6 +109,19 @@ function main() {
   scene.add(cube2);
   cubes.push(cube2);
 
+  class ColorGUIHelper {
+    constructor(object, prop) {
+      this.object = object;
+      this.prop = prop;
+    }
+    get value() {
+      return `#${this.object[this.prop].getHexString()}`;
+    }
+    set value(hexString) {
+      this.object[this.prop].set(hexString);
+    }
+  }
+
   class AxisGridHelper {
     constructor(node, units = 10) {
       const axes = new THREE.AxesHelper();
@@ -142,6 +155,9 @@ function main() {
 
   // makeAxisGrid(tank, 'car', 20);
   // makeAxisGrid(wheelMeshes[3], 'One Wheel');
+
+  // gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
+  // gui.add(light, 'intensity', 0, 2, 0.01);
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
