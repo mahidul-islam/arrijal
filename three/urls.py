@@ -14,4 +14,5 @@ urlpatterns = [
     path("base", views.base, name="base"),
     path("texture", views.texture, name="texture"),
     path("alcohol", views.alcohol, name="alcohol"),
+    path("molecules", views.molecules, name="molecules"),
 ]

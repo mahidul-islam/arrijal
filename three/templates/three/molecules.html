@@ -33,7 +33,7 @@ function main() {
   const near = 0.1;
   const far = 1000;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(8, 4, 10).multiplyScalar(5);
+  camera.position.set(8, 4, 10).multiplyScalar(3);
   camera.lookAt(0, 0, 0);
 
   const controls = new OrbitControls(camera, canvas);
@@ -65,66 +65,16 @@ function main() {
     scene.add(light);
   }
 
-  const groundGeometry = new THREE.PlaneBufferGeometry(100, 100);
+  const groundGeometry = new THREE.PlaneBufferGeometry(50, 50);
   const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = Math.PI * -.5;
   groundMesh.receiveShadow = true;
-  groundMesh.position.set(0,-5,0)
   scene.add(groundMesh);
 
 
   // Add your code here
-  const objects = [];
 
-  const radius = 1;
-  const widthSegments = 10;
-  const heightSegments = 10;
-  const sphereGeometry = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
-
-  const tomtom = new THREE.Object3D();
-  tomtom.position.set(15,15,0)
-  tomtom.scale.set(.7,.7,.7)
-  scene.add(tomtom)
-  objects.push(tomtom)
-
-  const atom1 = new THREE.MeshPhongMaterial({color: 0x454545})
-  const meshAtom1 = new THREE.Mesh(sphereGeometry, atom1)
-  meshAtom1.position.x=10
-  meshAtom1.scale.set(5,5,5)
-  meshAtom1.castShadow = true
-  tomtom.add(meshAtom1)
-
-  const atom2 = new THREE.MeshPhongMaterial({color: 0x888888})
-  const meshAtom2 = new THREE.Mesh(sphereGeometry, atom2)
-  meshAtom2.position.x = -10
-  meshAtom2.scale.set(4,4,4)
-  meshAtom2.castShadow = true
-  tomtom.add(meshAtom2)
-
-  function createLink(fromSphere, toSphere, linkMaterial, threedspace){
-    const linkRadius = 1;
-    const linkLength = 20;
-    const linkSegments = 6;
-    const linkGeometry = new THREE.CylinderBufferGeometry(linkRadius, linkRadius, linkLength, linkSegments)
-
-    const targetPosition = new THREE.Vector3()
-
-    const link = new THREE.Mesh(linkGeometry, linkMaterial)
-    const linkPivot = new THREE.Object3D()
-    toSphere.getWorldPosition(targetPosition)
-
-    threedspace.add(link)
-    link.lookAt(targetPosition)
-
-    // link.rotation.z = Math.PI * .5;
-    link.castShadow = true;
-    threedspace.add(link)
-  }
-
-  const linkMaterial = new THREE.MeshPhongMaterial({color: 0x222222})
-  const link = createLink(meshAtom1, meshAtom2, linkMaterial, tomtom)
-  tomtom.add(link)
 
   class AxisGridHelper {
     constructor(node, units = 10) {
@@ -172,11 +122,6 @@ function main() {
   }
   function render(time) {
     time *= 0.001;
-
-    objects.forEach((obj) => {
-      obj.rotation.y = time;
-    });
-
     if (resizeRendererToDisplaySize(renderer)) {
       const canvas = renderer.domElement;
       camera.aspect = canvas.clientWidth / canvas.clientHeight;

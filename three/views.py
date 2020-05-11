@@ -57,3 +57,8 @@ def alcohol(request):
     template = loader.get_template('three/alcohol.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def molecules(request):
+    template = loader.get_template('three/molecules.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
