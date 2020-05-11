@@ -19,6 +19,7 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
 
 function main() {
 
@@ -74,6 +75,36 @@ function main() {
 
 
   // Add your code here
+  // instantiate a loader
+  const loader = new PDBLoader();
+
+  // load a PDB resource
+  loader.load(
+  	// resource URL
+  	"{% static 'three/model/pdb/ch3ch2oh.pdb' %}",
+  	// called when the resource is loaded
+  	function ( pdb ) {
+
+  		var geometryAtoms = pdb.geometryAtoms;
+  		var geometryBonds = pdb.geometryBonds;
+  		var json = pdb.json;
+
+  		console.log( 'This molecule has ' + json.atoms.length + ' atoms' );
+
+  	},
+  	// called when loading is in progresses
+  	function ( xhr ) {
+
+  		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+  	},
+  	// called when loading has errors
+  	function ( error ) {
+
+  		console.log( 'An error happened' );
+
+  	}
+  );
 
 
   class AxisGridHelper {
