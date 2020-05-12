@@ -20,6 +20,8 @@ import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threej
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
 import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+
 
 function main() {
 
@@ -29,59 +31,46 @@ function main() {
   renderer.shadowMap.enabled = true;
   const gui = new GUI();
 
-  const fov = 40;
+  const fov = 70;
   const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 1000;
+  const near = 1;
+  const far = 5000;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(8, 4, 10).multiplyScalar(3);
+  camera.position.z = 1000;
   camera.lookAt(0, 0, 0);
 
   const controls = new OrbitControls(camera, canvas);
-  controls.target.set(0, 5, 0);
+  controls.target.set(0, 0, 0);
   controls.update();
 
   const scene = new THREE.Scene();
 
-  {
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(0, 20, 0);
-    scene.add(light);
-    light.castShadow = true;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
+  var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
+	light.position.set( 1, 1, 1 );
+	scene.add( light );
 
-    const d = 50;
-    light.shadow.camera.left = -d;
-    light.shadow.camera.right = d;
-    light.shadow.camera.top = d;
-    light.shadow.camera.bottom = -d;
-    light.shadow.camera.near = 1;
-    light.shadow.camera.far = 50;
-    light.shadow.bias = 0.001;
-  }
-  {
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 2, 4);
-    scene.add(light);
-  }
+	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( - 1, - 1, 1 );
+	scene.add( light );
+
+  const root = new THREE.Group();
+	scene.add( root );
 
   const groundGeometry = new THREE.PlaneBufferGeometry(50, 50);
   const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = Math.PI * -.5;
   groundMesh.receiveShadow = true;
-  scene.add(groundMesh);
+  // scene.add(groundMesh);
 
 
   // Add your code here
   // instantiate a loader
   const loader = new PDBLoader();
+  const offset = new THREE.Vector3();
 
   // load a PDB resource
-  loader.load(
-  	// resource URL
-  	"{% static 'three/model/pdb/ch3ch2oh.pdb' %}",
+  loader.load("{% static 'three/model/pdb/ch3ch2oh.pdb' %}",
   	// called when the resource is loaded
   	function ( pdb ) {
 
@@ -89,22 +78,87 @@ function main() {
   		var geometryBonds = pdb.geometryBonds;
   		var json = pdb.json;
 
-  		console.log( 'This molecule has ' + json.atoms.length + ' atoms' );
+      var boxGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+			var sphereGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
 
+      geometryAtoms.computeBoundingBox();
+			geometryAtoms.boundingBox.getCenter( offset ).negate();
+
+			geometryAtoms.translate( offset.x, offset.y, offset.z );
+			geometryBonds.translate( offset.x, offset.y, offset.z );
+
+			var positions = geometryAtoms.getAttribute( 'position' );
+			var colors = geometryAtoms.getAttribute( 'color' );
+
+			var position = new THREE.Vector3();
+			var color = new THREE.Color();
+
+      console.log(positions.count)
+
+      for ( var i = 0; i < positions.count; i ++ ) {
+
+				position.x = positions.getX( i );
+				position.y = positions.getY( i );
+				position.z = positions.getZ( i );
+
+				color.r = colors.getX( i );
+				color.g = colors.getY( i );
+				color.b = colors.getZ( i );
+
+				var material = new THREE.MeshPhongMaterial( { color: color } );
+
+				var object = new THREE.Mesh( sphereGeometry, material );
+				object.position.copy( position );
+				object.position.multiplyScalar( 75 );
+				object.scale.multiplyScalar( 25 );
+				root.add( object );
+
+				// var atom = json.atoms[ i ];
+        //
+				// var text = document.createElement( 'div' );
+				// text.className = 'label';
+				// text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
+				// text.textContent = atom[ 4 ];
+        //
+				// var label = new CSS2DObject( text );
+				// label.position.copy( object.position );
+				// root.add( label );
+			}
+      positions = geometryBonds.getAttribute( 'position' );
+      // console.log(positions.count)
+			var start = new THREE.Vector3();
+			var end = new THREE.Vector3();
+
+			for ( var i = 0; i < positions.count; i += 2 ) {
+				start.x = positions.getX( i );
+				start.y = positions.getY( i );
+				start.z = positions.getZ( i );
+
+				end.x = positions.getX( i + 1 );
+				end.y = positions.getY( i + 1 );
+				end.z = positions.getZ( i + 1 );
+
+				start.multiplyScalar( 75 );
+				end.multiplyScalar( 75 );
+
+				var object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( 0xffffff ) );
+				object.position.copy( start );
+				object.position.lerp( end, 0.5 );
+				object.scale.set( 5, 5, start.distanceTo( end ) );
+				object.lookAt( end );
+				root.add( object );
+			}
+  		// console.log( 'This molecule has ' + json.atoms.length + ' atoms' );
   	},
   	// called when loading is in progresses
   	function ( xhr ) {
-
   		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
   	},
   	// called when loading has errors
   	function ( error ) {
-
   		console.log( 'An error happened' );
-
   	}
-  );
+  )
 
 
   class AxisGridHelper {
