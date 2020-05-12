@@ -23,12 +23,42 @@ def experiment(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def water(request):
-    template = loader.get_template('three/water.html')
+def tankofnet(request):
+    template = loader.get_template('three/tankofnet.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
 def carbonDiOxide(request):
     template = loader.get_template('three/carbonDiOxide.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def tank(request):
+    template = loader.get_template('three/tank.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def guiexample(request):
+    template = loader.get_template('three/guiexample.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def texture(request):
+    template = loader.get_template('three/texture.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def base(request):
+    template = loader.get_template('three/base.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def alcohol(request):
+    template = loader.get_template('three/alcohol.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def molecules(request):
+    template = loader.get_template('three/molecules.html')
     context = {}
     return HttpResponse(template.render(context, request))

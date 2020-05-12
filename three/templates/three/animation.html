@@ -49,10 +49,10 @@
 					<div class="categorie-item">
 						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
 						<div class="ci-text">
-							<a href="{% url 'three:water' %}">
-								<h5>Water Atom</h5>
+							<a href="{% url 'three:tankofnet' %}">
+								<h5>Tank</h5>
 							</a>
-							<p>1st atom of the periodic table</p>
+							<p>A tank is playing by itself...</p>
 							<span>Size: bad de pm</span>
 						</div>
 					</div>
@@ -71,13 +71,86 @@
 					</div>
 				</div>
 				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:experimentTank' %}">
+								<h5>Experiment Tank</h5>
+							</a>
+							<p>Experimenting on the scenegraph.</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/6.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:guiexample' %}">
+								<h5>Example of GUI.dat</h5>
+							</a>
+							<p>Testing with gui.dat</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'three:base' %}">
+                <h5>Base</h5>
+              </a>
+							<p>A stepping stone to rise from</p>
+							<span>Size: No siZe</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:texture' %}">
+								<h5>Testing Texture</h5>
+							</a>
+							<p>Testing texture in some shape !!!</p>
+							<span>Size: No siZe</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:alcohol' %}">
+								<h5>Alcohol</h5>
+							</a>
+							<p>A Atom of Alcohol</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:molecules' %}">
+								<h5>Molecules</h5>
+							</a>
+							<p>All molecules</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
 			</div>
 		</div>
 	</section>
 	<!-- categories section end -->
 {% endblock later %}
-
-
-{% block pageSpecificJavascript %}
-  <script type="module" src="{% static 'js/three.js' %}"></script>
-{% endblock pageSpecificJavascript %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block spadof %}
+{% endblock %}
+
+{% block navbar %}
+	{% include 'navbar3.html' %}
+{% endblock %}
+
+{% block later %}
+
+<!-- categories section -->
+	<section class="categories-section spad">
+		<div class="container">
+			<div class="section-title">
+				<h2>Our Animations</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+			</div>
+			<div class="row">
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:tank' %}">
+								<h5>Tank</h5>
+							</a>
+							<p>A tank is playing by itself...</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:oxygen' %}">
+								<h5>Oxygen</h5>
+							</a>
+							<p>O2</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:carbon' %}">
+								<h5>Carbon</h5>
+							</a>
+							<p>C</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+			</div>
+		</div>
+	</section>
+	<!-- categories section end -->
+{% endblock later %}

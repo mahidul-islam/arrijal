@@ -10,12 +10,8 @@
 {% block javascript %}{% endblock javascript %}
 
 {% block pageSpecificJavascript %}
-  <script type="text/javascript" src="{% static 'three/js/three.js' %}"></script>
-  <script type="module" src="{% static 'js/dat.gui.module.js' %}"></script>
   <script type="module">
-  // import * as THREE from "{% static 'js/three.js' %}";
-
-  // import {GUI} from '{% static 'js/dat.gui.module.js' %}';
+  import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
