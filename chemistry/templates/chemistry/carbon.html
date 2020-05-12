@@ -3,15 +3,10 @@
 {% block css %}{% endblock css %}
 {% block pageStyle %}
 <style>
-html,body{
+body{
   margin: 0;
-  height: 100%;
 }
-#c{
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+
 </style>
 {% endblock pageStyle %}
 {% block animation %}
@@ -19,144 +14,36 @@ html,body{
 {% endblock %}
 {% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
-<script type="module">
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
-import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
-import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+  <div id="3d-graph"></div>
+<script src="//unpkg.com/3d-force-graph"></script>
+<script>
+      const initData = {
+          nodes: [ {id: 0 } ],
+          links: []
+      };
+      const elem = document.getElementById("3d-graph");
 
-function main(){
-  const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas: canvas});
-  renderer.setClearColor(0xAAAAAA);
-  renderer.shadowMap.enabled = true;
-  const gui = new GUI();
+      const Graph = ForceGraph3D()(elem)
+              .enableNodeDrag(false)
+              .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+              .onNodeClick(removeNode)
+              .graphData(initData);
 
-  const fov = 40;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 1000;
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(8, 4, 10).multiplyScalar(3);
-  camera.lookAt(0, 0, 0);
+      setInterval(() => {
+          const { nodes, links } = Graph.graphData();
+          const id = nodes.length;
+          Graph.graphData({
+              nodes: [...nodes, { id }],
+              links: [...links, { source: id, target: Math.round(Math.random() * (id-1)) }]
+          });
+      }, 1000);
 
-  const controls = new OrbitControls(camera, canvas);
-  controls.target.set(0, 5, 0);
-  controls.update();
-
-  const scene = new THREE.Scene();
-  {
-    const color = 0xFFFFFF;
-    const intensity = 3;
-    const light = new THREE.PointLight(color, intensity);
-    scene.add(light);
-  }
-
-    const objects = [];
-    const radius = 1;
-    const widthSegments = 6;
-    const heightSegments = 6;
-    const sphereGeometry = new THREE.SphereBufferGeometry(
-        radius, widthSegments, heightSegments);
-
-    const solarSystem = new THREE.Object3D();
-    solarSystem.position.x = 15;
-    scene.add(solarSystem);
-    objects.push(solarSystem);
-
-    const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
-    const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
-    sunMesh.scale.set(5, 5, 5);
-    solarSystem.add(sunMesh);
-    objects.push(sunMesh);
-
-    const earthOrbit = new THREE.Object3D();
-    earthOrbit.position.x = 15;
-    solarSystem.add(earthOrbit);
-    objects.push(earthOrbit);
-
-    const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
-    const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
-    earthOrbit.add(earthMesh);
-    objects.push(earthMesh);
-
-    const moonOrbit = new THREE.Object3D();
-    moonOrbit.position.x = 3;
-    earthOrbit.add(moonOrbit);
-    objects.push(moonOrbit);
-
-
-   const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
-   const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
-   moonMesh.scale.set(.5, .5, .5);
-   moonOrbit.add(moonMesh);
-   objects.push(moonMesh);
-
-
-   class AxisGridHelper {
-     constructor(node, units = 10) {
-       const axes = new THREE.AxesHelper();
-       axes.material.depthTest = false;
-       axes.renderOrder = 2;  // after the grid
-       node.add(axes);
-
-       const grid = new THREE.GridHelper(units, units);
-       grid.material.depthTest = false;
-       grid.renderOrder = 1;
-       node.add(grid);
-
-       this.grid = grid;
-       this.axes = axes;
-       this.visible = false;
-     }
-     get visible() {
-       return this._visible;
-     }
-     set visible(v) {
-       this._visible = v;
-       this.grid.visible = v;
-       this.axes.visible = v;
-     }
-   }
-
-   function makeAxisGrid(node, label, units) {
-     const helper = new AxisGridHelper(node, units);
-     gui.add(helper, 'visible').name(label);
-   }
-
-   makeAxisGrid(solarSystem, 'solarSystem', 26);
-   makeAxisGrid(sunMesh, 'sunMesh');
-   makeAxisGrid(earthOrbit, 'earthOrbit');
-   makeAxisGrid(earthMesh, 'earthMesh');
-   makeAxisGrid(moonMesh, 'moonMesh');
-
-  function resizeRendererToDisplaySize(renderer){
-    const canvas = renderer.domElement;
-    const pixelRatio = window.devicePixelRatio;
-    const width = canvas.clientWidth * pixelRatio | 0;
-    const height = canvas.clientHeight * pixelRatio | 0;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if(needResize){
-      renderer.setSize(width,height,false);
-    }
-    return needResize;
-  }
-  function render(time) {
-    time *= 0.001;
-    if(resizeRendererToDisplaySize(renderer)){
-      const canvas = renderer.domElement;
-      camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.updateProjectionMatrix();
-    }
-    objects.forEach((obj,ndx)=>{
-      const speed=1+ndx*1;
-      obj.rotation.y = time*speed;
-    });
-    renderer.render(scene, camera)
-    requestAnimationFrame(render);
-  }
-
-  requestAnimationFrame(render);
-}
-main();
-</script>
+      function removeNode(node) {
+          let { nodes, links } = Graph.graphData();
+          links = links.filter(l => l.source !== node && l.target !== node); // Remove links attached to node
+          nodes.splice(node.id, 1); // Remove node
+          nodes.forEach((n, idx) => { n.id = idx; }); // Reset node ids to array index
+          Graph.graphData({ nodes, links });
+      }
+  </script>
 {% endblock pageSpecificJavascript %}
