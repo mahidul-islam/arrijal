@@ -19,6 +19,9 @@
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/OBJLoader2.js';
+import {MTLLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/MTLLoader.js';
+import {MtlObjBridge} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
 
 function main() {
 
@@ -73,6 +76,25 @@ function main() {
     scene.add(light);
   }
 
+  // {
+  //   const objLoader = new OBJLoader2();
+  //   objLoader.load('{% static "three/obj/windmill_001.obj" %}', (root) => {
+  //     scene.add(root);
+  //   });
+  // }
+
+  // {
+  //   const mtlLoader = new MTLLoader();
+  //   mtlLoader.load('{% static "three/obj/windmill_001.mtl" %}', (mtlParseResult) => {
+  //     const objLoader = new OBJLoader2();
+  //     const materials =  MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+  //     objLoader.addMaterials(materials);
+  //     objLoader.load('{% static "three/obj/windmill_001.obj" %}', (root) => {
+  //       scene.add(root);
+  //     });
+  //   });
+  // }
+
   const objects = [];
 
   const radius = 1;
@@ -81,7 +103,7 @@ function main() {
   const sphereGeometry = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
   const ao = new THREE.Object3D();
 
-  ao.position.set(4,10,0)
+  ao.position.set(4,15,0)
   ao.scale.set(.2,.2,.2)
   scene.add(ao)
   objects.push(ao)

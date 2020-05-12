@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+
+<div class="blog-post">
+
+
+  {% for item in page.gallery_images.all %}
+
+
+  {% image item.image fill-400x250 %}
+
+
+
+
+  {% endfor %}
+
+  <h3>{{ page.title }}</h3>
+  <div class="blog-metas">
+    <div class="blog-meta author">
+    <div class="post-author set-bg" data-setbg="{% static 'img/authors/1.jpg' %}"></div>
+      <a href="#">{{page.owner}}</a>
+    </div>
+    <div class="blog-meta">
+      {% with categories=page.categories.all %}
+      {% if categories %}
+
+
+      {% for category in categories %}
+
+
+      <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
+
+      {% endfor %}
+
+      {% endif %}
+      {% endwith %}
+
+    </div>
+    <div class="blog-meta">
+      <a href="#">{{page.date}}</a>
+    </div>
+    <div class="blog-meta">
+      <a href="#">2 Comments</a>
+    </div>
+    <div class="blog-meta">
+      <a href="/cms/pages/{{page.pk}}/edit/" class="site-btn readmore">Edit</a>
+    </div>
+  </div>
+
+  <p> {{ page.body|richtext }}</p>
+
+  {% if page.tags.all.count %}
+  <div class="sb-widget-item">
+    <div class="tags">
+
+      {% for tag in page.tags.all %}
+
+
+           {% with tag1=tag  %}
+           {{ tag1 }}
+
+  <!--    <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}  </a> -->
+  {% endwith %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% if page.get_parent.url == '/blog/' %}
+   <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to blog</a></p>
+   {% if page.get_children %}
+     <p>
+   {% for post in page.get_children %}
+         <a href="{% pageurl post %}" class="site-btn readmore">{{ post.title }}</a>
+
+       {% endfor %}
+       {% endif %}
+   {% else %}
+
+{% if page.get_children %}
+  <p>
+{% for post in page.get_children %}
+      <a href="{% pageurl post %}" class="site-btn readmore">{{ post.title }}</a>
+
+    {% endfor %}
+
+  <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to parent</a></p>
+   <p><a href="{% url 'blog:blog' %}" class="site-btn readmore"> return to blog</a></p>
+  {% else %}
+    <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to parent</a></p>
+ <p><a href="{% url 'blog:blog' %}" class="site-btn readmore"> return to blog</a></p>
+
+
+
+{% endif %}
+{% endif %}
+
+
+</div>
+
+{% endblock %}
