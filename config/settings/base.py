@@ -82,6 +82,7 @@ LOCAL_APPS = [
     "newsletters",
     "three",
     "review",
+    "chemistry",
 ]
 Install=[
   'blog',

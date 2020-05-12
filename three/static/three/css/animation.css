@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+}
+#c {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+#back-button {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#info {
+  position: absolute;
+  left: 1em;
+  top: 4em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera1 {
+  position: absolute;
+  left: 1em;
+  top: 7em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera2 {
+  position: absolute;
+  left: 1em;
+  top: 10em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera3 {
+  position: absolute;
+  left: 1em;
+  top: 13em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera4 {
+  position: absolute;
+  left: 1em;
+  top: 16em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
