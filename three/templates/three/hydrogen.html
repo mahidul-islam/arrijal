@@ -1,145 +1,261 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
 {% block css %}{% endblock css %}
+
 {% block pageStyle %}
-<style>
-  body { margin: 0; }
-  canvas { display: block; }
-</style>
+  <link rel="stylesheet" href="{% static 'three/css/animation.css' %}"/>
 {% endblock pageStyle %}
+
+{% block animation %}
+  <div id="container"></div>
+  <div id="back-button">
+    <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+  </div>
+  <div id="menu"></div>
+{% endblock %}
+
 {% block javascript %}{% endblock javascript %}
 
 {% block pageSpecificJavascript %}
-  <script type="module">
-  import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-  // const gui = new GUI();
-  camera.position.set(0, 30, 0);
-  camera.up.set(0, 0, 1);
-  camera.lookAt(0, 0, 0);
+  var camera, scene, renderer, labelRenderer;
+  var controls;
+  var root;
 
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight, false );
-  document.body.appendChild( renderer.domElement );
+  var MOLECULES = {
+		"Al2O3": "Al2O3.pdb",
+    "ch3cho": "ch3cho.pdb",
+    "ch3ch2oh": "ch3ch2oh.pdb",
+		"C13H24":"C13H24.pdb",
+		"CH3MgCl":"CH3MgCl.pdb",
+		"ch3coch3":"ch3coch3.pdb",
+		"ch3cooNa":"ch3cooNa.pdb",
+		"ch3cooch3":"ch3cooch3.pdb",
+		"ch3coCl":"ch3coCl.pdb",
+		"ch3coNH2":"ch3coNH2.pdb",
+		"C6H5OC6H5":"C6H5OC6H5.pdb",
 
-  {
-    const color = 0xFFFFFF;
-    const intensity = 3;
-    const light = new THREE.PointLight(color, intensity);
-    scene.add(light);
+//Organic Molecules:
+		"methane": "methane.pdb",
+		"ethane": "ethane.pdb",
+		"ethanol": "ethanol.pdb",
+		"ethylene": "ethylene.pdb",
+		"ethyne":"ethyne.pdb",
+		"propane": "propane.pdb",
+		"butane": "butane.pdb",
+		"octane":"octane.pdb",
+		"c_60": "c_60.pdb",
+		"graphite": "graphite.pdb",
+		"diamond": "diamond.pdb",
+
+//Salts:
+		"barite_BaSO4":"barite_BaSO4.pdb",
+		"calcite_CaCO3_":"calcite_CaCO3_.pdb",
+		"quartz_SiO2":"quartz_SiO2.pdb",
+		"nacl":"nacl.pdb",
+
+//Water:
+		"water": "water.pdb",
+		"ice": "ice.pdb",
+		"water_five":"water_five.pdb",
+		"water_three":"water_three.pdb",
+		"water_two":"water_two.pdb",
+  };
+
+  var loader = new PDBLoader();
+  var offset = new THREE.Vector3();
+
+  var menu = document.getElementById( 'menu' );
+
+  init();
+  animate();
+
+  function init() {
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xD4AF37 );
+
+    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera.position.z = 1000;
+    scene.add( camera );
+
+    var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    light.position.set( 1, 1, 1 );
+    scene.add( light );
+
+    var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    light.position.set( - 1, - 1, 1 );
+    scene.add( light );
+
+    var light = new THREE.DirectionalLight( 0xffffff, 0.2 );
+    light.position.set( 0, 0, 1000 );
+    scene.add( light );
+
+    root = new THREE.Group();
+    root.position.set(0, 0, 0)
+    scene.add( root );
+
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+    labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize( window.innerWidth, window.innerHeight );
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.pointerEvents = 'none';
+    document.getElementById( 'container' ).appendChild( labelRenderer.domElement );
+
+    controls = new TrackballControls( camera, renderer.domElement );
+    controls.minDistance = 500;
+    controls.maxDistance = 2000;
+
+    loadMolecule( '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}' );
+    createMenu();
+
+    window.addEventListener( 'resize', onWindowResize, false );
   }
 
-  // an array of objects whose rotation to update
-  const objects = [];
+  function generateButtonCallback( url ) {
+    return function () {
+      loadMolecule( url );
+    };
+  }
 
-  // use just one sphere for everything
-  const radius = 1;
-  const widthSegments = 6;
-  const heightSegments = 6;
-  const sphereGeometry = new THREE.SphereBufferGeometry(radius, widthSegments, heightSegments);
+  function createMenu() {
 
-  const solarSystem = new THREE.Object3D()
-  scene.add(solarSystem)
-  objects.push(solarSystem)
+    for ( var m in MOLECULES ) {
 
-  const earthOrbit = new THREE.Object3D()
-  earthOrbit.position.x = 10
-  solarSystem.add(earthOrbit)
-  objects.push(earthOrbit)
-
-  const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xEEEE00});
-  const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
-  sunMesh.scale.set(5, 5, 5);  // make the sun large
-  solarSystem.add(sunMesh);
-  objects.push(sunMesh);
-
-  const earthMetarial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244})
-  const earthMesh = new THREE.Mesh(sphereGeometry, earthMetarial)
-  earthOrbit.add(earthMesh)
-  objects.push(earthMesh)
-
-  const moonOrbit = new THREE.Object3D()
-  moonOrbit.position.x = 2
-  earthOrbit.add(moonOrbit)
-  objects.push(moonOrbit)
-
-  const moonMetarial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222})
-  const moonMesh = new THREE.Mesh(sphereGeometry, moonMetarial)
-  moonMesh.scale.set(.5, .5, .5)
-  moonOrbit.add(moonMesh)
-  objects.push(moonMesh)
-
-  objects.forEach((node) =>{
-    const axes = new THREE.AxesHelper()
-    axes.material.depthTest = false;
-    axes.renderOrder = 1;
-    node.add(axes);
-  })
-  // class AxisGridHelper {
-  //   constructor(node, units = 10) {
-  //     const axes = new THREE.AxesHelper();
-  //     axes.material.depthTest = false;
-  //     axes.renderOrder = 2;  // after the grid
-  //     node.add(axes);
-  //
-  //     const grid = new THREE.GridHelper(units, units);
-  //     grid.material.depthTest = false;
-  //     grid.renderOrder = 1;
-  //     node.add(grid);
-  //
-  //     this.grid = grid;
-  //     this.axes = axes;
-  //     this.visible = false;
-  //   }
-  //   get visible() {
-  //     return this._visible;
-  //   }
-  //   set visible(v) {
-  //     this._visible = v;
-  //     this.grid.visible = v;
-  //     this.axes.visible = v;
-  //   }
-  // }
-  //
-  // function makeAxisGrid(node, label, units) {
-  //   const helper = new AxisGridHelper(node, units);
-  //   gui.add(helper, 'visible').name(label);
-  // }
-  //
-  // makeAxisGrid(solarSystem, 'solarSystem', 25);
-  // makeAxisGrid(sunMesh, 'sunMesh');
-  // makeAxisGrid(earthOrbit, 'earthOrbit');
-  // makeAxisGrid(earthMesh, 'earthMesh');
-  // makeAxisGrid(moonMesh, 'moonMesh');
-  //
-
-  function resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-      renderer.setSize(width, height, false);
+      var button = document.createElement( 'button' );
+      button.innerHTML = m;
+      menu.appendChild( button );
+      var url = '{% static 'chemistry/model/pdb/' %}' + MOLECULES[ m ];
+      button.addEventListener( 'click', generateButtonCallback( url ), false );
     }
-    return needResize;
   }
 
-  function render(time) {
-    time *= 0.001;
-    if (resizeRendererToDisplaySize(renderer)) {
-      const canvas = renderer.domElement;
-      camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.updateProjectionMatrix();
+  function loadMolecule( url ) {
+    while ( root.children.length > 0 ) {
+
+      var object = root.children[ 0 ];
+      object.parent.remove( object );
     }
-    objects.forEach((obj) => {
-      obj.rotation.y = time;
-    });
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
-  }
-  requestAnimationFrame(render);
 
-  </script>
+    loader.load( url, function ( pdb ) {
+
+      var geometryAtoms = pdb.geometryAtoms;
+      var geometryBonds = pdb.geometryBonds;
+      var json = pdb.json;
+
+      var boxGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+      var sphereGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
+
+      geometryAtoms.computeBoundingBox();
+      geometryAtoms.boundingBox.getCenter( offset ).negate();
+
+      geometryAtoms.translate( offset.x, offset.y, offset.z );
+      geometryBonds.translate( offset.x, offset.y, offset.z );
+
+      var positions = geometryAtoms.getAttribute( 'position' );
+      var colors = geometryAtoms.getAttribute( 'color' );
+
+      var position = new THREE.Vector3();
+      var color = new THREE.Color();
+
+      for ( var i = 0; i < positions.count; i ++ ) {
+
+        position.x = positions.getX( i );
+        position.y = positions.getY( i );
+        position.z = positions.getZ( i );
+
+        color.r = colors.getX( i );
+        color.g = colors.getY( i );
+        color.b = colors.getZ( i );
+
+        var atom = json.atoms[ i ];
+
+        var text = document.createElement( 'div' );
+        text.className = 'label';
+        text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
+        text.textContent = atom[ 4 ];
+
+        {% include 'three/changeColor.html' %}
+
+        var material = new THREE.MeshPhongMaterial( { color: color } );
+
+        var object = new THREE.Mesh( sphereGeometry, material );
+        object.position.copy( position );
+        object.position.multiplyScalar( 75 );
+        object.scale.multiplyScalar( 25 );
+        root.add( object );
+
+        var label = new CSS2DObject( text );
+        label.position.copy( object.position );
+        root.add( label );
+      }
+
+      positions = geometryBonds.getAttribute( 'position' );
+
+      var start = new THREE.Vector3();
+      var end = new THREE.Vector3();
+
+      for ( var i = 0; i < positions.count; i += 2 ) {
+
+        start.x = positions.getX( i );
+        start.y = positions.getY( i );
+        start.z = positions.getZ( i );
+
+        end.x = positions.getX( i + 1 );
+        end.y = positions.getY( i + 1 );
+        end.z = positions.getZ( i + 1 );
+
+        start.multiplyScalar( 75 );
+        end.multiplyScalar( 75 );
+
+        var object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( 0xffffff ) );
+        object.position.copy( start );
+        object.position.lerp( end, 0.5 );
+        object.scale.set( 5, 5, start.distanceTo( end ) );
+        object.lookAt( end );
+        root.add( object );
+      }
+      render();
+    } );
+  }
+
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    labelRenderer.setSize( window.innerWidth, window.innerHeight );
+
+    render();
+  }
+
+  function animate() {
+    requestAnimationFrame( animate );
+    controls.update();
+
+    var time = Date.now() * 0.0004;
+
+    root.rotation.x = time;
+    root.rotation.y = time * 0.7;
+    render();
+  }
+
+  function render() {
+    renderer.render( scene, camera );
+    labelRenderer.render( scene, camera );
+  }
+
+</script>
 {% endblock pageSpecificJavascript %}
