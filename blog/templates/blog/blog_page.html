@@ -2,7 +2,6 @@
 {% load static i18n %}
 {% load wagtailcore_tags wagtailimages_tags %}
 {% block body_class %}template-blogpage{% endblock %}
-{% load comment_tags %}
 
 {% block content %}
 {% block pageSpecificJavascript %}
@@ -50,6 +49,7 @@
       <a href="/cms/pages/{{page.pk}}/edit/" class="site-btn readmore">Edit</a>
     </div>
   </div>
+    <h3>{{ page.intro }}</h3>
 
   <p> {{ page.body|richtext }}</p>
 

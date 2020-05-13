@@ -29,9 +29,14 @@
       <a href="#">{{page.owner}}</a>
     </div>
 
+
+
+
+    {% with categories=page.categories.all %}
+    {% if categories %}
+
+
     <div class="blog-meta">
-      {% with categories=page.categories.all %}
-      {% if categories %}
 
 
       {% for category in categories %}
@@ -40,16 +45,17 @@
       <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
 
       {% endfor %}
-
+</div>
       {% endif %}
+
       {% endwith %}
 
-    </div>
+
     <div class="blog-meta">
       <a href="#">{{page.date}}</a>
     </div>
     <div class="blog-meta">
-      <a href="#">2 Comments</a>
+      <a href="{% pageurl page %}">{{page.comments.all.count}} comments</a>
     </div>
   </div>
   <p> {{ page.intro }}</p>
