@@ -28,8 +28,8 @@ def tankofnet(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def carbonDiOxide(request):
-    template = loader.get_template('three/carbonDiOxide.html')
+def aromaticChart(request):
+    template = loader.get_template('three/aromaticChart.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
