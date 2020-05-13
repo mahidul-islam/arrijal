@@ -1,9 +1,20 @@
-function loadMolecule( url, root ) {
+function loadMolecule( url, root, text='not given' ) {
   while ( root.children.length > 0 ) {
 
     var object = root.children[ 0 ];
     object.parent.remove( object );
   }
+
+  const rotatingObject = new THREE.Object3D()
+  const stationaryObject = new THREE.Object3D()
+  root.add(rotatingObject)
+  root.add(stationaryObject)
+  objects.push(rotatingObject)
+
+  {% include 'three/textLoader.html' %}
+  stationaryObject.position.y = 150
+  stationaryObject.position.x = -150
+  textLoader(stationaryObject, text)
 
   loader.load( url, function ( pdb ) {
 
@@ -51,11 +62,11 @@ function loadMolecule( url, root ) {
       object.position.copy( position );
       object.position.multiplyScalar( 75 );
       object.scale.multiplyScalar( 25 );
-      root.add( object );
+      rotatingObject.add( object );
 
       var label = new CSS2DObject( text );
       label.position.copy( object.position );
-      root.add( label );
+      rotatingObject.add( label );
     }
 
     positions = geometryBonds.getAttribute( 'position' );
@@ -81,7 +92,7 @@ function loadMolecule( url, root ) {
       object.position.lerp( end, 0.5 );
       object.scale.set( 5, 5, start.distanceTo( end ) );
       object.lookAt( end );
-      root.add( object );
+      rotatingObject.add( object );
     }
     render();
   } );

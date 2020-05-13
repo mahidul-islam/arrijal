@@ -50,7 +50,6 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     const root1 = new THREE.Group();
     root1.position.x = -700
     base.add( root1 );
-    objects.push(root1);
 
     const root2 = new THREE.Group();
     root2.position.x = -350
@@ -58,7 +57,6 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
     const root3 = new THREE.Group();
     base.add( root3 );
-    objects.push(root3)
 
     const root4 = new THREE.Group();
     root4.position.x = 350
@@ -67,9 +65,8 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     const root5 = new THREE.Group();
     root5.position.x = 700
     base.add( root5 );
-    objects.push(root5)
 
-    loadMolecule( mol1, root1 );
+    loadMolecule( mol1, root1, 'CH3CH2OH' );
     drawPlus(root2);
     loadMolecule( mol2, root3 );
     drawEqual(root4);
