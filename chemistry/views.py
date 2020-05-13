@@ -23,7 +23,7 @@ def oxygen(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def carbon(request):
-    template = loader.get_template('chemistry/carbon.html')
+def molecule(request):
+    template = loader.get_template('chemistry/molecule.html')
     context = {}
     return HttpResponse(template.render(context, request))
