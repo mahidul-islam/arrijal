@@ -1,0 +1,11 @@
+HETATM    1  C   UNK             2.537   0.000   0.000  0.00  0.00           C1-
+HETATM    2 Cl   UNK             4.269   0.000   0.000  0.00  0.00          Cl1-
+HETATM    3 Mg   UNK             3.403  -0.500   0.000  0.00  0.00          Mg2+
+HETATM    4  H   UNK             2.000   0.310   0.000  0.00  0.00           H  
+HETATM    5  H   UNK             2.227  -0.537   0.000  0.00  0.00           H  
+HETATM    6  H   UNK             2.847   0.537   0.000  0.00  0.00           H  
+CONECT    1    4    5    6
+CONECT    4    1
+CONECT    5    1
+CONECT    6    1
+END
