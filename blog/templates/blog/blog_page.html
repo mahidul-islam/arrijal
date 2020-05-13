@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% load wagtailcore_tags wagtailimages_tags %}
-
-
 {% block body_class %}template-blogpage{% endblock %}
+{% load comment_tags %}
 
 {% block content %}
 
@@ -12,11 +11,7 @@
 
   {% for item in page.gallery_images.all %}
 
-
   {% image item.image fill-400x250 %}
-
-
-
 
   {% endfor %}
 
@@ -46,9 +41,6 @@
       <a href="#">{{page.date}}</a>
     </div>
     <div class="blog-meta">
-      <a href="#">2 Comments</a>
-    </div>
-    <div class="blog-meta">
       <a href="/cms/pages/{{page.pk}}/edit/" class="site-btn readmore">Edit</a>
     </div>
   </div>
@@ -58,15 +50,10 @@
   {% if page.tags.all.count %}
   <div class="sb-widget-item">
     <div class="tags">
-
       {% for tag in page.tags.all %}
 
-
-           {% with tag1=tag  %}
-           {{ tag1 }}
-
-  <!--    <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}  </a> -->
-  {% endwith %}
+      <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
+      </a>
       {% endfor %}
     </div>
     {% endif %}
@@ -100,7 +87,8 @@
 {% endif %}
 {% endif %}
 
-
+{% render_comments page request %}
 </div>
+
 
 {% endblock %}
