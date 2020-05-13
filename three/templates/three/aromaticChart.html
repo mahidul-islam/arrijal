@@ -39,21 +39,21 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
   const place1 = new THREE.Group()
-  place1.position.y = 300;
   base.add(place1)
-  loadMolecule( mol1, place1 );
+  place1.position.y = 500;
+  loadMolecule( mol1, place1, 'One' );
 
   const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
   const place2 = new THREE.Group()
-  place2.position.x = -300
   base.add(place2)
-  loadMolecule( mol2, place2 );
+  place2.position.x = -400
+  loadMolecule( mol2, place2, 'Two' );
 
   const mol3 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
   const place3 = new THREE.Group()
-  place3.position.x = 300
   base.add(place3)
-  loadMolecule( mol3, place3 );
+  place3.position.x = 400
+  loadMolecule( mol3, place3, 'Three' );
 
   drawArrow(place1, place2)
   drawArrow(place2, place3)
@@ -64,28 +64,25 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   {% include 'three/sceneCameraLight.html' %}
 
   function drawArrow(mol1, mol2) {
-    var dir = new THREE.Vector3();
-    mol2.getWorldPosition(dir);
-    // console.log(dir)
-    //normalize the direction vector (convert to vector of length 1)
-    dir.normalize();
-    var origin = new THREE.Vector3();
-    mol1.getWorldPosition(origin);
-    // console.log(origin)
-    var length = 500;
+    var to = new THREE.Vector3();
+    mol2.getWorldPosition(to);
+    // console.log(to)
+    var from = new THREE.Vector3();
+    mol1.getWorldPosition(from);
+    var direction = to.clone().sub(from);
+    // console.log(from)
+    var length = direction.length();
     var hex = 0x00AA00;
-    var arrow = new THREE.ArrowHelper( dir, origin, length, hex );
+    var arrow = new THREE.ArrowHelper( direction.normalize(), from, length, hex );
     scene.add( arrow );
   }
 
-  var dir = new THREE.Vector3(0,0,0);
-  //normalize the direction vector (convert to vector of length 1)
-  dir.normalize();
-  var origin = new THREE.Vector3(1,1,1);
-  var length = 500;
-  var hex = 0x00AA00;
-  var arrow = new THREE.ArrowHelper( dir, origin, length, hex );
-  // scene.add( arrow );
+  // var from = new THREE.Vector3( 200, 200, 200 );
+  // var to = new THREE.Vector3( 0, 0, 0 );
+  // var direction = to.clone().sub(from);
+  // var length = direction.length();
+  // var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0xff0000 );
+  // scene.add( arrowHelper );
 
   // loadMolecule function
   {% include 'three/loadMolecule.html' %}
