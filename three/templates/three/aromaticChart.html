@@ -36,44 +36,49 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   const base = new THREE.Group();
   scene.add( base );
-  const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const result = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
 
-  loadEquation( base, mol1, mol2, result );
+  const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+  const place1 = new THREE.Group()
+  place1.position.y = 300;
+  base.add(place1)
+  objects.push(place1)
+  loadMolecule( mol1, place1 );
+
+  const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+  const place2 = new THREE.Group()
+  place2.position.x = -300
+  base.add(place2)
+  objects.push(place2)
+  loadMolecule( mol2, place2 );
+
+  const mol3 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+  const place3 = new THREE.Group()
+  place3.position.x = 300
+  base.add(place3)
+  objects.push(place3)
+  loadMolecule( mol3, place3 );
+
+  drawArrow(place1, place2)
+  drawArrow(place2, place3)
+  drawArrow(place3, place1)
   animate();
 
   // init function
   {% include 'three/sceneCameraLight.html' %}
 
-  function loadEquation( base, mol1, mol2, result ){
-    const root1 = new THREE.Group();
-    root1.position.x = -700
-    base.add( root1 );
-    objects.push(root1);
-
-    const root2 = new THREE.Group();
-    root2.position.x = -350
-    base.add( root2 );
-
-    const root3 = new THREE.Group();
-    base.add( root3 );
-    objects.push(root3)
-
-    const root4 = new THREE.Group();
-    root4.position.x = 350
-    base.add( root4 );
-
-    const root5 = new THREE.Group();
-    root5.position.x = 700
-    base.add( root5 );
-    objects.push(root5)
-
-    loadMolecule( mol1, root1 );
-    drawPlus(root2);
-    loadMolecule( mol2, root3 );
-    drawEqual(root4);
-    loadMolecule( result, root5 );
+  function drawArrow(mol1, mol2) {
+    var dir = new THREE.Vector3();
+    mol2.getWorldPosition(dir);
+    console.log(dir)
+    //normalize the direction vector (convert to vector of length 1)
+    dir.normalize();
+    var origin = new THREE.Vector3();
+    mol1.getWorldPosition(origin);
+    console.log(origin)
+    var length = 500;
+    var hex = 0x00AA00;
+    var arrow = new THREE.ArrowHelper( dir, origin, length, hex );
+    scene.add( arrow );
   }
 
   // loadMolecule function
