@@ -1,0 +1,93 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+
+{% block pageStyle %}
+  <link rel="stylesheet" href="{% static 'three/css/animation.css' %}"/>
+{% endblock pageStyle %}
+
+{% block animation %}
+  <div id="container"></div>
+  <div id="back-button">
+    <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+  </div>
+  <div id="menu"></div>
+{% endblock %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
+
+  var camera, scene, renderer, labelRenderer;
+  var controls;
+  const objects = [];
+
+  var loader = new PDBLoader();
+  var offset = new THREE.Vector3();
+
+  init();
+
+  const base = new THREE.Group();
+  scene.add( base );
+  const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+  const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+  const result = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
+
+  loadEquation( base, mol1, mol2, result );
+  animate();
+
+  // init function
+  {% include 'three/sceneCameraLight.html' %}
+
+  function loadEquation( base, mol1, mol2, result ){
+    const root1 = new THREE.Group();
+    root1.position.x = -700
+    base.add( root1 );
+    objects.push(root1);
+
+    const root2 = new THREE.Group();
+    root2.position.x = -350
+    base.add( root2 );
+
+    const root3 = new THREE.Group();
+    base.add( root3 );
+    objects.push(root3)
+
+    const root4 = new THREE.Group();
+    root4.position.x = 350
+    base.add( root4 );
+
+    const root5 = new THREE.Group();
+    root5.position.x = 700
+    base.add( root5 );
+    objects.push(root5)
+
+    loadMolecule( mol1, root1 );
+    drawPlus(root2);
+    loadMolecule( mol2, root3 );
+    drawEqual(root4);
+    loadMolecule( result, root5 );
+  }
+
+  // loadMolecule function
+  {% include 'three/loadMolecule.html' %}
+
+  // drawPlus function
+  {% include 'three/drawPlus.html' %}
+
+  // drawEqual function
+  {% include 'three/drawEqual.html' %}
+
+  // animation all
+  {% include 'three/animate.html' %}
+
+
+</script>
+{% endblock pageSpecificJavascript %}
