@@ -63,25 +63,8 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   // init function
   {% include 'three/sceneCameraLight.js' %}
 
-  function drawArrow(mol1, mol2) {
-    const to = new THREE.Vector3();
-    mol2.getWorldPosition(to);
-    const from = new THREE.Vector3();
-    mol1.getWorldPosition(from);
-    const direction = to.clone().sub(from);
-    // const radious =
-    const length = direction.length();
-    const hex = 0x00AA00;
-    const arrow = new THREE.ArrowHelper( direction.normalize(), from, length, hex );
-    scene.add( arrow );
-  }
-
-  // var from = new THREE.Vector3( 200, 200, 200 );
-  // var to = new THREE.Vector3( 0, 0, 0 );
-  // var direction = to.clone().sub(from);
-  // var length = direction.length();
-  // var arrowHelper = new THREE.ArrowHelper(direction.normalize(), from, length, 0xff0000 );
-  // scene.add( arrowHelper );
+  // drawArrow function
+  {% include 'three/drawArrow.js' %}
 
   // loadMolecule function
   {% include 'three/loadMolecule.js' %}
