@@ -27,3 +27,8 @@ def molecule(request):
     template = loader.get_template('chemistry/molecule.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def raycaster(request):
+    template = loader.get_template('chemistry/raycaster.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
