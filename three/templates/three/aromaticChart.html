@@ -39,31 +39,44 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   scene.add( base );
 
   const text = {% include "three/molecules.json" %}
-  console.log(text)
-  const molecules = JSON.parse(JSON.stringify(text))
+  const mol = JSON.parse(JSON.stringify(text))
 
+  for (let i=0;i<mol.molecules.length;i++){
+    const url = mol.molecules[i].url
+    const name = mol.molecules[i].name
+    const place = new THREE.Group()
+    base.add(place)
+    place.position.x = mol.molecules[i].positionX
+    place.position.y = mol.molecules[i].positionY
+    place.position.z = mol.molecules[i].positionZ
+    loadMolecule( url, place, name )
+  }
 
-  const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const place1 = new THREE.Group()
-  base.add(place1)
-  place1.position.y = 500;
-  loadMolecule( mol1, place1, 'One' );
+  for (let i=0;i<mol.links.length;i++){
+    const fromMol = mol.links[i].from
+    const toMol = mol.links[i].to
+    const placeFrom = new THREE.Group()
+    const placeTo = new THREE.Group()
 
-  const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const place2 = new THREE.Group()
-  base.add(place2)
-  place2.position.x = -400
-  loadMolecule( mol2, place2, 'Two' );
+    for (let i=0;i<mol.molecules.length;i++){
+      if(mol.molecules[i].name == fromMol){
+        placeFrom.position.x = mol.molecules[i].positionX
+        placeFrom.position.y = mol.molecules[i].positionY
+        placeFrom.position.z = mol.molecules[i].positionZ
+      }
+      if(mol.molecules[i].name == toMol){
+        placeTo.position.x = mol.molecules[i].positionX
+        placeTo.position.y = mol.molecules[i].positionY
+        placeTo.position.z = mol.molecules[i].positionZ
+      }
+    }
 
-  const mol3 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const place3 = new THREE.Group()
-  base.add(place3)
-  place3.position.x = 400
-  loadMolecule( mol3, place3, 'Three' );
+    drawArrow(placeFrom, placeTo)
+  }
 
-  drawArrow(place1, place2)
-  drawArrow(place2, place3)
-  drawArrow(place3, place1)
+  // drawArrow(place, place2)
+  // drawArrow(place2, place)
+  // drawArrow(place3, place)
   animate();
 
   // init function

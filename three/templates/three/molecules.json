@@ -4,19 +4,43 @@
   "molecules":
   [
     {
-      "name":"c6h6",
-      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "name":"C6H6",
+      "url":"{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+      "positionX":0,
+      "positionY":300,
+      "positionZ":0,
       "isAromatic":true
     },
     {
-      "name":"c6h6",
-      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "name":"C6H5CH3",
+      "url":"{% static 'chemistry/model/pdb/c6h5ch3.pdb' %}",
+      "positionX":-400,
+      "positionY":-200,
+      "positionZ":0,
       "isAromatic":true
     },
     {
-      "name":"c6h6",
+      "name":"CH3CH2OH",
       "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "positionX":400,
+      "positionY":-200,
+      "positionZ":0,
       "isAromatic":true
+    },
+  ],
+  "links":
+  [
+    {
+      "from":"C6H6",
+      "to":"CH3CH2OH",
+    },
+    {
+      "from":"C6H6",
+      "to":"C6H5CH3",
+    },
+    {
+      "from":"C6H5CH3",
+      "to":"CH3CH2OH",
     },
   ]
 }
