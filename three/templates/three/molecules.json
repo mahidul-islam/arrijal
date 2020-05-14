@@ -1,0 +1,22 @@
+{% load static %}
+
+{
+  "molecules":
+  [
+    {
+      "name":"c6h6",
+      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "isAromatic":true
+    },
+    {
+      "name":"c6h6",
+      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "isAromatic":true
+    },
+    {
+      "name":"c6h6",
+      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "isAromatic":true
+    },
+  ]
+}
