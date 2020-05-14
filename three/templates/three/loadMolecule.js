@@ -67,7 +67,7 @@ function loadMolecule( url, root, text='not given' ) {
 
       var label = new CSS2DObject( text );
       label.position.copy( object.position );
-      rotatingObject.add( label );
+      // rotatingObject.add( label );
     }
 
     positions = geometryBonds.getAttribute( 'position' );

@@ -3,8 +3,8 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xD4AF37 );
 
-  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
-  camera.position.z = 1000;
+  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
+  camera.position.z = 2000;
   scene.add( camera );
 
   var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
