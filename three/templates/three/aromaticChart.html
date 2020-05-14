@@ -56,24 +56,23 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   loadMolecule( mol3, place3, 'Three' );
 
   drawArrow(place1, place2)
-  drawArrow(place2, place3)
-  drawArrow(place3, place1)
+  // drawArrow(place2, place3)
+  // drawArrow(place3, place1)
   animate();
 
   // init function
-  {% include 'three/sceneCameraLight.html' %}
+  {% include 'three/sceneCameraLight.js' %}
 
   function drawArrow(mol1, mol2) {
-    var to = new THREE.Vector3();
+    const to = new THREE.Vector3();
     mol2.getWorldPosition(to);
-    // console.log(to)
-    var from = new THREE.Vector3();
+    const from = new THREE.Vector3();
     mol1.getWorldPosition(from);
-    var direction = to.clone().sub(from);
-    // console.log(from)
-    var length = direction.length();
-    var hex = 0x00AA00;
-    var arrow = new THREE.ArrowHelper( direction.normalize(), from, length, hex );
+    const direction = to.clone().sub(from);
+    // const radious =
+    const length = direction.length();
+    const hex = 0x00AA00;
+    const arrow = new THREE.ArrowHelper( direction.normalize(), from, length, hex );
     scene.add( arrow );
   }
 
@@ -85,16 +84,16 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   // scene.add( arrowHelper );
 
   // loadMolecule function
-  {% include 'three/loadMolecule.html' %}
+  {% include 'three/loadMolecule.js' %}
 
   // drawPlus function
-  {% include 'three/drawPlus.html' %}
+  {% include 'three/drawPlus.js' %}
 
   // drawEqual function
-  {% include 'three/drawEqual.html' %}
+  {% include 'three/drawEqual.js' %}
 
   // animation all
-  {% include 'three/animate.html' %}
+  {% include 'three/animate.js' %}
 
 
 </script>

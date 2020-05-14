@@ -44,7 +44,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   animate();
 
   // init function
-  {% include 'three/sceneCameraLight.html' %}
+  {% include 'three/sceneCameraLight.js' %}
 
   function loadEquation( base, mol1, mol2, result ){
     const root1 = new THREE.Group();
@@ -74,16 +74,16 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   }
 
   // loadMolecule function
-  {% include 'three/loadMolecule.html' %}
+  {% include 'three/loadMolecule.js' %}
 
   // drawPlus function
-  {% include 'three/drawPlus.html' %}
+  {% include 'three/drawPlus.js' %}
 
   // drawEqual function
-  {% include 'three/drawEqual.html' %}
+  {% include 'three/drawEqual.js' %}
 
   // animation all
-  {% include 'three/animate.html' %}
+  {% include 'three/animate.js' %}
 
 
 </script>
