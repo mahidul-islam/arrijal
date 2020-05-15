@@ -30,7 +30,7 @@
     {
       "name":"C6H5NaCl",
       "url":"{% static 'chemistry/model/pdb/C6H5NaCl.pdb' %}",
-      "positionX":0,
+      "positionX":-500,
       "positionY":-800,
       "positionZ":0,
       "isAromatic":true
@@ -52,8 +52,8 @@
       "isAromatic":true
     },
     {
-      "name":"c6h5no2",
-      "url":"{% static 'chemistry/model/pdb/c6h5no2.pdb' %}",
+      "name":"C6h5no2",
+      "url":"{% static 'chemistry/model/pdb/C6h5no2.pdb' %}",
       "positionX":-1800,
       "positionY":300,
       "positionZ":0,
@@ -142,8 +142,72 @@
     {
       "name":"tnt",
       "url":"{% static 'chemistry/model/pdb/tnt.pdb' %}",
-      "positionX":-2000,
+      "positionX":-1800,
       "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5n2cl",
+      "url":"{% static 'chemistry/model/pdb/c6h5n2cl.pdb' %}",
+      "positionX":-1200,
+      "positionY":-1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5c6h5",
+      "url":"{% static 'chemistry/model/pdb/c6h5c6h5.pdb' %}",
+      "positionX":2800,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h4o2",
+      "url":"{% static 'chemistry/model/pdb/c6h4o2.pdb' %}",
+      "positionX":2800,
+      "positionY":200,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5chcl2",
+      "url":"{% static 'chemistry/model/pdb/c6h5chcl2.pdb' %}",
+      "positionX":-2800,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h4ch3no2",
+      "url":"{% static 'chemistry/model/pdb/c6h4ch3no2.pdb' %}",
+      "positionX":-2800,
+      "positionY":200,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5coch3",
+      "url":"{% static 'chemistry/model/pdb/c6h5coch3.pdb' %}",
+      "positionX":-2800,
+      "positionY":-600,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5oh",
+      "url":"{% static 'chemistry/model/pdb/c6h5oh.pdb' %}",
+      "positionX":2800,
+      "positionY":-600,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"c6h5no2no2ch3",
+      "url":"{% static 'chemistry/model/pdb/c6h5no2no2ch3.pdb' %}",
+      "positionX":300,
+      "positionY":-800,
       "positionZ":0,
       "isAromatic":true
     },
@@ -160,7 +224,7 @@
     },
     {
       "from":"C6H6",
-      "to":"c6h5no2",
+      "to":"C6h5no2",
     },
     {
       "from":"C6H6",
