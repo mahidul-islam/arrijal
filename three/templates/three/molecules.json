@@ -230,6 +230,57 @@
       "from":"C6H6",
       "to":"c6h5cho",
     },
+    {
+      "from":"C6H6",
+      "to":"c6h5oh",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5n2cl",
+    },
+    {
+      "from":"C6H6",
+      "to":"C6h5no2",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5nh2",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5coch3",
+    },
+
+
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5nh2",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5cn",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5oh",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"C6H6",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5Cl",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5F",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5l",
+    },
+
 
     {
       "from":"c6h5cho",
@@ -252,24 +303,61 @@
       "to":"c6h5ch2cl",
     },
     {
+      "from":"c6h5ch2cl",
+      "to":"c6h5chcl2",
+    },
+    {
+      "from":"c6h5ch2cl",
+      "to":"c6h5ch2oh",
+    },
+    {
+      "from":"c6h5cho",
+      "to":"c6h5coona",
+    },
+    {
       "from":"c6h5ch3",
-      "to":"c6h5cooh",
+      "to":"c6h4ch3no2",
+    },
+    {
+      "from":"c6h4ch3no2",
+      "to":"c6h5no2no2ch3",
+    },
+    {
+      "from":"c6h5no2no2ch3",
+      "to":"tnt",
+    },
+    {
+      "from":"c6h5Cl",
+      "to":"c6h5c6h5",
+    },
+    {
+      "from":"c6h5Cl",
+      "to":"c6h5ona",
     },
     {
       "from":"c6h5coona",
-      "to":"c6h5cooh",
+      "to":"c6h5cho",
     },
     {
-      "from":"c6h5coona",
-      "to":"c6h5cooh",
+      "from":"c6h5oh",
+      "to":"c6h4o2",
     },
     {
-      "from":"c6h5coona",
-      "to":"c6h5cooh",
+      "from":"c6h5n2cl",
+      "to":"c6h5F",
     },
     {
-      "from":"c6h5coona",
-      "to":"c6h5cooh",
+      "from":"c6h5n2cl",
+      "to":"c6h5F",
     },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5F",
+    },
+    {
+      "from":"c6h5n2cl",
+      "to":"c6h5F",
+    },
+
   ]
 }
