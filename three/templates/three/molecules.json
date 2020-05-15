@@ -12,7 +12,7 @@
       "isAromatic":true
     },
     {
-      "name":"C6H5CH3",
+      "name":"c6h5ch3",
       "url":"{% static 'chemistry/model/pdb/c6h5ch3.pdb' %}",
       "positionX":-400,
       "positionY":-200,
@@ -152,15 +152,35 @@
   [
     {
       "from":"C6H6",
-      "to":"c6h5ch2oh",
+      "to":"c6h5ch3",
     },
     {
       "from":"C6H6",
-      "to":"C6H5CH3",
+      "to":"c6h5Cl",
     },
     {
-      "from":"C6H5CH3",
-      "to":"c6h5ch2oh",
+      "from":"C6H6",
+      "to":"c6h5no2",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5cho",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5cho",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5cho",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5cho",
+    },
+    {
+      "from":"C6H6",
+      "to":"c6h5cho",
     },
   ]
 }
