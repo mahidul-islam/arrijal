@@ -11,7 +11,7 @@ function loadMolecule( url, root, text='not given' ) {
   root.add(stationaryObject)
   objects.push(rotatingObject)
 
-  {% include 'three/textLoader.js' %}
+  {% include 'three/snippet/textLoader.js' %}
   stationaryObject.position.y = 150
   stationaryObject.position.x = -150
   textLoader(stationaryObject, text)
@@ -55,7 +55,7 @@ function loadMolecule( url, root, text='not given' ) {
       text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
       text.textContent = atom[ 4 ];
 
-      {% include 'three/changeColor.js' %}
+      {% include 'three/snippet/changeColor.js' %}
 
       var material = new THREE.MeshPhongMaterial( { color: color } );
 

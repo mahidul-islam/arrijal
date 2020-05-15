@@ -14,11 +14,13 @@ function animate() {
 
   var time = Date.now() * 0.0004;
 
-  objects.forEach((obj) => {
-    obj.rotation.x = time;
-    obj.rotation.y = time * 0.7;
-  });
-  render();
+  if(rotatate == true){
+    objects.forEach((obj) => {
+      obj.rotation.x = time;
+      obj.rotation.y = time * 0.7;
+    });
+    render();
+  }
 }
 
 function render() {

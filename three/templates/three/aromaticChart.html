@@ -12,6 +12,9 @@
     <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
   </div>
   <div id="menu"></div>
+  <div id="camera1">
+    <span>Camera Change</span>
+  </div>
 {% endblock %}
 
 {% block javascript %}{% endblock javascript %}
@@ -27,7 +30,10 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
 
   var camera, scene, renderer, labelRenderer;
-  var controls;
+  var controls
+  let rotatate = true
+  var menu = document.getElementById( 'menu' );
+
   const objects = [];
 
   var loader = new PDBLoader();
@@ -38,8 +44,9 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   const base = new THREE.Group();
   scene.add( base );
 
-  const text = {% include "three/molecules.json" %}
+  const text = {% include "three/snippet/molecules.json" %}
   const mol = JSON.parse(JSON.stringify(text))
+
 
   for (let i=0;i<mol.molecules.length;i++){
     const url = mol.molecules[i].url
@@ -73,29 +80,38 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
     drawArrow(placeFrom, placeTo)
   }
-
-  // drawArrow(place, place2)
-  // drawArrow(place2, place)
-  // drawArrow(place3, place)
   animate();
 
+  var cbutton = document.createElement( 'button' );
+  cbutton.innerHTML = "camera";
+  menu.appendChild( cbutton );
+  cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
+
+  function cgenerateButtonCallback( url ) {
+  	return function () {
+  		movecamera( url );
+  	};
+  }
+  function movecamera( url ) {
+  	camera.position.z = -1000;
+  }
   // init function
-  {% include 'three/sceneCameraLight.js' %}
+  {% include 'three/snippet/sceneCameraLight.js' %}
 
   // drawArrow function
-  {% include 'three/drawArrow.js' %}
+  {% include 'three/snippet/drawArrow.js' %}
 
   // loadMolecule function
-  {% include 'three/loadMolecule.js' %}
+  {% include 'three/snippet/loadMolecule.js' %}
 
   // drawPlus function
-  {% include 'three/drawPlus.js' %}
+  {% include 'three/snippet/drawPlus.js' %}
 
   // drawEqual function
-  {% include 'three/drawEqual.js' %}
+  {% include 'three/snippet/drawEqual.js' %}
 
   // animation all
-  {% include 'three/animate.js' %}
+  {% include 'three/snippet/animate.js' %}
 
 
 </script>
