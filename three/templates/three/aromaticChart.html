@@ -31,36 +31,55 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   var camera, scene, renderer, labelRenderer;
   var controls
-  let rotatate = true
-  var menu = document.getElementById( 'menu' );
+  let rotatate = false // if the rotatable object will rotate
 
+  // objects will be stored here to rotate later in animate
   const objects = [];
 
   var loader = new PDBLoader();
   var offset = new THREE.Vector3();
 
-  const position = new THREE.Object3D()
-  position.position.z = 3000
-  init(position);
+  const menu = document.getElementById( 'menu' );
+  const initialCameraPosition = new THREE.Object3D()
+  initialCameraPosition.position.z = 3000
 
-  const base = new THREE.Group();
-  scene.add( base );
+  init(initialCameraPosition, menu);
 
+  const rbutton = document.createElement( 'button' );
+  rbutton.innerHTML = "Start/Stop rotating";
+  menu.appendChild( rbutton );
+  rbutton.addEventListener( 'click', rgenerateButtonCallback(  ), false );
+
+  function rgenerateButtonCallback( url ) {
+    return function () {
+      rotatate = !rotatate;
+    };
+  }
+  // function movecamera( url ) {
+  //   camera.position.z = position.position.z;
+  // }
+
+  // root for the whole scenegraph
+  const root = new THREE.Group();
+  scene.add( root );
+
+  // load the molecules from json
   const text = {% include "three/snippet/molecules.json" %}
   const mol = JSON.parse(JSON.stringify(text))
 
-
+  // draw the molecules
   for (let i=0;i<mol.molecules.length;i++){
     const url = mol.molecules[i].url
     const name = mol.molecules[i].name
     const place = new THREE.Group()
-    base.add(place)
+    root.add(place)
     place.position.x = mol.molecules[i].positionX
     place.position.y = mol.molecules[i].positionY
     place.position.z = mol.molecules[i].positionZ
     loadMolecule( url, place, name )
   }
 
+  // draw the links between molecules
   for (let i=0;i<mol.links.length;i++){
     const fromMol = mol.links[i].from
     const toMol = mol.links[i].to

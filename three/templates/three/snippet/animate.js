@@ -19,8 +19,9 @@ function animate() {
       obj.rotation.x = time;
       obj.rotation.y = time * 0.7;
     });
-    render();
   }
+
+  render();
 }
 
 function render() {

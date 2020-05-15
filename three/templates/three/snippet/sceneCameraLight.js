@@ -1,4 +1,4 @@
-function init(position) {
+function init(position, toAdd) {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xD4AF37 );
@@ -48,7 +48,7 @@ function init(position) {
 
   const cbutton = document.createElement( 'button' );
   cbutton.innerHTML = "Back To Initial";
-  menu.appendChild( cbutton );
+  toAdd.appendChild( cbutton );
   cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
 
   function cgenerateButtonCallback( url ) {
