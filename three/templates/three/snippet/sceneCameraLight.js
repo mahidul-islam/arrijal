@@ -1,10 +1,10 @@
-function init() {
+function init(position) {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xD4AF37 );
 
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
-  camera.position.z = 2000;
+  camera.position.z = position.position.z;
   scene.add( camera );
 
   var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
@@ -40,8 +40,23 @@ function init() {
   document.getElementById( 'container' ).appendChild( labelRenderer.domElement );
 
   controls = new TrackballControls( camera, renderer.domElement );
-  controls.minDistance = 500;
-  controls.maxDistance = 2000;
+  controls.minDistance = 200;
+  controls.maxDistance = 4000;
 
   window.addEventListener( 'resize', onWindowResize, false );
+
+
+  const cbutton = document.createElement( 'button' );
+  cbutton.innerHTML = "Back To Initial";
+  menu.appendChild( cbutton );
+  cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
+
+  function cgenerateButtonCallback( url ) {
+  	return function () {
+  		movecamera( url );
+  	};
+  }
+  function movecamera( url ) {
+  	camera.position.z = position.position.z;
+  }
 }

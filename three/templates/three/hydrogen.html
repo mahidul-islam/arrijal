@@ -28,11 +28,14 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   var camera, scene, renderer, labelRenderer;
   var controls;
   const objects = [];
+  let rotatate = true;
 
   var loader = new PDBLoader();
   var offset = new THREE.Vector3();
 
-  init();
+  const position = new THREE.Object3D()
+  position.position.z = 1500
+  init(position);
 
   const base = new THREE.Group();
   scene.add( base );
@@ -44,7 +47,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   animate();
 
   // init function
-  {% include 'three/sceneCameraLight.js' %}
+  {% include 'three/snippet/sceneCameraLight.js' %}
 
   function loadEquation( base, mol1, mol2, result ){
     const root1 = new THREE.Group();
@@ -70,20 +73,20 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     drawPlus(root2);
     loadMolecule( mol2, root3 );
     drawEqual(root4);
-    loadMolecule( result, root5 );
+    loadMolecule( result, root5);
   }
 
   // loadMolecule function
-  {% include 'three/loadMolecule.js' %}
+  {% include 'three/snippet/loadMolecule.js' %}
 
   // drawPlus function
-  {% include 'three/drawPlus.js' %}
+  {% include 'three/snippet/drawPlus.js' %}
 
   // drawEqual function
-  {% include 'three/drawEqual.js' %}
+  {% include 'three/snippet/drawEqual.js' %}
 
   // animation all
-  {% include 'three/animate.js' %}
+  {% include 'three/snippet/animate.js' %}
 
 
 </script>

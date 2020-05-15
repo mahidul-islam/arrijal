@@ -12,9 +12,9 @@
     <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
   </div>
   <div id="menu"></div>
-  <div id="camera1">
+  <!-- <div id="camera1">
     <span>Camera Change</span>
-  </div>
+  </div> -->
 {% endblock %}
 
 {% block javascript %}{% endblock javascript %}
@@ -39,7 +39,9 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   var loader = new PDBLoader();
   var offset = new THREE.Vector3();
 
-  init();
+  const position = new THREE.Object3D()
+  position.position.z = 3000
+  init(position);
 
   const base = new THREE.Group();
   scene.add( base );
@@ -82,19 +84,6 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   }
   animate();
 
-  var cbutton = document.createElement( 'button' );
-  cbutton.innerHTML = "camera";
-  menu.appendChild( cbutton );
-  cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
-
-  function cgenerateButtonCallback( url ) {
-  	return function () {
-  		movecamera( url );
-  	};
-  }
-  function movecamera( url ) {
-  	camera.position.z = -1000;
-  }
   // init function
   {% include 'three/snippet/sceneCameraLight.js' %}
 
