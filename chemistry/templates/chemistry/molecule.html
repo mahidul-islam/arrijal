@@ -220,23 +220,39 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     controls.maxDistance = 2000;
 
     //
+//......cbutton.............
+
+var cbutton = document.createElement( 'button' );
+cbutton.innerHTML = "camera";
+menu.appendChild( cbutton );
+cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
+//.................
 
     loadMolecule( '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}' );
     createMenu();
-
     //
-
     window.addEventListener( 'resize', onWindowResize, false );
 
   }
 
   //
+//........cbutton..........
+function cgenerateButtonCallback( url ) {
+	return function () {
+		movecamera( url );
+	};
+}
+function movecamera( url ) {
+	camera.position.z = -1000;
+		}
+
+//....................
 
   function generateButtonCallback( url ) {
 
     return function () {
 
-      loadMolecule( url );
+			loadMolecule( url );
 
     };
 
