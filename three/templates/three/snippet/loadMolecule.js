@@ -1,4 +1,4 @@
-function loadMolecule( url, root, text='not given' ) {
+function loadMolecule( url, root, text='not given', showLabel ) {
   while ( root.children.length > 0 ) {
 
     var object = root.children[ 0 ];
@@ -27,7 +27,7 @@ function loadMolecule( url, root, text='not given' ) {
 
     geometryAtoms.computeBoundingBox();
     geometryAtoms.boundingBox.getCenter( offset ).negate();
-    console.log(geometryAtoms.boundingBox)
+    // console.log(geometryAtoms.boundingBox)
 
     geometryAtoms.translate( offset.x, offset.y, offset.z );
     geometryBonds.translate( offset.x, offset.y, offset.z );
@@ -49,7 +49,6 @@ function loadMolecule( url, root, text='not given' ) {
       color.b = colors.getZ( i );
 
       var atom = json.atoms[ i ];
-
       var text = document.createElement( 'div' );
       text.className = 'label';
       text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
@@ -65,9 +64,15 @@ function loadMolecule( url, root, text='not given' ) {
       object.scale.multiplyScalar( 25 );
       rotatingObject.add( object );
 
-      var label = new CSS2DObject( text );
-      label.position.copy( object.position );
-      // rotatingObject.add( label );
+      // console.log(showLabel)
+      if(showLabel){
+        var label = new CSS2DObject( text );
+        label.position.copy( object.position );
+        rotatingObject.add( label );
+      }
+      else{
+      }
+      console.log(rotatingObject.children)
     }
 
     positions = geometryBonds.getAttribute( 'position' );

@@ -32,6 +32,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   var camera, scene, renderer, labelRenderer;
   var controls
   let rotatate = false // if the rotatable object will rotate
+  let showLabel = false
 
   // objects will be stored here to rotate later in animate
   const objects = [];
@@ -45,62 +46,77 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   init(initialCameraPosition, menu);
 
-  const rbutton = document.createElement( 'button' );
-  rbutton.innerHTML = "Start/Stop rotating";
-  menu.appendChild( rbutton );
-  rbutton.addEventListener( 'click', rgenerateButtonCallback(  ), false );
+  const startStopRotationButton = document.createElement( 'button' );
+  startStopRotationButton.innerHTML = "Start/Stop rotating";
+  menu.appendChild( startStopRotationButton );
+  startStopRotationButton.addEventListener( 'click', generateStartStopRotationButtonCallback(), false );
 
-  function rgenerateButtonCallback( url ) {
+  function generateStartStopRotationButtonCallback( url ) {
     return function () {
-      rotatate = !rotatate;
-    };
+      rotatate = !rotatate
+    }
   }
-  // function movecamera( url ) {
-  //   camera.position.z = position.position.z;
-  // }
+
+  const showLabelButton = document.createElement( 'button' )
+  showLabelButton.innerHTML = "Show Label"
+  // menu.appendChild( showLabelButton )
+  showLabelButton.addEventListener( 'click', generateShowLabelButtonCallback(), false )
+
+  function generateShowLabelButtonCallback( url ) {
+    return function () {
+      showLabel = !showLabel
+      drawAllMolsAndLinks()
+    }
+  }
 
   // root for the whole scenegraph
   const root = new THREE.Group();
   scene.add( root );
 
   // load the molecules from json
-  const text = {% include "three/snippet/molecules.json" %}
-  const mol = JSON.parse(JSON.stringify(text))
 
-  // draw the molecules
-  for (let i=0;i<mol.molecules.length;i++){
-    const url = mol.molecules[i].url
-    const name = mol.molecules[i].name
-    const place = new THREE.Group()
-    root.add(place)
-    place.position.x = mol.molecules[i].positionX
-    place.position.y = mol.molecules[i].positionY
-    place.position.z = mol.molecules[i].positionZ
-    loadMolecule( url, place, name )
-  }
+  drawAllMolsAndLinks();
 
-  // draw the links between molecules
-  for (let i=0;i<mol.links.length;i++){
-    const fromMol = mol.links[i].from
-    const toMol = mol.links[i].to
-    const placeFrom = new THREE.Group()
-    const placeTo = new THREE.Group()
+  function drawAllMolsAndLinks() {
 
+    const text = {% include "three/snippet/molecules.json" %}
+
+    // draw the molecules
+    const mol = JSON.parse(JSON.stringify(text))
     for (let i=0;i<mol.molecules.length;i++){
-      if(mol.molecules[i].name == fromMol){
-        placeFrom.position.x = mol.molecules[i].positionX
-        placeFrom.position.y = mol.molecules[i].positionY
-        placeFrom.position.z = mol.molecules[i].positionZ
-      }
-      if(mol.molecules[i].name == toMol){
-        placeTo.position.x = mol.molecules[i].positionX
-        placeTo.position.y = mol.molecules[i].positionY
-        placeTo.position.z = mol.molecules[i].positionZ
-      }
+      const url = mol.molecules[i].url
+      const name = mol.molecules[i].name
+      const place = new THREE.Group()
+      root.add(place)
+      place.position.x = mol.molecules[i].positionX
+      place.position.y = mol.molecules[i].positionY
+      place.position.z = mol.molecules[i].positionZ
+      loadMolecule( url, place, name, showLabel )
     }
 
-    drawArrow(placeFrom, placeTo)
+    // draw the links between molecules
+    for (let i=0;i<mol.links.length;i++){
+      const fromMol = mol.links[i].from
+      const toMol = mol.links[i].to
+      const placeFrom = new THREE.Group()
+      const placeTo = new THREE.Group()
+
+      for (let i=0;i<mol.molecules.length;i++){
+        if(mol.molecules[i].name == fromMol){
+          placeFrom.position.x = mol.molecules[i].positionX
+          placeFrom.position.y = mol.molecules[i].positionY
+          placeFrom.position.z = mol.molecules[i].positionZ
+        }
+        if(mol.molecules[i].name == toMol){
+          placeTo.position.x = mol.molecules[i].positionX
+          placeTo.position.y = mol.molecules[i].positionY
+          placeTo.position.z = mol.molecules[i].positionZ
+        }
+      }
+      drawArrow(placeFrom, placeTo)
+    }
   }
+
   animate();
 
   // init function
