@@ -25,18 +25,29 @@ import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/three
 import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
 import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
 
-  var camera, scene, renderer, labelRenderer;
-  var controls;
-  const objects = [];
-  let rotatate = true;
+  var camera, scene, renderer, labelRenderer
+  var controls
+  const objects = []
+  let rotatate = false
 
-  var loader = new PDBLoader();
-  var offset = new THREE.Vector3();
+  var loader = new PDBLoader()
+  var offset = new THREE.Vector3()
 
   const initialCameraPosition = new THREE.Object3D()
   initialCameraPosition.position.z = 1500
 
   init(initialCameraPosition, menu);
+
+  const startStopRotationButton = document.createElement( 'button' );
+  startStopRotationButton.innerHTML = "Start/Stop rotating";
+  menu.appendChild( startStopRotationButton );
+  startStopRotationButton.addEventListener( 'click', generateStartStopRotationButtonCallback(), false );
+
+  function generateStartStopRotationButtonCallback( url ) {
+    return function () {
+      rotatate = !rotatate
+    }
+  }
 
   const base = new THREE.Group();
   scene.add( base );
