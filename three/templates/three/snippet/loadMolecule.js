@@ -72,7 +72,7 @@ function loadMolecule( url, root, text='not given', showLabel ) {
       }
       else{
       }
-      console.log(rotatingObject.children)
+      // console.log(rotatingObject.children)
     }
 
     positions = geometryBonds.getAttribute( 'position' );

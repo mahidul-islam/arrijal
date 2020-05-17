@@ -13,8 +13,8 @@ def three(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def hydrogen(request):
-    template = loader.get_template('three/hydrogen.html')
+def equations(request):
+    template = loader.get_template('three/equations.html')
     context = {}
     return HttpResponse(template.render(context, request))
 

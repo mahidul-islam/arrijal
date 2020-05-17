@@ -33,9 +33,10 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   var loader = new PDBLoader();
   var offset = new THREE.Vector3();
 
-  const position = new THREE.Object3D()
-  position.position.z = 1500
-  init(position);
+  const initialCameraPosition = new THREE.Object3D()
+  initialCameraPosition.position.z = 1500
+
+  init(initialCameraPosition, menu);
 
   const base = new THREE.Group();
   scene.add( base );
