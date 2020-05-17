@@ -29,6 +29,10 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   var controls
   const objects = []
   let rotatate = false
+  const distanceBetweenMol = 350
+  const startingPointX = -700
+  const startingPointY = 500
+  const distanceBetweenEqn = 600
 
   var loader = new PDBLoader()
   var offset = new THREE.Vector3()
@@ -49,44 +53,30 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     }
   }
 
+  const text = {% include "three/snippet/equations.json" %}
+  const eqn = JSON.parse(JSON.stringify(text))
+
   const base = new THREE.Group();
   scene.add( base );
-  const mol1 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const mol2 = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
-  const result = '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}'
 
-  loadEquation( base, mol1, mol2, result );
+  let position = startingPointY;
+  for(let i=0; i<eqn.equations.length; i++){
+
+    const eqnBase = new THREE.Group();
+    eqnBase.position.y = position
+    position -= distanceBetweenEqn
+    base.add( eqnBase );
+
+    loadEquation( eqnBase, eqn.equations[i], distanceBetweenMol, startingPointX );
+  }
+
   animate();
 
   // init function
   {% include 'three/snippet/sceneCameraLight.js' %}
 
-  function loadEquation( base, mol1, mol2, result ){
-    const root1 = new THREE.Group();
-    root1.position.x = -700
-    base.add( root1 );
-
-    const root2 = new THREE.Group();
-    root2.position.x = -350
-    base.add( root2 );
-
-    const root3 = new THREE.Group();
-    base.add( root3 );
-
-    const root4 = new THREE.Group();
-    root4.position.x = 350
-    base.add( root4 );
-
-    const root5 = new THREE.Group();
-    root5.position.x = 700
-    base.add( root5 );
-
-    loadMolecule( mol1, root1, 'CH3CH2OH' );
-    drawPlus(root2);
-    loadMolecule( mol2, root3 );
-    drawEqual(root4);
-    loadMolecule( result, root5);
-  }
+  // loadEquation function
+  {% include 'three/snippet/loadEquation.js' %}
 
   // loadMolecule function
   {% include 'three/snippet/loadMolecule.js' %}
