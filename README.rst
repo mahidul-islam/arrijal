@@ -1,7 +1,7 @@
-arrijal
+ArRijal
 =======
 
-a test project
+An Open source Educational Website
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
@@ -72,7 +72,3 @@ Deployment
 ----------
 
 The following details how to deploy this application.
-
-
-
-
