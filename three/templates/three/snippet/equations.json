@@ -1,0 +1,57 @@
+{% load static %}
+
+{
+  "equations":
+  [
+    {
+      "name":"Name of the first equation",
+      "ingredients":
+      [
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+      ],
+      "results":
+      [
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+      ],
+    },
+    {
+      "name":"Name of the first equation",
+      "ingredients":
+      [
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+      ],
+      "results":
+      [
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+        {
+          "name": "c6h6",
+          "url": "{% static 'chemistry/model/pdb/c6h6.pdb' %}",
+        },
+      ],
+    },
+  ],
+}
