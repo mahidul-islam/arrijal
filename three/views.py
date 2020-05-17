@@ -33,6 +33,11 @@ def aromaticChart(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def aliphaticChart(request):
+    template = loader.get_template('three/aliphaticChart.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def tank(request):
     template = loader.get_template('three/tank.html')
     context = {}

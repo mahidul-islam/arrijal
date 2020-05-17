@@ -8,6 +8,7 @@ urlpatterns = [
     path("hydrogen", views.hydrogen, name="hydrogen"),
     path("experiment", views.experiment, name="experiment"),
     path("aromaticChart", views.aromaticChart, name="aromaticChart"),
+    path("aliphaticChart", views.aliphaticChart, name="aliphaticChart"),    
     path("tankofnet", views.tankofnet, name="tankofnet"),
     path("tank", views.tank, name="experimentTank"),
     path("guiexample", views.guiexample, name="guiexample"),
