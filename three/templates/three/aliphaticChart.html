@@ -42,7 +42,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   const menu = document.getElementById( 'menu' );
   const initialCameraPosition = new THREE.Object3D()
-  initialCameraPosition.position.z = 3000
+  initialCameraPosition.position.z = 1000
 
   init(initialCameraPosition, menu);
 
@@ -79,7 +79,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   function drawAllMolsAndLinks() {
 
-    const text = {% include "three/snippet/aromaticMolecules.json" %}
+    const text = {% include "three/snippet/aliphaticMolecules.json" %}
 
     // draw the molecules
     const mol = JSON.parse(JSON.stringify(text))
