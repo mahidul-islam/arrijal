@@ -21,6 +21,7 @@ urlpatterns = [
     # User management
     path("users/", include("arrijal.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path('comment/', include('comment.urls')),
     # Your stuff: custom urls includes go here
     path("three/", include("three.urls", namespace="three")),
     path("review/", include("review.urls", namespace="review")),
