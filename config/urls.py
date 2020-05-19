@@ -27,6 +27,8 @@ urlpatterns = [
     path("blog/", include("blog.urls", namespace="blog")),
     path("newsletter/", include("newsletters.urls", namespace="newsletter")),
     path("chemistry/", include("chemistry.urls", namespace="chemistry")),
+    path("isnad/", include("isnad.urls", namespace="isnad")),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
