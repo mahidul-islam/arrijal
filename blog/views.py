@@ -11,12 +11,14 @@ from django.shortcuts import render
 from wagtail.core.models import Page
 from wagtail.search.models import Query
 
+
 def blogpage(request):
     tag1=' '
     li=[]
     posts=BlogPage.objects.all()
     posts2=BlogPage.objects.all()
     category=BlogCategory.objects.all()
+
 
     try:
         page = int(request.GET.get('page', '1'))
@@ -41,7 +43,7 @@ def blogpage(request):
     for i in li:
          if i not in res:
              res.append(i)
-             print(res)
+
 
     return render(request,'blog/blog_index_page.html',{'posts':posts,'mylist':res,'categori':category})
 def search(request):
@@ -65,7 +67,42 @@ def search(request):
     })
 
 def category_dao(request,category_id):
-    category=BlogCategory.objects.get(pk=category_id)
+    tag1=' '
+    li=[]
+    posts=[]
+    single_category=BlogCategory.objects.get(pk=category_id)
     categories=BlogCategory.objects.all()
-    posts2=BlogPage.objects.all()
-    return render(request,'blog/category.html',{'single_category':category,'categori':categories,'posts2':posts2})
+    l2=BlogPage.objects.all()
+    print(type(l2))
+    for page2 in l2:
+        categor=page2.categories.all()
+        for category in categor:
+            if(single_category== category):
+                 posts.append(page2)
+
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    paginator = Paginator(posts, 2)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    for page in l2:
+        for tag in page.tags.all():
+            if tag1 != tag :
+                tag1=tag
+                li.append(tag1)
+
+
+    res = []
+    for i in li:
+         if i not in res:
+             res.append(i)
+
+    return render(request,'blog/category.html',{'categori':categories,'posts':posts,'mylist':res})

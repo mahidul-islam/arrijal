@@ -16,6 +16,8 @@ from wagtail.core.models import Page, Orderable
 from wagtail.snippets.models import register_snippet
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from wagtail.core.models import Page
+from django.contrib.contenttypes.fields import GenericRelation
+from comment.models import Comment
 
 
 
@@ -49,6 +51,8 @@ class BlogPage(Page):
     body = RichTextField(blank=True)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
+        # the field name should be comments
+    comments = GenericRelation(Comment)
 
 
     def main_image(self):

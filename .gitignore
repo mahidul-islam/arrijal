@@ -52,6 +52,8 @@ coverage.xml
 
 # Django stuff:
 staticfiles/
+# media files 
+media/
 
 # Sphinx documentation
 docs/_build/
@@ -282,5 +284,3 @@ pip-selfcheck.json
 arrijal/media/
 
 .pytest_cache/
-
-

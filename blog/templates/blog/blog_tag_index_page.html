@@ -22,7 +22,7 @@
         {% for blogpage in blogpages %}
 
         <p>
-        <h4><a href="{% pageurl page %}">{{ blogpage.title }}</a></h4><br />
+        <h4><a href="{% pageurl blogpage %}">{{ blogpage.title }}</a></h4><br />
         <small>Revised: {{ blogpage.latest_revision_created_at }}</small><br />
         {% if blogpage.owner %}
         <p>By {{ blogpage.owner }}</p>
