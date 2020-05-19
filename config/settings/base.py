@@ -83,7 +83,8 @@ LOCAL_APPS = [
     "three",
     "review",
     "chemistry",
-    "map",    
+    "comment",
+    "map",
     "isnad",
 ]
 Install=[
