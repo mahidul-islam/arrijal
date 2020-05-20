@@ -1,8 +1,11 @@
 from django.urls import path
+
 from . import views
 
 app_name = "isnad"
 urlpatterns = [
-    path("graph", views.graph, name="graph"),
+    path("", views.isnad, name="isnad"),
+    path("isgraph", views.igraph, name="isgraph"),
+    path("graph1", views.graph1, name="graph1"),
 
 ]

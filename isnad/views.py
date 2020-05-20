@@ -7,8 +7,17 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib import messages
 
+def isnad(request):
+    template = loader.get_template('isnad/isnad.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
-def graph(request):
-    template = loader.get_template('isnad/graph.html')
+def igraph(request):
+    template = loader.get_template('isnad/igraph.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def graph1(request):
+    template = loader.get_template('isnad/graph1.html')
     context = {}
     return HttpResponse(template.render(context, request))
