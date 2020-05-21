@@ -13,6 +13,11 @@
     <div class="col-sm-2"><p id="value-simple"></p></div>
     <div class="col-sm"><div id="slider-simple"></div></div>
   </div>
+
+  <div class="row align-items-center">
+    <div class="col-sm-2"><p id="value-time"></p></div>
+    <div class="col-sm"><div id="slider-time"></div></div>
+  </div>
 </div>
 
 
@@ -52,7 +57,8 @@ d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json', function(error, t
 				.attr("d", path)
 });
 
-var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
+  // simple
+  var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
 
   var sliderSimple = d3
     .sliderBottom()
@@ -77,6 +83,37 @@ var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
   gSimple.call(sliderSimple);
 
   d3.select('p#value-simple').text(d3.format('.2%')(sliderSimple.value()))
+
+  // Time
+  var dataTime = d3.range(0, 10).map(function(d) {
+    return new Date(1995 + d, 10, 3);
+  });
+
+  var sliderTime = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(d3.max(dataTime))
+    .step(1000 * 60 * 60 * 24 * 365)
+    .width(width - (width/20))
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default(new Date(1998, 10, 3))
+    .on('onchange', val => {
+      d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+    });
+
+  var gTime = d3
+    .select('div#slider-time')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTime.call(sliderTime);
+
+  d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
 
 </script>
 {% endblock pageSpecificJavascript %}
