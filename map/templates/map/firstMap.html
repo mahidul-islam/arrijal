@@ -6,32 +6,40 @@
 {% endblock pageStyle %}
 
 {% block map %}
-<content id="content"></content>
+<div class="">
+  <content id="content"></content>
+
+  <div class="row align-items-center">
+    <div class="col-sm-2"><p id="value-simple"></p></div>
+    <div class="col-sm"><div id="slider-simple"></div></div>
+  </div>
+</div>
+
+
 {% endblock map %}
 
 {% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
 
 <script type="module">
 
-var width = window.innerWidth, height = window.innerHeight;
+var width = window.innerWidth, height = (window.innerWidth/13)*5;
 var projection = d3.geoNaturalEarth1()
   .rotate([10,0])
   .center([-width/35, width/70]) //long and lat starting position
   .scale(width/7.2) //starting zoom position
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#content").append("svg")
                           .attr("width", width)
                           .attr("height", height)
-                          // .attr("preserveAspectRatio", "xMinYMin meet")
-                          // .attr("viewBox", "0 0 width height")
+                          .attr("preserveAspectRatio", "xMinYMin meet")
+                          .attr("viewBox", "0 0 width height")
 
 var path = d3.geoPath()
   .projection(projection);
-
-console.log(window.innerHeight)
 
 var g = svg.append("g");
 
@@ -44,14 +52,31 @@ d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json', function(error, t
 				.attr("d", path)
 });
 
-// d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json')
-//   .then(data => {
-//     const countries = feature(data, data.objects.countries);
-//     svg.selectAll('path').data(countries.features)
-//       .enter().append('path')
-//         .attr('class', 'country')
-//         .attr('d', pathGenerator);
-// });
+var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
+
+  var sliderSimple = d3
+    .sliderBottom()
+    .min(d3.min(data))
+    .max(d3.max(data))
+    .width(width - (width/20))
+    .tickFormat(d3.format('.2%'))
+    .ticks(5)
+    .default(0.015)
+    .on('onchange', val => {
+      d3.select('p#value-simple').text(d3.format('.2%')(val));
+    });
+
+  var gSimple = d3
+    .select('div#slider-simple')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gSimple.call(sliderSimple);
+
+  d3.select('p#value-simple').text(d3.format('.2%')(sliderSimple.value()))
 
 </script>
 {% endblock pageSpecificJavascript %}
