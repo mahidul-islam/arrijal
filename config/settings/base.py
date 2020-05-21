@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "review",
     "chemistry",
     "map",
+    "edumap",
 ]
 Install=[
   'blog',
