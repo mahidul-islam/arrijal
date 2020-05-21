@@ -1,5 +1,139 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block spadof %} {% endblock %}
 
 {% block navbar %}
   {% include 'navbar.html' %}
 {% endblock %}
+
+{% block later %}
+
+  <!-- course section -->
+	<section class="course-section spad">
+    <div class="course-warp">
+      <div class="container">
+        <div class="section-title">
+          <h2>Our Animations</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+        </div>
+      </div>
+			<ul class="course-filter controls pt-0">
+				<li class="control active" data-filter="all">All</li>
+				<li class="control" data-filter=".chemistry">Chemistry</li>
+				<li class="control" data-filter=".aromatic">Aromatic</li>
+				<li class="control" data-filter=".learning">Learning</li>
+				<li class="control" data-filter=".aliphatic">Aliphatic</li>
+			</ul>
+			<div class="row course-items-area">
+        <!-- categorie -->
+				<div class="mix col-lg-3 col-md-4 col-sm-6 learning">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:experimentTank' %}">
+								<h5>Experiment Tank</h5>
+							</a>
+							<p>Experimenting on the scenegraph.</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+        <!-- categorie -->
+				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'three:equations' %}">
+                <h5>Many Molicules</h5>
+              </a>
+							<p>Many molicules</p>
+							<span>Size: No</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry aliphatic">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'three:aliphaticChart' %}">
+                <h5>Aliphatic Chart</h5>
+              </a>
+							<p>Aliphatic Chart</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="mix col-lg-3 col-md-4 col-sm-6 learning">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:tankofnet' %}">
+								<h5>Tank</h5>
+							</a>
+							<p>A tank is playing by itself...</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry aromatic">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:aromaticChart' %}">
+								<h5>Aromatic Chart</h5>
+							</a>
+							<p>Aromatic Chart</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+			</div>
+		</div>
+	</section>
+	<!-- course section end -->
+
+
+  <!-- course section -->
+	<section class="course-section">
+    <div class="course-warp">
+      <div class="container">
+        <div class="section-title">
+          <h2>Our Maps</h2>
+  				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+        </div>
+      </div>
+			<ul class="course-filter controls pt-0">
+				<li>All</li>
+				<li>World</li>
+				<li>Bangladesh</li>
+				<li>Education</li>
+				<li>History</li>
+			</ul>
+			<div class="row map-items-area">
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 world">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'map:firstMap' %}">
+                <h5>First Map</h5>
+              </a>
+              <p>First Map</p>
+              <span>Size: No</span>
+            </div>
+          </div>
+        </div>
+        <!-- categorie -->
+      </div>
+		</div>
+	</section>
+  	<!-- categories section end -->
+
+  <section class="spad"></section>
+
+{% endblock later %}
