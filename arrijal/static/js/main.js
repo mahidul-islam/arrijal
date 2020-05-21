@@ -2,7 +2,7 @@
 ------------------------------------
 	WebUni - Education Template
 	Version: 1.0
- ------------------------------------ 
+ ------------------------------------
  ====================================*/
 
 
@@ -13,7 +13,7 @@ $(window).on('load', function() {
 	/*------------------
 		Preloder
 	--------------------*/
-	$(".loader").fadeOut(); 
+	$(".loader").fadeOut();
 	$("#preloder").delay(400).fadeOut("slow");
 
 
@@ -25,6 +25,10 @@ $(window).on('load', function() {
 		var mixer = mixitup(containerEl);
 	}
 
+	// if($('.map-items-area').length > 0 ) {
+	// 	var containerEl = document.querySelector('.map-items-area');
+	// 	var mixer = mixitup(containerEl);
+	// }
 });
 
 (function($) {
@@ -121,4 +125,3 @@ $(window).on('load', function() {
 	});
 
 })(jQuery);
-
