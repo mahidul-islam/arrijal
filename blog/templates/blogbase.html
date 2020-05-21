@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
-
 {% block body_class %}template-blogpage{% endblock %}
 {% load static i18n %}
-{% block spadof %}
+
+{% block spadof %} {% endblock %}
+
+{% block navbar %}
+	{% include 'navbar5.html' %}
 {% endblock %}
+
 {% block later %}
-
-<!-- Page info end -->
-
-
-<!-- search section -->
-
-<!-- search section end -->
-
 <!-- Page  -->
 
 <section class="blog-page spad pb-0">
@@ -24,29 +20,27 @@
 				{% block content2 %}
 				{% endblock  %}
 				<!-- blog post -->
-
-
 			</div>
 
 			<div class="col-lg-3 col-md-5 col-sm-9 sidebar">
 				<div class="sb-widget-item">
 					<form action="{% url 'blog:search' %}" method="get" class="search-widget">
-        <input type="text" name="query" placeholder="Search" value="{{ search_query }}">
-        	<button ><i class="fa fa-search"></i></button>
-    </form>
-
+		        <input type="text" name="query" placeholder="Search" value="{{ search_query }}">
+	        	<button ><i class="fa fa-search"></i></button>
+			    </form>
 				</div>
+
 				<div class="sb-widget-item">
 					<h4 class="sb-w-title">Categories</h4>
 					<ul>
 						{% for category in categori %}
-
-						<li> <a href="{% url 'blog:category-dao' category.pk %}"> {{ category.name }}</a></li>
-
+							<li>
+								<a href="{% url 'blog:category-dao' category.pk %}"> {{ category.name }}</a>
+							</li>
 						{% endfor %}
-
 					</ul>
 				</div>
+
 				<div class="sb-widget-item">
 					<h4 class="sb-w-title">Archives</h4>
 					<ul>
@@ -57,9 +51,9 @@
 						<li><a href="#">June 2018</a></li>
 					</ul>
 				</div>
+
 				<div class="sb-widget-item">
 					<h4 class="sb-w-title">Tags</h4>
-
 					<div class="tags">
 						{% for tag in mylist %}
 						<a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
@@ -67,6 +61,7 @@
 						{% endfor %}
 					</div>
 				</div>
+
 				<div class="sb-widget-item">
 					<div class="add">
 						<a href="#"><img src="{% static 'img/add.jpg' %}" alt=""></a>

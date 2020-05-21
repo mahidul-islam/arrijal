@@ -13,8 +13,8 @@ def three(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def hydrogen(request):
-    template = loader.get_template('three/hydrogen.html')
+def equations(request):
+    template = loader.get_template('three/equations.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -28,8 +28,13 @@ def tankofnet(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def carbonDiOxide(request):
-    template = loader.get_template('three/carbonDiOxide.html')
+def aromaticChart(request):
+    template = loader.get_template('three/aromaticChart.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def aliphaticChart(request):
+    template = loader.get_template('three/aliphaticChart.html')
     context = {}
     return HttpResponse(template.render(context, request))
 

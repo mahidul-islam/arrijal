@@ -7,6 +7,8 @@ urlpatterns = [
     path("", views.chemistry, name="chemistry"),
     path("tank", views.tank, name="tank"),
     path("oxygen", views.oxygen, name="oxygen"),
-    path("carbon", views.carbon, name="carbon"),
+    path("molecule", views.molecule, name="molecule"),
+    path("raycaster", views.raycaster, name="raycaster"),
+
 
 ]

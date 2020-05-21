@@ -1,165 +1,98 @@
-{% extends 'abstractbase.html' %}
-{% load static %}
-{% block css %}{% endblock css %}
-{% block pageStyle %}
-<style>
-html,body{
-  margin: 0;
-  height: 100%;
-}
-#c{
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-</style>
-{% endblock pageStyle %}
-{% block animation %}
-<canvas id="c"></canvas>
-{% endblock %}
-{% block javascript %}{% endblock javascript %}
-{% block pageSpecificJavascript %}
-<script type="module">
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
-import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
-import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - interactive cubes</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
 
-function main(){
-  const canvas = document.querySelector('#c');
-  const renderer = new THREE.WebGLRenderer({canvas: canvas});
-  const loader = new THREE.TextureLoader();
-  renderer.setClearColor(0xAAAAAA);
-  renderer.shadowMap.enabled = true;
-  const gui = new GUI();
+		</style>
+	</head>
+	<body>
+		<script type="module">
+    import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+			var container, stats;
+			var camera, scene, raycaster, renderer;
+			var mouse = new THREE.Vector2(), INTERSECTED;
+			var radius = 100, theta = 0;
+			init();
+			animate();
+function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
+				var light = new THREE.DirectionalLight( 0xffffff, 1 );
+				light.position.set( 1, 1, 1 ).normalize();
+				scene.add( light );
 
-  const fov = 40;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 1000;
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(8, 4, 10).multiplyScalar(3);
-  camera.lookAt(0, 0, 0);
+        const sphereGeometry = new THREE.SphereBufferGeometry(1, 6, 6);
+        const sunMaterial = new THREE.MeshLambertMaterial({color: 0x2233FF});
+        const nMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+        nMesh.scale.set(15, 15, 15);
+        scene.add(nMesh);
 
-  const controls = new OrbitControls(camera, canvas);
-  controls.target.set(0, 5, 0);
-  controls.update();
+        const psunMaterial = new THREE.MeshLambertMaterial({color: 'red'});
+        const pMesh = new THREE.Mesh(sphereGeometry, psunMaterial);
+        pMesh.position.x=30;
+        pMesh.scale.set(10, 10, 10);
+        scene.add(pMesh);
 
-  const scene = new THREE.Scene();
-  {
-    const color = 0xFFFFFF;
-    const intensity = 3;
-    const light = new THREE.PointLight(color, intensity);
-    scene.add(light);
-  }
+//..............
+				raycaster = new THREE.Raycaster();
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+	}
 
-    const objects = [];
-    const radius = 1;
-    const widthSegments = 6;
-    const heightSegments = 6;
-    const sphereGeometry = new THREE.SphereBufferGeometry(
-        radius, widthSegments, heightSegments);
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function onDocumentMouseMove( event ) {
+				event.preventDefault();
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			}
+			//
 
-    const solarSystem = new THREE.Object3D();
-    solarSystem.position.x = 15;
-    scene.add(solarSystem);
-    objects.push(solarSystem);
+function animate() {
+    	requestAnimationFrame( animate );
+    	render();
+		}
+	function render() {
+				theta += 0.1;
+				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
+				camera.lookAt( scene.position );
+				camera.updateMatrixWorld();
+				// find intersections
+				raycaster.setFromCamera( mouse, camera );
 
-    const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
-
-    const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
-    sunMesh.scale.set(5, 5, 5);
-    solarSystem.add(sunMesh);
-    objects.push(sunMesh);
-
-    const earthOrbit = new THREE.Object3D();
-    earthOrbit.position.x = 15;
-    solarSystem.add(earthOrbit);
-    objects.push(earthOrbit);
-
-    const earthMaterial = new THREE.MeshPhongMaterial({map: loader.load('https://threejsfundamentals.org/threejs/resources/images/flower-3.jpg')});
-    // const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
-    const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
-    earthOrbit.add(earthMesh);
-    objects.push(earthMesh);
-
-    const moonOrbit = new THREE.Object3D();
-    moonOrbit.position.x = 3;
-    earthOrbit.add(moonOrbit);
-    objects.push(moonOrbit);
-
-
-   const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
-   const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
-   moonMesh.scale.set(.5, .5, .5);
-   moonOrbit.add(moonMesh);
-   objects.push(moonMesh);
-
-
-   class AxisGridHelper {
-     constructor(node, units = 10) {
-       const axes = new THREE.AxesHelper();
-       axes.material.depthTest = false;
-       axes.renderOrder = 2;  // after the grid
-       node.add(axes);
-
-       const grid = new THREE.GridHelper(units, units);
-       grid.material.depthTest = false;
-       grid.renderOrder = 1;
-       node.add(grid);
-
-       this.grid = grid;
-       this.axes = axes;
-       this.visible = false;
-     }
-     get visible() {
-       return this._visible;
-     }
-     set visible(v) {
-       this._visible = v;
-       this.grid.visible = v;
-       this.axes.visible = v;
-     }
-   }
-
-   function makeAxisGrid(node, label, units) {
-     const helper = new AxisGridHelper(node, units);
-     gui.add(helper, 'visible').name(label);
-   }
-
-   makeAxisGrid(solarSystem, 'solarSystem', 26);
-   makeAxisGrid(sunMesh, 'sunMesh');
-   makeAxisGrid(earthOrbit, 'earthOrbit');
-   makeAxisGrid(earthMesh, 'earthMesh');
-   makeAxisGrid(moonMesh, 'moonMesh');
-
-  function resizeRendererToDisplaySize(renderer){
-    const canvas = renderer.domElement;
-    const pixelRatio = window.devicePixelRatio;
-    const width = canvas.clientWidth * pixelRatio | 0;
-    const height = canvas.clientHeight * pixelRatio | 0;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if(needResize){
-      renderer.setSize(width,height,false);
-    }
-    return needResize;
-  }
-  function render(time) {
-    time *= 0.001;
-    if(resizeRendererToDisplaySize(renderer)){
-      const canvas = renderer.domElement;
-      camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.updateProjectionMatrix();
-    }
-    objects.forEach((obj,ndx)=>{
-      const speed=1+ndx*1;
-      obj.rotation.y = time*speed;
-    });
-    renderer.render(scene, camera)
-    requestAnimationFrame(render);
-  }
-
-  requestAnimationFrame(render);
-}
-main();
-</script>
-{% endblock pageSpecificJavascript %}
+				var intersects = raycaster.intersectObjects( scene.children );
+				if ( intersects.length > 0 ) {
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+						 INTERSECTED.material.emissive.setHex( 0xff0000 );
+            // INTERSECTED.scale.set(30, 30, 30);
+            // scene.remove( INTERSECTED );
+					}
+				} else {
+					if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+					INTERSECTED = null;
+				}
+				renderer.render( scene, camera );
+			}
+		</script>
+	</body>
+</html>

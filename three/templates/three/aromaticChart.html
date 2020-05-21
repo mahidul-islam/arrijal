@@ -1,0 +1,136 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+
+{% block pageStyle %}
+  <link rel="stylesheet" href="{% static 'three/css/animation.css' %}"/>
+{% endblock pageStyle %}
+
+{% block animation %}
+  <div id="container"></div>
+  <div id="back-button">
+    <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+  </div>
+  <div id="menu"></div>
+  <!-- <div id="camera1">
+    <span>Camera Change</span>
+  </div> -->
+{% endblock %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
+
+
+  var camera, scene, renderer, labelRenderer;
+  var controls
+  let rotatate = false // if the rotatable object will rotate
+  let showLabel = false
+
+  // objects will be stored here to rotate later in animate
+  const objects = [];
+
+  var loader = new PDBLoader();
+  var offset = new THREE.Vector3();
+
+  const menu = document.getElementById( 'menu' );
+  const initialCameraPosition = new THREE.Object3D()
+  initialCameraPosition.position.z = 3000
+
+  init(initialCameraPosition, menu);
+
+  const startStopRotationButton = document.createElement( 'button' );
+  startStopRotationButton.innerHTML = "Start/Stop rotating";
+  menu.appendChild( startStopRotationButton );
+  startStopRotationButton.addEventListener( 'click', generateStartStopRotationButtonCallback(), false );
+
+  function generateStartStopRotationButtonCallback( url ) {
+    return function () {
+      rotatate = !rotatate
+    }
+  }
+
+  const showLabelButton = document.createElement( 'button' )
+  showLabelButton.innerHTML = "Show Label"
+  // menu.appendChild( showLabelButton )
+  showLabelButton.addEventListener( 'click', generateShowLabelButtonCallback(), false )
+
+  function generateShowLabelButtonCallback( url ) {
+    return function () {
+      showLabel = !showLabel
+      drawAllMolsAndLinks()
+    }
+  }
+
+  // root for the whole scenegraph
+  const root = new THREE.Group();
+  scene.add( root );
+
+  // load the molecules from json
+
+  drawAllMolsAndLinks();
+
+  function drawAllMolsAndLinks() {
+
+    const text = {% include "three/snippet/aromaticMolecules.json" %}
+
+    // draw the molecules
+    const mol = JSON.parse(JSON.stringify(text))
+    for (let i=0;i<mol.molecules.length;i++){
+      const url = mol.molecules[i].url
+      const name = mol.molecules[i].name
+      const place = new THREE.Group()
+      root.add(place)
+      place.position.x = mol.molecules[i].positionX
+      place.position.y = mol.molecules[i].positionY
+      place.position.z = mol.molecules[i].positionZ
+      loadMolecule( url, place, name, showLabel )
+    }
+
+    // draw the links between molecules
+    for (let i=0;i<mol.links.length;i++){
+      const fromMol = mol.links[i].from
+      const toMol = mol.links[i].to
+      const placeFrom = new THREE.Group()
+      const placeTo = new THREE.Group()
+
+      for (let i=0;i<mol.molecules.length;i++){
+        if(mol.molecules[i].name == fromMol){
+          placeFrom.position.x = mol.molecules[i].positionX
+          placeFrom.position.y = mol.molecules[i].positionY
+          placeFrom.position.z = mol.molecules[i].positionZ
+        }
+        if(mol.molecules[i].name == toMol){
+          placeTo.position.x = mol.molecules[i].positionX
+          placeTo.position.y = mol.molecules[i].positionY
+          placeTo.position.z = mol.molecules[i].positionZ
+        }
+      }
+      drawArrow(placeFrom, placeTo)
+    }
+  }
+
+  animate();
+
+  // init function
+  {% include 'three/snippet/sceneCameraLight.js' %}
+
+  // drawArrow function
+  {% include 'three/snippet/drawArrow.js' %}
+
+  // loadMolecule function
+  {% include 'three/snippet/loadMolecule.js' %}
+
+  // animation all
+  {% include 'three/snippet/animate.js' %}
+
+
+</script>
+{% endblock pageSpecificJavascript %}
