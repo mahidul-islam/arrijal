@@ -8,17 +8,12 @@ from django.utils import timezone
 from django.contrib import messages
 
 
-def map(request):
-    template = loader.get_template('map/map.html')
+def edumap(request):
+    template = loader.get_template('edumap/edumap.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
 def firstMap(request):
-    template = loader.get_template('map/firstMap.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
-
-def bangladesh(request):
-    template = loader.get_template('map/bangladesh.html')
+    template = loader.get_template('edumap/firstMap.html')
     context = {}
     return HttpResponse(template.render(context, request))

@@ -31,6 +31,7 @@ urlpatterns = [
     path("isnad/", include("isnad.urls", namespace="isnad")),
     path('comment/', include('comment.urls')),
     path("map/", include("map.urls", namespace="map")),
+    path("edumap/", include("edumap.urls", namespace="edumap")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [

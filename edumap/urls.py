@@ -2,9 +2,8 @@ from django.urls import path
 
 from . import views
 
-app_name = "map"
+app_name = "edumap"
 urlpatterns = [
-    path("", views.map, name="map"),
+    path("", views.edumap, name="edumap"),
     path("firstMap", views.firstMap, name="firstMap"),
-    path("bangladesh", views.bangladesh, name="bangladesh"),
 ]
