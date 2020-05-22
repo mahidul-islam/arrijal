@@ -1,0 +1,62 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+<div class="">
+  <content id="content"></content>
+
+  <div class="row align-items-center">
+    <div class="col-sm-2"><p id="value-simple"></p></div>
+    <div class="col-sm"><div id="slider-simple"></div></div>
+  </div>
+
+  <div class="row align-items-center">
+    <div class="col-sm-2"><p id="value-time"></p></div>
+    <div class="col-sm"><div id="slider-time"></div></div>
+  </div>
+</div>
+
+
+{% endblock map %}
+
+{% block javascript %}{% endblock javascript %}
+{% block pageSpecificJavascript %}
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+
+<script type="module">
+
+var width = window.innerWidth, height = (window.innerWidth/13)*5;
+var projection = d3.geoNaturalEarth1()
+  .rotate([-140, 5])
+  // .center([0, 0])
+  .center([-width/35, width/70]) //long and lat starting position
+  .scale(width*3) //starting zoom position
+
+var svg = d3.select("#content").append("svg")
+                          .attr("width", width)
+                          .attr("height", height)
+                          .attr("preserveAspectRatio", "xMinYMin meet")
+                          // .attr("viewBox", "0 0 width height")
+
+var path = d3.geoPath()
+  .projection(projection);
+
+var g = svg.append("g");
+
+d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
+  console.log(bangladesh.objects.map)
+  var bangladesh = g.selectAll("path")
+				.data(topojson.feature(bangladesh, bangladesh.objects.map).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+});
+
+</script>
+{% endblock pageSpecificJavascript %}

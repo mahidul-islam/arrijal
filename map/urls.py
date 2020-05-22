@@ -6,4 +6,5 @@ app_name = "map"
 urlpatterns = [
     path("", views.map, name="map"),
     path("firstMap", views.firstMap, name="firstMap"),
+    path("bangladesh", views.bangladesh, name="bangladesh"),
 ]

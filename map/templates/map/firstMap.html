@@ -34,6 +34,7 @@
 var width = window.innerWidth, height = (window.innerWidth/13)*5;
 var projection = d3.geoNaturalEarth1()
   .rotate([10,0])
+  // .center([0, 0])
   .center([-width/35, width/70]) //long and lat starting position
   .scale(width/7.2) //starting zoom position
 
@@ -41,7 +42,7 @@ var svg = d3.select("#content").append("svg")
                           .attr("width", width)
                           .attr("height", height)
                           .attr("preserveAspectRatio", "xMinYMin meet")
-                          .attr("viewBox", "0 0 width height")
+                          // .attr("viewBox", "0 0 width height")
 
 var path = d3.geoPath()
   .projection(projection);
@@ -49,7 +50,7 @@ var path = d3.geoPath()
 var g = svg.append("g");
 
 d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json', function(error, topology) {
-
+  console.log(topology)
   var world = g.selectAll("path")
 				.data(topojson.feature(topology, topology.objects.countries).features)
 				.enter()
