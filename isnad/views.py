@@ -21,3 +21,8 @@ def graph1(request):
     template = loader.get_template('isnad/graph1.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def graph2(request):
+    template = loader.get_template('isnad/graph2.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

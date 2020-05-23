@@ -1,0 +1,9 @@
+source,target
+Harry,"Sarah,Eveie,Peter,James,Bobby,Alice,Mario"
+Sarah,"Harry,Eveie,Peter,James,Bobby,Alice,Mario"
+Eveie,"Harry,Sarah,Peter,James,Bobby,Alice,Mario"
+Peter,"Harry,Sarah,Eveie,James,Bobby,Alice,Mario"
+Mario,"Harry,Sarah,Eveie,Peter,James,Bobby,Alice"
+James,"Harry,Sarah,Eveie,Peter,Bobby,Mario,Alice"
+Bobby,"Harry,Sarah,Eveie,Peter,James,Alice,Mario"
+Alice,"Harry,Sarah,Eveie,Peter,James,Bobby,Mario"
