@@ -37,7 +37,7 @@ def graph3(request):
 
 
 def load(request):
-    limit=300
+    limit=70
     wdata = {}
     wdata['nodes'] = []
     wdata['links'] = []

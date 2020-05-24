@@ -34,7 +34,7 @@ var graphLayout = d3.forceSimulation(graph.nodes)
     .force("center", d3.forceCenter(width / 2, height / 2))
     .force("x", d3.forceX(width / 2).strength(1))
     .force("y", d3.forceY(height / 2).strength(1))
-    .force("link", d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(50).strength(1))
+    .force("link", d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(150).strength(1))
     .on("tick", ticked);
 
 var adjlist = [];
@@ -57,22 +57,49 @@ svg.call(
         .scaleExtent([.1, 4])
         .on("zoom", function() { container.attr("transform", d3.event.transform); })
 );
+//.........
+ svg.append("defs").selectAll("marker")
+    .data(["suit", "licensing", "resolved"])
+    .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 25)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+    .style("stroke", "#4679BD")
+    .style("opacity", "1");
 
-var link = container.append("g").attr("class", "links")
-    .selectAll("line")
+//Create all the line svgs but without locations yet
+var link = container.selectAll(".link")
     .data(graph.links)
     .enter()
     .append("line")
+    .data(graph.links)
     .attr("stroke", "#aaa")
-    .attr("stroke-width", "1px");
+    .attr("stroke-width", "1px")
+    .attr("class", "link")
+    .style("marker-end",  "url(#suit)") // Modified line
+//..........
+// var link = container.append("g")
+//     .attr("class", "links")
+//     .selectAll("line")
+//     .data(graph.links)
+//     .enter()
+//     .append("line")
+//     .attr("stroke", "#aaa")
+//     .attr("stroke-width", "1px");
 
 var node = container.append("g").attr("class", "nodes")
     .selectAll("g")
     .data(graph.nodes)
     .enter()
     .append("circle")
-    .attr("r", 5)
-  .attr("fill", function(d) { return color(d.group); })
+    .attr("r", 13)
+    .attr("fill", function(d) { return color(d.grade); })
 
 node.on("mouseover", focus).on("mouseout", unfocus);
 
@@ -92,6 +119,7 @@ var labelNode = container.append("g").attr("class", "labelNodes")
     .style("fill", "#555")
     .style("font-family", "Arial")
     .style("font-size", 12)
+    .style("opacity", .6)
     .style("pointer-events", "none"); // to prevent mouseover/drag capture
 
 node.on("mouseover", focus).on("mouseout", unfocus);
@@ -134,18 +162,23 @@ function focus(d) {
     node.style("opacity", function(o) {
         return neigh(index, o.index) ? 1 : 0.1;
     });
-    labelNode.attr("display", function(o) {
-      return neigh(index, o.node.index) ? "block": "none";
-    });
     link.style("opacity", function(o) {
         return o.source.index == index || o.target.index == index ? 1 : 0.1;
     });
+    labelNode.attr("display", function(o) {
+      return neigh(index, o.node.index) ? "block": "none";
+    });
+    labelNode.style("opacity", function(o) {     //.........
+        return neigh(index, o.node.index) ? 1 : 0.1;
+    });
+
 }
 
 function unfocus() {
-   labelNode.attr("display", "block");
    node.style("opacity", 1);
    link.style("opacity", 1);
+   labelNode.attr("display", "block");
+   labelNode.style("opacity", .5);   //............
 }
 
 function updateLink(link) {
