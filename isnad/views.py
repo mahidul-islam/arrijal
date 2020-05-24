@@ -14,6 +14,11 @@ def isnad(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def sgraph(request):
+    template = loader.get_template('isnad/sgraph.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def igraph(request):
     template = loader.get_template('isnad/igraph.html')
     context = {}
@@ -34,10 +39,20 @@ def graph3(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def graph4(request):
+    template = loader.get_template('isnad/graph4.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def graph5(request):
+    template = loader.get_template('isnad/graph5.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
 
 def load(request):
-    limit=70
+    start=0;
+    end=300;
     wdata = {}
     wdata['nodes'] = []
     wdata['links'] = []
@@ -46,7 +61,7 @@ def load(request):
     with open('isnad/static/isnad/datasets/all_rawis.json') as json_file:
         aldata = json.load(json_file)
     for a in aldata['info']:
-        if a['scholar_indx'] < limit:
+        if start < a['scholar_indx'] < end:
             wdata['nodes'].append({
                 'id': a['scholar_indx'],
                 'name':a['name'],
@@ -55,7 +70,7 @@ def load(request):
     for l in ldata['links']:
         for t in l['target']:
             if not (str(t)) == "NA":
-                if t < limit and l['source'] < limit :
+                if start < t < end and start < l['source'] < end :
                     wdata['links'].append({
                         'source': l['source'],
                         'target': t
