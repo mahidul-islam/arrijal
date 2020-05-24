@@ -14,7 +14,7 @@
 	<section class="categories-section spad">
 		<div class="container">
 			<div class="section-title">
-				<h2>Our Isnad</h2>
+				<h2>Our Isnad Graphs</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
 			</div>
 			<div class="row">
@@ -39,7 +39,7 @@
 							<a href="{% url 'isnad:graph1' %}">
 								<h5>graph1</h5>
 							</a>
-							<p>O2</p>
+							<p>graph1</p>
 							<span>Size: bad de pm</span>
 						</div>
 					</div>
@@ -52,7 +52,7 @@
 							<a href="{% url 'isnad:graph2' %}">
 								<h5>graph2</h5>
 							</a>
-							<p>C</p>
+							<p>graph2</p>
 							<span>Size: Unknown</span>
 						</div>
 					</div>
@@ -62,10 +62,23 @@
 					<div class="categorie-item">
 						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
 						<div class="ci-text">
-							<a href="#">
-								<h5>..</h5>
+							<a href="{% url 'isnad:graph3' %}">
+								<h5>VR mode: graph3</h5>
 							</a>
-							<p>Raycaster</p>
+							<p>for big graph</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'isnad:load' %}">
+								<h5>Load</h5>
+							</a>
+							<p>--Load scholar data to json file--</p>
 							<span>Size: Unknown</span>
 						</div>
 					</div>
