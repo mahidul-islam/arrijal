@@ -1,0 +1,29 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="hello">
+  Hello:
+</div>
+<svg width="500" height="500" fill="yellow">
+  <rect x = "100" y = "100" width = "300" height = "200" fill = "yellow"></rect>
+</svg>
+
+
+{% endblock map %}
+
+{% block javascript %}{% endblock javascript %}
+{% block pageSpecificJavascript %}
+<script type="module">
+  const message = d3.select("div.hello").html("Bye");
+  d3.select("div.hello").classed("red", true)
+  d3.select(".red").html("No red")
+
+</script>
+{% endblock pageSpecificJavascript %}

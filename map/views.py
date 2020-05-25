@@ -22,3 +22,13 @@ def bangladesh(request):
     template = loader.get_template('map/bangladesh.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def d3(request):
+    template = loader.get_template('map/d3.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def povertymap(request):
+    template = loader.get_template('map/povertymap.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
