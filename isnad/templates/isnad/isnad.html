@@ -114,10 +114,23 @@
 					<div class="categorie-item">
 						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
 						<div class="ci-text">
-							<a href="{% url 'isnad:load' %}">
-								<h5>Load</h5>
+							<a href="{% url 'isnad:sload' %}">
+								<h5>Load Scholars</h5>
 							</a>
 							<p>--Load scholar data to json file--</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'isnad:iload' %}">
+								<h5>Load Isnad</h5>
+							</a>
+							<p>--Load Isnad data to json file--</p>
 							<span>Size: Unknown</span>
 						</div>
 					</div>

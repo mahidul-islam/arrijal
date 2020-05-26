@@ -9,7 +9,7 @@
 var width = 1400;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
-d3.json("{% static 'isnad/datasets/some_rawis.json' %}").then(function(graph) {
+d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
 var label = {
     'nodes': [],
@@ -99,7 +99,7 @@ var node = container.append("g").attr("class", "nodes")
     .enter()
     .append("circle")
     .attr("r", 13)
-    .attr("fill", function(d) { return color(d.grade); })
+    .attr("fill", function(d) { return color(d.group); })
 
 node.on("mouseover", focus).on("mouseout", unfocus);
 
@@ -119,7 +119,7 @@ var labelNode = container.append("g").attr("class", "labelNodes")
     .style("fill", "#555")
     .style("font-family", "Arial")
     .style("font-size", 12)
-    .style("opacity", .6)
+    .style("opacity", 1)    //
     .style("pointer-events", "none"); // to prevent mouseover/drag capture
 
 node.on("mouseover", focus).on("mouseout", unfocus);
@@ -169,8 +169,9 @@ function focus(d) {
       return neigh(index, o.node.index) ? "block": "none";
     });
     labelNode.style("opacity", function(o) {     //.........
-        return neigh(index, o.node.index) ? 1 : 0.1;
+        return neigh(index, o.node.index) ? 1 : .9;
     });
+
 
 }
 

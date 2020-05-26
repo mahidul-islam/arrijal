@@ -13,6 +13,10 @@ urlpatterns = [
     path("graph4", views.graph4, name="graph4"),
     path("graph5", views.graph5, name="graph5"),
 
-    path("load", views.load, name="load"),
+    path("sload", views.sload, name="sload"),
+    path("iload", views.iload, name="iload"),
+
+    path("getrawisload", views.getrawisload, name="getrawisload"),
+
 
 ]

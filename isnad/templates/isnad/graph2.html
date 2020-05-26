@@ -45,7 +45,7 @@
         .force("charge", d3.forceManyBody())
         .force("center", d3.forceCenter(width / 2, height / 2));
 
-    d3.json("{% static 'isnad/datasets/some_rawis.json' %}", function (error, graph) {
+    d3.json("{% static 'isnad/datasets/some_hadiths.json' %}", function (error, graph) {
         if (error) throw error;
         update(graph.links, graph.nodes);
     })
@@ -112,7 +112,7 @@
 
         node.append("text")
             .attr("dy", -3)
-            .text(function (d) {return d.name+":"+d.grade;});
+            .text(function (d) {return d.name+":"+d.group;});
 
         simulation
             .nodes(nodes)
