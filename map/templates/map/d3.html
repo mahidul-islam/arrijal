@@ -11,9 +11,16 @@
 <div class="hello">
   Hello:
 </div>
-<svg width="500" height="500" fill="yellow">
-  <rect x = "100" y = "100" width = "300" height = "200" fill = "yellow"></rect>
+<ul id = "list">
+   <li><li>
+   <li></li>
+</ul>
+<svg width="500" height="200" fill="yellow">
+  <rect x = "100" y = "10" width = "300" height = "200" fill = "yellow"></rect>
+  <line x1 = "100" y1 = "100" x2 = "200" y2 = "200"
+   style = "stroke:rgb(155,0,0);stroke-width:2"/>
 </svg>
+<div class="svgcontainer"></div>
 
 
 {% endblock map %}
@@ -24,6 +31,33 @@
   const message = d3.select("div.hello").html("Bye");
   d3.select("div.hello").classed("red", true)
   d3.select(".red").html("No red")
+
+  d3.select("#list").selectAll("li")
+    .data([10,20,30,40,50])
+    .text(function(d) {return d})
+    .enter()
+    .append("li")
+    .text(function(d) {return d})
+
+  var width = 300;
+    var height = 300;
+    //Create SVG element
+    var svg = d3.select(".svgcontainer")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+    //Append circle
+    svg.append("circle")
+      .attr("cx", 200)
+      .attr("cy", 50)
+      .attr("r", 20)
+      .attr("fill", "green");
+    svg.append("rect")
+      .attr("x", 20)
+      .attr("y", 20)
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("fill", "yellow");
 
 </script>
 {% endblock pageSpecificJavascript %}

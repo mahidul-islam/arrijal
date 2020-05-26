@@ -1,7 +1,7 @@
-path {
+/* path {
   stroke: white;
   stroke-width: 0.25px;
-  fill: #778899;
+  fill: #69b3a2;
 }
 
 path:hover {
@@ -21,4 +21,35 @@ div.tooltip {
   box-shadow: 0px 0px 2px 0px #a6a6a6;
   opacity: 0.9;
   position: absolute;
+} */
+body {
+  /* background-color: #d7f8ff; */
+  background: rgba(254,241,210, 0.3)
+}
+
+.base{
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+#svg_map {
+  background: rgba(215,248,255,.8)
+}
+
+.countries {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+.legendThreshold {
+    font-size: 12px;
+    font-family: sans-serif;
+}
+.caption {
+    fill: #000;
+    text-anchor: start;
+    font-weight: bold;
 }
