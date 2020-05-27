@@ -83,7 +83,7 @@ def sload(request):
 def iload(request):
     name=""
     start=0
-    end=100
+    end=40
     j=0
     all="hadiths"
     source=""
@@ -166,8 +166,10 @@ def iload(request):
                     'source': hadith_id,
                     'target': str(c['chain_indx'][j])
                 })
-                hadith_id = str(c['chain_indx'][j])
-                j=+1
+                if str(cdata['info'][index]['chain_indx'][j]) in getindex:
+                    hadith_id = str(c['chain_indx'][j])
+                j+=1
+                print(hadith_id)
     with open('isnad/static/isnad/datasets/some_hadiths.json', 'w') as outfile:
         json.dump(wdata, outfile)
     return redirect('isnad:isnad')
