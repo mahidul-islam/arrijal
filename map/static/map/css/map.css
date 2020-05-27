@@ -23,7 +23,6 @@ div.tooltip {
   position: absolute;
 } */
 body {
-  /* background-color: #d7f8ff; */
   background: rgba(254,241,210, 0.3)
 }
 
@@ -36,7 +35,8 @@ body {
 }
 
 #svg_map {
-  background: rgba(215,248,255,.8)
+  /* background: rgba(215,248,255,.8) */
+  background-color: #fff;
 }
 
 .countries {

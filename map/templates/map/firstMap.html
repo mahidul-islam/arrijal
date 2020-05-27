@@ -1,6 +1,5 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
-{% block css %}{% endblock css %}
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
 {% endblock pageStyle %}
@@ -9,11 +8,13 @@
 
 <div class="base">
   <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>World Map Showing data with Legend</h4>
+  </div>
 </div>
 
 {% endblock map %}
 
-{% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -76,14 +77,15 @@ function ready(error, topo) {
         .attr("class", "countries")
         .selectAll("path")
         .data(topo.features)
-        .enter().append("path")
-            .attr("fill", function (d){
-                // Pull data for this country
-                d.total = data.get(d.id) || 0;
-                // Set the color
-                return colorScale(d.total);
-            })
-            .attr("d", path);
+        .enter()
+        .append("path")
+        .attr("fill", function (d){
+          // Pull data for this country
+          d.total = data.get(d.id) || 0;
+          // Set the color
+          return colorScale(d.total);
+        })
+        .attr("d", path);
 }
 </script>
 {% endblock pageSpecificJavascript %}

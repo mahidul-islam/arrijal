@@ -1,29 +1,20 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
-{% block css %}{% endblock css %}
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
 {% endblock pageStyle %}
 
 {% block map %}
-<div class="">
-  <content id="content"></content>
 
-  <div class="row align-items-center">
-    <div class="col-sm-2"><p id="value-simple"></p></div>
-    <div class="col-sm"><div id="slider-simple"></div></div>
-  </div>
-
-  <div class="row align-items-center">
-    <div class="col-sm-2"><p id="value-time"></p></div>
-    <div class="col-sm"><div id="slider-time"></div></div>
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>Map of Bangladesh</h4>
   </div>
 </div>
 
-
 {% endblock map %}
 
-{% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -31,20 +22,11 @@
 
 <script type="module">
 
-var width = window.innerWidth, height = (window.innerWidth/13)*5;
-var projection = d3.geoNaturalEarth1()
-  .rotate([-140, 5])
-  // .center([0, 0])
-  .center([-width/35, width/70]) //long and lat starting position
-  .scale(width) //starting zoom position
+var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
 
-// var projection = d3.geoNaturalEarth1().scale(400).translate([-5850, 2000])
-
-var svg = d3.select("#content").append("svg")
-                          .attr("width", width)
-                          .attr("height", height)
-                          .attr("preserveAspectRatio", "xMinYMin meet")
-                          // .attr("viewBox", "0 0 width height")
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
 var path = d3.geoPath().projection(projection);
 
