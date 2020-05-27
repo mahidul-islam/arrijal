@@ -1,255 +1,217 @@
-<!DOCTYPE html>
-<meta charset="utf-7">
+{% load static %}
+<html>
+<body>
+<svg id='viz'></svg>
+</body>
 
-<svg width="960" height="600"></svg>
-
-<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
-var baseNodes = [
-  { id: "1", group: 0, label: "আব্বাদ ইবন শারাহীল (রাঃ)", level: 1 },
-  { id: "2"   , group: 0, label: "আলী ইবনু আবদুর রহমান মু'আবী (রহঃ)"   , level: 2 },
-  { id: "3"   , group: 0, label: "আলা ইবনে যিয়াদ (রহঃ)"   , level: 2 },
-  { id: "4"   , group: 0, label: "আ‘মাশ (রহঃ)"  , level: 2 },
-  { id: "5"   , group: 0, label: "আ'রাজ (রহঃ)"    , level: 2 },
-  { id: "6", group: 1, label: "আবায়া ইবনু রিফা‘আহ (রহঃ)", level: 1 },
-  { id: "7"   , group: 1, label: "আবদে রাব্বিহী ইবন সাঈদ (রহঃ)"   , level: 2 },
-  { id: "8"   , group: 1, label: "আবান ইবন উসমান (রহঃ)"   , level: 2 },
-  { id: "9"  , group: 2, label: "আবদু খায়ের (রহঃ)"   , level: 1 },
-  { id: "10"  , group: 2, label: "আব্দুল আ’লা (রহঃ)"   , level: 2 },
-  { id: "11"  , group: 2, label: "আব্বাদ ইবনু তামীম (রহঃ)"  , level: 2 }
-]
+var width = 1400;
+var height = 600;
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
-var baseLinks = [
-	{ target: "1", source: "2" , strength: 0.7 },
-	{ target: "1", source: "3" , strength: 0.7 },
-  { target: "1", source: "4" , strength: 0.7 },
-  { target: "1", source: "5" , strength: 0.7 },
-  { target: "6", source: "7" , strength: 0.7 },
-  { target: "6", source: "8" , strength: 0.7 },
-  { target: "9"  , source: "10", strength: 0.7 },
-  { target: "9"  , source: "11", strength: 0.7 },
-  { target: "3"   , source: "5" , strength: 0.1 },
-  { target: "10"  , source: "7" , strength: 0.1 },
-  { target: "5"   , source: "8" , strength: 0.1 },
-  { target: "2"   , source: "3" , strength: 0.1 },
-  { target: "4"   , source: "7" , strength: 0.1 },
-	{ target: "11"  , source: "3" , strength: 0.1 }
-]
+var label = {
+    'nodes': [],
+    'links': []
+};
 
-var nodes = [...baseNodes]
-var links = [...baseLinks]
+graph.nodes.forEach(function(d, i) {
+    label.nodes.push({node: d});
+    label.nodes.push({node: d});
+    label.links.push({
+        source: i * 2,
+        target: i * 2 + 1
+    });
+});
 
-function getNeighbors(node) {
-  return baseLinks.reduce(function (neighbors, link) {
-      if (link.target.id === node.id) {
-        neighbors.push(link.source.id)
-      } else if (link.source.id === node.id) {
-        neighbors.push(link.target.id)
-      }
-      return neighbors
-    },
-    [node.id]
-  )
-}
+var labelLayout = d3.forceSimulation(label.nodes)
+    .force("charge", d3.forceManyBody().strength(-50))
+    .force("link", d3.forceLink(label.links).distance(0).strength(2));
 
-function isNeighborLink(node, link) {
-  return link.target.id === node.id || link.source.id === node.id
+var graphLayout = d3.forceSimulation(graph.nodes)
+    .force("charge", d3.forceManyBody().strength(-3000))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("x", d3.forceX(width / 2).strength(1))
+    .force("y", d3.forceY(height / 2).strength(1))
+    .force("link", d3.forceLink(graph.links).id(function(d) {return d.id; }).distance(150).strength(1))
+    .on("tick", ticked);
+
+var adjlist = [];
+
+graph.links.forEach(function(d) {
+    adjlist[d.source.index + "-" + d.target.index] = true;
+    adjlist[d.target.index + "-" + d.source.index] = true;
+});
+
+function neigh(a, b) {
+    return a == b || adjlist[a + "-" + b];
 }
 
 
-function getNodeColor(node, neighbors) {
-  if (Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1) {
-    return node.level === 1 ? 'blue' : 'green'
-  }
+var svg = d3.select("#viz").attr("width", width).attr("height", height);
+var container = svg.append("g");
 
-  return node.level === 1 ? 'red' : 'gray'
-}
+svg.call(
+    d3.zoom()
+        .scaleExtent([.1, 4])
+        .on("zoom", function() { container.attr("transform", d3.event.transform); })
+);
+//.........
+ svg.append("defs").selectAll("marker")
+    .data(["suit", "licensing", "resolved"])
+    .enter().append("marker")
+    .attr("id", function(d) { return d; })
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 25)
+    .attr("refY", 0)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+  .append("path")
+    .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+    .style("stroke", "#4679BD")
+    .style("opacity", "1");
 
-
-function getLinkColor(node, link) {
-  return isNeighborLink(node, link) ? 'green' : '#E5E5E5'
-}
-
-function getTextColor(node, neighbors) {
-  return Array.isArray(neighbors) && neighbors.indexOf(node.id) > -1 ? 'green' : 'black'
-}
-
-var width = window.innerWidth
-var height = window.innerHeight
-
-var svg = d3.select('svg')
-svg.attr('width', width).attr('height', height)
-
-var linkElements,
-  nodeElements,
-  textElements
-
-// we use svg groups to logically group the elements together
-var linkGroup = svg.append('g').attr('class', 'links')
-var nodeGroup = svg.append('g').attr('class', 'nodes')
-var textGroup = svg.append('g').attr('class', 'texts')
-
-// we use this reference to select/deselect
-// after clicking the same element twice
-var selectedId
-
-// simulation setup with all forces
-var linkForce = d3
-  .forceLink()
-  .id(function (link) { return link.id })
-  .strength(function (link) { return link.strength })
-
-var simulation = d3
-  .forceSimulation()
-  .force('link', linkForce)
-  .force('charge', d3.forceManyBody().strength(-120))
-  .force('center', d3.forceCenter(width / 2, height / 2))
-
-var dragDrop = d3.drag().on('start', function (node) {
-  node.fx = node.x
-  node.fy = node.y
-}).on('drag', function (node) {
-  simulation.alphaTarget(0.7).restart()
-  node.fx = d3.event.x
-  node.fy = d3.event.y
-}).on('end', function (node) {
-  if (!d3.event.active) {
-    simulation.alphaTarget(0)
-  }
-  node.fx = null
-  node.fy = null
-})
-
-// select node is called on every click
-// we either update the data according to the selection
-// or reset the data if the same node is clicked twice
-function selectNode(selectedNode) {
-  if (selectedId === selectedNode.id) {
-    selectedId = undefined
-    resetData()
-    updateSimulation()
-  } else {
-    selectedId = selectedNode.id
-    updateData(selectedNode)
-    updateSimulation()
-  }
-
-  var neighbors = getNeighbors(selectedNode)
-
-  // we modify the styles to highlight selected nodes
-  nodeElements.attr('fill', function (node) { return getNodeColor(node, neighbors) })
-  textElements.attr('fill', function (node) { return getTextColor(node, neighbors) })
-  linkElements.attr('stroke', function (link) { return getLinkColor(selectedNode, link) })
-}
-
-// this helper simple adds all nodes and links
-// that are missing, to recreate the initial state
-function resetData() {
-  var nodeIds = nodes.map(function (node) { return node.id })
-
-  baseNodes.forEach(function (node) {
-    if (nodeIds.indexOf(node.id) === -1) {
-      nodes.push(node)
-    }
-  })
-
-  links = baseLinks
-}
-
-// diffing and mutating the data
-function updateData(selectedNode) {
-  var neighbors = getNeighbors(selectedNode)
-  var newNodes = baseNodes.filter(function (node) {
-    return neighbors.indexOf(node.id) > -1 || node.level === 1
-  })
-
-  var diff = {
-    removed: nodes.filter(function (node) { return newNodes.indexOf(node) === -1 }),
-    added: newNodes.filter(function (node) { return nodes.indexOf(node) === -1 })
-  }
-
-  diff.removed.forEach(function (node) { nodes.splice(nodes.indexOf(node), 1) })
-  diff.added.forEach(function (node) { nodes.push(node) })
-
-  links = baseLinks.filter(function (link) {
-    return link.target.id === selectedNode.id || link.source.id === selectedNode.id
-  })
-}
-
-function updateGraph() {
-  // links
-  linkElements = linkGroup.selectAll('line')
-    .data(links, function (link) {
-      return link.target.id + link.source.id
-    })
-
-  linkElements.exit().remove()
-
-  var linkEnter = linkElements
-    .enter().append('line')
-    .attr('stroke-width', 1)
-    .attr('stroke', 'rgba(50, 50, 50, 0.2)')
-
-  linkElements = linkEnter.merge(linkElements)
-
-  // nodes
-  nodeElements = nodeGroup.selectAll('circle')
-    .data(nodes, function (node) { return node.id })
-
-  nodeElements.exit().remove()
-
-  var nodeEnter = nodeElements
+//Create all the line svgs but without locations yet
+var link = container.selectAll(".link")
+    .data(graph.links)
     .enter()
-    .append('circle')
-    .attr('r', 10)
-    .attr('fill', function (node) { return node.level === 1 ? 'red' : 'gray' })
-    .call(dragDrop)
-    // we link the selectNode method here
-    // to update the graph on every click
-    .on('click', selectNode)
+    .append("line")
+    .data(graph.links)
+    .attr("stroke", "#aaa")
+    .attr("stroke-width", "1px")
+    .attr("class", "link")
+    .style("marker-end",  "url(#suit)") // Modified line
+//..........
+// var link = container.append("g")
+//     .attr("class", "links")
+//     .selectAll("line")
+//     .data(graph.links)
+//     .enter()
+//     .append("line")
+//     .attr("stroke", "#aaa")
+//     .attr("stroke-width", "1px");
 
-  nodeElements = nodeEnter.merge(nodeElements)
-
-  // texts
-  textElements = textGroup.selectAll('text')
-    .data(nodes, function (node) { return node.id })
-
-  textElements.exit().remove()
-
-  var textEnter = textElements
+var node = container.append("g").attr("class", "nodes")
+    .selectAll("g")
+    .data(graph.nodes)
     .enter()
-    .append('text')
-    .text(function (node) { return node.label })
-    .attr('font-size', 15)
-    .attr('dx', 15)
-    .attr('dy', 4)
+    .append("circle")
+    .attr("r", 13)
+    .attr("fill", function(d) { return color(d.group); })
 
-  textElements = textEnter.merge(textElements)
+node.on("mouseover", focus).on("mouseout", unfocus);
+
+node.call(
+    d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+);
+
+var labelNode = container.append("g").attr("class", "labelNodes")
+    .selectAll("text")
+    .data(label.nodes)
+    .enter()
+    .append("text")
+    .text(function(d, i) { return i % 2 == 0 ? "" : d.node.name; })   // level text
+    .style("fill", "#555")
+    .style("font-family", "Arial")
+    .style("font-size", 12)
+    .style("opacity", 1)    //
+    .style("pointer-events", "none"); // to prevent mouseover/drag capture
+
+node.on("mouseover", focus).on("mouseout", unfocus);
+
+function ticked() {
+
+    node.call(updateNode);
+    link.call(updateLink);
+
+    labelLayout.alphaTarget(0.3).restart();
+    labelNode.each(function(d, i) {
+        if(i % 2 == 0) {
+            d.x = d.node.x;
+            d.y = d.node.y;
+        } else {
+            var b = this.getBBox();
+
+            var diffX = d.x - d.node.x;
+            var diffY = d.y - d.node.y;
+
+            var dist = Math.sqrt(diffX * diffX + diffY * diffY);
+
+            var shiftX = b.width * (diffX - dist) / (dist * 2);
+            shiftX = Math.max(-b.width, Math.min(0, shiftX));
+            var shiftY = 16;
+            this.setAttribute("transform", "translate(" + shiftX + "," + shiftY + ")");
+        }
+    });
+    labelNode.call(updateNode);
+
 }
 
-function updateSimulation() {
-  updateGraph()
-
-  simulation.nodes(nodes).on('tick', () => {
-    nodeElements
-      .attr('cx', function (node) { return node.x })
-      .attr('cy', function (node) { return node.y })
-    textElements
-      .attr('x', function (node) { return node.x })
-      .attr('y', function (node) { return node.y })
-    linkElements
-      .attr('x1', function (link) { return link.source.x })
-      .attr('y1', function (link) { return link.source.y })
-      .attr('x2', function (link) { return link.target.x })
-      .attr('y2', function (link) { return link.target.y })
-  })
-
-  simulation.force('link').links(links)
-  simulation.alphaTarget(0.7).restart()
+function fixna(x) {
+    if (isFinite(x)) return x;
+    return 0;
 }
 
-// last but not least, we call updateSimulation
-// to trigger the initial render
-updateSimulation()
+function focus(d) {
+    var index = d3.select(d3.event.target).datum().index;
+    node.style("opacity", function(o) {
+        return neigh(index, o.index) ? 1 : 0.1;
+    });
+    link.style("opacity", function(o) {
+        return o.source.index == index || o.target.index == index ? 1 : 0.1;
+    });
+    labelNode.attr("display", function(o) {
+      return neigh(index, o.node.index) ? "block": "none";
+    });
+    labelNode.style("opacity", function(o) {     //.........
+        return neigh(index, o.node.index) ? 1 : .9;
+    });
 
+}
+
+function unfocus() {
+   node.style("opacity", 1);
+   link.style("opacity", 1);
+   labelNode.attr("display", "block");
+   labelNode.style("opacity", .5);   //............
+}
+
+function updateLink(link) {
+    link.attr("x1", function(d) { return fixna(d.source.x); })
+        .attr("y1", function(d) { return fixna(d.source.y); })
+        .attr("x2", function(d) { return fixna(d.target.x); })
+        .attr("y2", function(d) { return fixna(d.target.y); });
+}
+
+function updateNode(node) {
+    node.attr("transform", function(d) {
+        return "translate(" + fixna(d.x) + "," + fixna(d.y) + ")";
+    });
+}
+
+function dragstarted(d) {
+    d3.event.sourceEvent.stopPropagation();
+    if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+}
+
+function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+}
+
+function dragended(d) {
+    if (!d3.event.active) graphLayout.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+}
+
+}); // d3.json
 </script>
+</html>
