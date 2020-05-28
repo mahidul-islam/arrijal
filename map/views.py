@@ -23,6 +23,11 @@ def bangladesh(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def bdgeojson(request):
+    template = loader.get_template('map/bdgeojson.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def d3(request):
     template = loader.get_template('map/d3.html')
     context = {}

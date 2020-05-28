@@ -18,41 +18,35 @@
 <script src="https://unpkg.com/topojson@3"></script>
 
 <script type="module">
-// import {select,
-//         json,
-//         geoPath,
-//         geoMercator,
-//         zoom,
-//         event} from "d3";
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
-    height = +svg.attr("height");
+    height = +svg.attr("height")
 
 const projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
-const pathGenerator = d3.geoPath().projection(projection);
-const g= svg.append('g');
-const TipsText = "Tips: Hover on any area to see details";
-const HeaderText = "Poverty Map in Bangladesh";
+const pathGenerator = d3.geoPath().projection(projection)
+const g= svg.append('g')
+const TipsText = "Tips: Hover on any area to see details"
+const HeaderText = "Poverty Map in Bangladesh"
 
-svg.style('background-color',"white");
-svg.append('text').attr('y',40).attr('x',300).text(HeaderText);
-svg.append('text').attr('y',height-150).attr('x',width-280).text(TipsText).attr('class',"tips");
+svg.style('background-color',"white")
+svg.append('text').attr('y',40).attr('x',300).text(HeaderText)
+svg.append('text').attr('y',height-150).attr('x',width-280).text(TipsText).attr('class',"tips")
 svg.call(d3.zoom().on('zoom',()=>{
-	console.log("Zooming..");
-  g.attr('transform',event.transform);
-}));
+	console.log("Zooming..")
+  g.attr('transform', d3.event.transform)
+}))
 
 
 // Parsing Data
 let count = 0;
 Promise.all([
   d3.json("{% static  'map/json/data.json' %}"),
-	d3.json("https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json"),
-  d3.json("https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json")
-]).then(([salesData,topoJsonData,disTopoJsonData])=> {
-  console.log(topoJsonData, disTopoJsonData);
-    // Get Sales information on hover
+  d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json'),
+	d3.json("{% static  'map/json/bddis.json' %}")
+]).then(([salesData ,disTopoJsonData, newdata])=> {
+      console.log(disTopoJsonData, newdata)
+			// Get Sales information on hover
       const getSalesInformation =(d)=> {
         //console.log(d.properties.NAME_3, count++);
         const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
@@ -63,13 +57,14 @@ Promise.all([
         //console.log(selectedDistrict);
         let outputString = `City: ${selectedDistrict[0].name}\nCity ID: ${selectedDistrict[0].id} \nExtreme Level: ${selectedDistrict[0].extreme} \nPoor Level: ${selectedDistrict[0].poor}`;
         return outputString;
-    }
+    	}
 
       var myColor = d3.scaleLinear()
   						.range(["white", "red"])
               .domain([1,63.5]);
 
       const getColor =(d)=> {
+        // console.log(d)
         const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
         let distPoverty = salesData.filter(obj => {
             if( obj.name === districtName){
@@ -77,17 +72,21 @@ Promise.all([
             };
         })
        let povertyRate =distPoverty[0].poor;
-
        //console.log(myColor(povertyRate));
        return myColor(povertyRate);
       }
 
     // Parsing feature from Data
+		// console.log(disTopoJsonData)
+		// console.log(disTopoJsonData.objects["bangladesh[1]"])
     const subdistrict = topojson.feature(disTopoJsonData, disTopoJsonData.objects["bangladesh[1]"])
-  	console.log(subdistrict)
+  	// console.log(subdistrict)
 
     // Construct map path from feature data( subdistrict);
-    const dist = g.selectAll('path').data(subdistrict.features).enter().append('path')
+    const dist = g.selectAll('path')
+						.data(subdistrict.features)
+						.enter()
+						.append('path')
     				.style("fill", (d)=>getColor(d))
             .attr('class', 'district')
             .attr('d', pathGenerator);

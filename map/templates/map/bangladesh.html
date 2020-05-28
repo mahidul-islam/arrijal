@@ -16,6 +16,7 @@
 {% endblock map %}
 
 {% block pageSpecificJavascript %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
 <script src="https://unpkg.com/d3-simple-slider"></script>
@@ -32,23 +33,16 @@ var path = d3.geoPath().projection(projection);
 
 var g = svg.append("g");
 
-d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
-  console.log(bangladesh.objects.map)
+// alternate data source with divisions https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json
+d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
+  console.log(bangladesh)
+  // console.log(bangladesh.objects["bangladesh[1]"])
   var bangladesh = g.selectAll("path")
-				.data(topojson.feature(bangladesh, bangladesh.objects.map).features)
+				.data(topojson.feature(bangladesh, bangladesh.objects["bangladesh[1]"]).features)
 				.enter()
 				.append("path")
 				.attr("d", path)
 });
-
-// d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/China.topo.json', function(error, bangladesh) {
-//   console.log(bangladesh.objects.map)
-//   var bangladesh = g.selectAll("path")
-// 				.data(topojson.feature(bangladesh, bangladesh.objects.map).features)
-// 				.enter()
-// 				.append("path")
-// 				.attr("d", path)
-// });
 
 </script>
 {% endblock pageSpecificJavascript %}

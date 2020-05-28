@@ -1,0 +1,46 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>Map of Bangladesh from GeoJson data</h4>
+  </div>
+</div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://unpkg.com/topojson@3"></script>
+
+<script type="module">
+
+var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var path = d3.geoPath().projection(projection);
+
+var g = svg.append("g");
+
+d3.json("{% static  'map/json/bddis.json' %}", function(error, bangladesh) {
+  var geoPathGenerator = d3.geoPath().projection(projection);
+
+  svg.append("path")
+      .attr("d", geoPathGenerator(bangladesh))
+      .attr("class", "feature");
+});
+
+</script>
+{% endblock pageSpecificJavascript %}

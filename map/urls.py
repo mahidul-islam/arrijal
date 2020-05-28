@@ -9,4 +9,5 @@ urlpatterns = [
     path("bangladesh", views.bangladesh, name="bangladesh"),
     path("d3", views.d3, name="d3"),
     path("povertymap", views.povertymap, name="povertymap"),
+    path("bdgeojson", views.bdgeojson, name="bdgeojson"),
 ]
