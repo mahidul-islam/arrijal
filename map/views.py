@@ -37,3 +37,8 @@ def povertymap(request):
     template = loader.get_template('map/povertymap.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def markermap(request):
+    template = loader.get_template('map/markermap.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

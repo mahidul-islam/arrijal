@@ -1,4 +1,4 @@
-/* path {
+path {
   stroke: white;
   stroke-width: 0.25px;
   fill: #69b3a2;
@@ -21,7 +21,8 @@ div.tooltip {
   box-shadow: 0px 0px 2px 0px #a6a6a6;
   opacity: 0.9;
   position: absolute;
-} */
+}
+
 body {
   background: rgba(254,241,210, 0.3)
 }

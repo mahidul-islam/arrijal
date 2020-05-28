@@ -1,31 +1,38 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
-{% block css %}{% endblock css %}
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 {% endblock pageStyle %}
 
 {% block map %}
-
-<div class="hello">
-  Hello:
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="hello">
+        Hello:
+      </div>
+      <ul id = "list">
+         <li></li>
+         <li></li>
+      </ul>
+    </div>
+    <div class="col">
+      <svg width="500" height="200" fill="yellow">
+        <rect x = "100" y = "10" width = "300" height = "200" fill = "yellow"></rect>
+        <line x1 = "100" y1 = "100" x2 = "200" y2 = "200"
+         style = "stroke:rgb(155,0,0);stroke-width:2" />
+      </svg>
+    </div>
+  </div>
+  <div class="row">
+    <div class="svgcontainer"></div>
+  </div>
 </div>
-<ul id = "list">
-   <li><li>
-   <li></li>
-</ul>
-<svg width="500" height="200" fill="yellow">
-  <rect x = "100" y = "10" width = "300" height = "200" fill = "yellow"></rect>
-  <line x1 = "100" y1 = "100" x2 = "200" y2 = "200"
-   style = "stroke:rgb(155,0,0);stroke-width:2"/>
-</svg>
-<div class="svgcontainer"></div>
 
 
 {% endblock map %}
 
-{% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
 <script type="module">
   const message = d3.select("div.hello").html("Bye");
@@ -38,6 +45,7 @@
     .enter()
     .append("li")
     .text(function(d) {return d})
+    .attr("style", "color:red")
 
   var width = 300;
     var height = 300;
