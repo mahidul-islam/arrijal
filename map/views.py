@@ -42,3 +42,8 @@ def markermap(request):
     template = loader.get_template('map/markermap.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def mymarker(request):
+    template = loader.get_template('map/mymarker.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

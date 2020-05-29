@@ -39,7 +39,10 @@ d3.json("{% static  'map/json/bddis.json' %}", function(error, bangladesh) {
 
   svg.append("path")
       .attr("d", geoPathGenerator(bangladesh))
-      .attr("class", "feature");
+      .attr("class", "feature")
+      .attr("fill", "green")
+      .attr("stroke", "white")
+      .attr("stroke-width", "0.5px")
 });
 
 </script>

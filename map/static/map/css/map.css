@@ -1,8 +1,8 @@
-path {
+/* path {
   stroke: white;
   stroke-width: 0.25px;
   fill: #69b3a2;
-}
+} */
 
 path:hover {
   fill: red;

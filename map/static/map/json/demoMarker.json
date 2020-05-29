@@ -1,0 +1,16 @@
+[
+  {
+    "code":"ZNZ",
+    "city":"ZANZIBAR",
+    "country":"TANZANIA",
+    "lat":-6.13,
+    "lon":39.31
+  },
+  {
+    "code":"DHA",
+    "city":"DHAKA",
+    "country":"BANGLADESH",
+    "lat":23.777176,
+    "lon":90.399452
+  }
+]

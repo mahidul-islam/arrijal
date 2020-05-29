@@ -11,4 +11,5 @@ urlpatterns = [
     path("povertymap", views.povertymap, name="povertymap"),
     path("bdgeojson", views.bdgeojson, name="bdgeojson"),
     path("markermap", views.markermap, name="markermap"),
+    path("mymarker", views.mymarker, name="mymarker"),    
 ]
