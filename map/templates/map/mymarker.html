@@ -43,6 +43,18 @@ d3.queue()
 function ready(error, topo, marker) {
     if (error) throw error;
 
+    // const getSalesInformation =(d)=> {
+    //   //console.log(d.properties.NAME_3, count++);
+    //   const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
+    //   let selectedDistrict = salesData.filter(obj => {
+    //       return obj.name === districtName;
+    //     // console.log(selectedDistrict);
+    //   })
+    //   //console.log(selectedDistrict);
+    //   let outputString = `City: ${selectedDistrict[0].name}\nCity ID: ${selectedDistrict[0].id} \nExtreme Level: ${selectedDistrict[0].extreme} \nPoor Level: ${selectedDistrict[0].poor}`;
+    //   return outputString;
+    // }
+
     var g = svg.append("g")
     // Draw the map
     g.selectAll("path")
@@ -62,6 +74,10 @@ function ready(error, topo, marker) {
     			       .attr("r", 5)
     			       .style("fill", "red")
     			       .style("opacity", 0.6)
+                 .append('title')
+                 .text(function(d) {return d.eventInformation})
+
+  	// locations.append('title').text((d)=>getEventInformation(d));
 }
 
 

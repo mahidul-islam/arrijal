@@ -34,14 +34,16 @@ var path = d3.geoPath().projection(projection);
 var g = svg.append("g");
 
 // alternate data source with divisions https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json
-d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
+// d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
+d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
   console.log(bangladesh)
   // console.log(bangladesh.objects["bangladesh[1]"])
   var bangladesh = g.selectAll("path")
-				.data(topojson.feature(bangladesh, bangladesh.objects["bangladesh[1]"]).features)
+				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
 				.enter()
 				.append("path")
 				.attr("d", path)
+        .attr("fill", "green")
         .attr("stroke", "white")
         .attr("stroke-width", ".5px")
 });

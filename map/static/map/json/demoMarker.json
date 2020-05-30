@@ -3,6 +3,7 @@
     "code":"ZNZ",
     "city":"ZANZIBAR",
     "country":"TANZANIA",
+    "eventInformation":"This is the city i don't know",
     "lat":-6.13,
     "lon":39.31
   },
@@ -10,6 +11,7 @@
     "code":"DHA",
     "city":"DHAKA",
     "country":"BANGLADESH",
+    "eventInformation":"This is the capital city of Bangladesh",
     "lat":23.777176,
     "lon":90.399452
   }
