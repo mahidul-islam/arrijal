@@ -20,8 +20,7 @@
     <div class="col">
       <svg width="500" height="200" fill="yellow">
         <rect x = "100" y = "10" width = "300" height = "200" fill = "yellow"></rect>
-        <line x1 = "100" y1 = "100" x2 = "200" y2 = "200"
-         style = "stroke:rgb(155,0,0);stroke-width:2" />
+        <line x1 = "100" y1 = "100" x2 = "200" y2 = "200" style = "stroke:rgb(155,0,0);stroke-width:2" />
       </svg>
     </div>
   </div>
@@ -29,9 +28,6 @@
     <div class="col">
       <div class="svgcontainer"></div>
     </div>
-  </div>
-  <div class="row">
-    <div id="my_dataviz"></div>
   </div>
 </div>
 
@@ -63,40 +59,24 @@
     svg.append("circle")
       .attr("cx", 200)
       .attr("cy", 50)
-      .attr("r", 20)
+      .attr("r", 300)
       .attr("fill", "green");
     svg.append("rect")
       .attr("x", 20)
       .attr("y", 20)
       .attr("width", 100)
       .attr("height", 100)
-      .attr("fill", "yellow");
+      .attr("fill", "yellow")
+      .attr("transform", "translate(30, 30) rotate(45)")
 
-  var newsvg = d3.select("#my_dataviz")
-      .append("svg")
-        .attr("width", 400)
-        .attr("height", 400)
-
-    // Append a circle
-    newsvg.append("circle")
-      .attr("id", "circleBasicTooltip")
-      .attr("cx", 150)
-      .attr("cy", 200)
-      .attr("r", 40)
-      .attr("fill", "#69b3a2")
-
-    // create a tooltip
-    var tooltip = d3.select("#my_dataviz")
-      .append("div")
-        .style("position", "absolute")
-        .style("visibility", "hidden")
-        .text("I'm a circle!");
-
-    //
-    d3.select("#circleBasicTooltip")
-      .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-      .on("mousemove", function(){return tooltip.style("top", (event.pageY-800)+"px").style("left",(event.pageX-800)+"px");})
-      .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+    d3.select("body")
+      .transition()
+      .style("background-color", "gray")
+      .duration(5000)
+      .transition()
+      .delay(5000)
+      .style("background-color", "lightblue")
+      .duration(5000)
 
 </script>
 {% endblock pageSpecificJavascript %}

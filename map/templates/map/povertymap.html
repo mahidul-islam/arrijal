@@ -43,7 +43,7 @@ let count = 0;
 Promise.all([
   d3.json("{% static  'map/json/data.json' %}"),
   d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json'),
-	d3.json("{% static  'map/json/bddis.json' %}")
+	d3.json("{% static  'map/json/bddistopo.json' %}")
 ]).then(([salesData ,disTopoJsonData, newdata])=> {
       console.log(disTopoJsonData, newdata)
 			// Get Sales information on hover

@@ -33,7 +33,7 @@ var path = d3.geoPath().projection(projection);
 
 var g = svg.append("g");
 
-// alternate data source with divisions https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json
+// d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
 // d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
 d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
   console.log(bangladesh)
@@ -46,6 +46,41 @@ d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
         .attr("fill", "green")
         .attr("stroke", "white")
         .attr("stroke-width", ".5px")
+
+var popupData = [
+  {"code":"DHA", "city":"DHAKA", "country":"BANGLADESH", "lat":23.777176, "lon":90.399452}
+];
+
+var popupProjectedData = []
+for (let i=0;i<popupData.length;i++){
+  var x = projection([popupData[i].lon, popupData[i].lat])[0]
+  var y = projection([popupData[i].lon, popupData[i].lat])[1]
+  popupProjectedData.push({"x":x, "y":y})
+}
+svg.append("circle")
+.attr("cx", popupProjectedData[0].x)
+.attr("cy", popupProjectedData[0].y)
+.attr("r", 5)
+.attr("fill", "yellow")
+.append('title')
+.text("Hello")
+
+  function draw(d){
+    console.log(d)
+    var x = projection([d.lon, d.lat])[0]
+    var y = projection([d.lon, d.lat])[1]
+    console.log(x,y)
+    g.selectAll("circle")
+	       .data([{"x":x, "y":y}])
+	       .enter()
+	       .append("circle")
+	       .attr("cx", function(d) {return d.x})
+	       .attr("cy", function(d) {return d.y})
+	       .attr("r", 5)
+	       .style("fill", "red")
+	       .style("opacity", 0.6)
+  }
+  draw(popupData[0])
 });
 
 </script>

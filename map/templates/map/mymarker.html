@@ -77,6 +77,10 @@ function ready(error, topo, marker) {
                  .append('title')
                  .text(function(d) {return d.eventInformation})
 
+    for(let i=0;i<marker.length;i++){
+      console.log(projection([marker[i].lon, marker[i].lat]))
+    }
+
   	// locations.append('title').text((d)=>getEventInformation(d));
 }
 
