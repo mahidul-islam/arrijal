@@ -27,6 +27,21 @@ body {
   background: rgba(254,241,210, 0.3)
 }
 
+/* .svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+} */
+
 .base{
   position: absolute;
   top: 35%;

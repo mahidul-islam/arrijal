@@ -8,8 +8,20 @@
 
 <div class="base">
   <svg id="svg_map" width="960" height="600"></svg>
+
   <div class="container pt-3">
-    <h4>Map of Bangladesh</h4>
+    <div class="row">
+      <div class="col">
+        <h4>Map of Bangladesh</h4>
+      </div>
+      <div class="col">
+        <label for="mySlider"
+           style="display: inline-block; width: 240px; text-align: right">
+           Radius = <span id="nRadius-value"> 10 </span>
+        </label>
+        <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
+      </div>
+    </div>
   </div>
 </div>
 
@@ -19,7 +31,6 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
 
 <script type="module">
 
@@ -27,7 +38,7 @@ var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
-    height = +svg.attr("height");
+    height = +svg.attr("height")
 
 var path = d3.geoPath().projection(projection);
 
@@ -37,7 +48,6 @@ var g = svg.append("g");
 // d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
 d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
   console.log(bangladesh)
-  // console.log(bangladesh.objects["bangladesh[1]"])
   var bangladesh = g.selectAll("path")
 				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
 				.enter()
@@ -46,42 +56,62 @@ d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
         .attr("fill", "green")
         .attr("stroke", "white")
         .attr("stroke-width", ".5px")
+        .append("title")
+        .text(function(d) {return d.properties.NAME_2});
 
 var popupData = [
-  {"code":"DHA", "city":"DHAKA", "country":"BANGLADESH", "lat":23.777176, "lon":90.399452}
+  {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452}
 ];
 
-var popupProjectedData = []
-for (let i=0;i<popupData.length;i++){
-  var x = projection([popupData[i].lon, popupData[i].lat])[0]
-  var y = projection([popupData[i].lon, popupData[i].lat])[1]
-  popupProjectedData.push({"x":x, "y":y})
+function rewrite(EventText){
+  svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
+  svg.append('text').attr('y',40).attr('x',90).text(EventText)
 }
-svg.append("circle")
-.attr("cx", popupProjectedData[0].x)
-.attr("cy", popupProjectedData[0].y)
-.attr("r", 5)
-.attr("fill", "yellow")
-.append('title')
-.text("Hello")
 
   function draw(d){
-    console.log(d)
+    console.log("draw called")
+    rewrite(d.event)
+    var text = d.popupText
     var x = projection([d.lon, d.lat])[0]
     var y = projection([d.lon, d.lat])[1]
     console.log(x,y)
     g.selectAll("circle")
-	       .data([{"x":x, "y":y}])
+	       .data([{"x":x, "y":y, "text":text}])
 	       .enter()
 	       .append("circle")
 	       .attr("cx", function(d) {return d.x})
 	       .attr("cy", function(d) {return d.y})
-	       .attr("r", 5)
+	       .attr("r", 10)
 	       .style("fill", "red")
 	       .style("opacity", 0.6)
+         .append('title')
+         .text(function(d) {return d.text})
   }
-  draw(popupData[0])
-});
+
+  function remove(){
+    console.log("remove called")
+    g.selectAll("circle")
+         .remove()
+  }
+
+  for(let i=0;i<popupData.length;i++){
+    remove()
+    draw(popupData[i])
+  }
+
+  // Listen to the slider
+  d3.select("#mySlider").on("change", function(d){
+    d3.select("#nRadius-value").text(this.value)
+    g.selectAll("circle")
+      .attr('r',this.value)
+  })
+})
+
+//zoom and pan functionality
+var zoom = d3.zoom()
+            .scaleExtent([0.8, 2])
+            .on("zoom",function() { g.attr("transform", d3.event.transform)})
+svg.call(zoom)
 
 </script>
 {% endblock pageSpecificJavascript %}
