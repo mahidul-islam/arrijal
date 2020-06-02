@@ -10,6 +10,12 @@
   <svg id="svg_map" width="960" height="600"></svg>
 
   <div class="container pt-3">
+    <div class="row flex space-around my-5">
+      <a href="#" id="prevStep" class="button round">&laquo;</a>
+      <a href="#" id="prev" class="button round">&#8249;</a>
+      <a href="#" id="next" class="button round">&#8250;</a>
+      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    </div>
     <div class="row">
       <div class="col">
         <h4>Map of Bangladesh</h4>
@@ -54,16 +60,19 @@ d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
 				.append("path")
 				.attr("d", path)
         .attr("fill", "green")
+        .attr("hover", "red")
         .attr("stroke", "white")
         .attr("stroke-width", ".5px")
         .append("title")
         .text(function(d) {return d.properties.NAME_2});
 
 var popupData = [
-  {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452}
+  {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
+  {"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
 ];
 
 function rewrite(EventText){
+  svg.selectAll("text").remove()
   svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
   svg.append('text').attr('y',40).attr('x',90).text(EventText)
 }
@@ -94,10 +103,51 @@ function rewrite(EventText){
          .remove()
   }
 
-  for(let i=0;i<popupData.length;i++){
+  let count = 0;
+
+  function newEvent(n){
     remove()
-    draw(popupData[i])
+    draw(popupData[n])
   }
+  newEvent(count)
+
+  // Listen to the next button
+  d3.select("#next").on("click", function(){
+    if(count+1 < popupData.length){
+      count++
+      newEvent(count)
+    }
+    else{
+      console.log("The last Event")
+    }
+  })
+
+  // Listen to the prev button
+  d3.select("#prev").on("click", function(){
+    if(count != 0){
+      count--
+      newEvent(count)
+    }
+    else{
+      console.log("The first Event")
+    }
+  })
+
+  // Listen to the prevStep button
+  d3.select("#prevStep").on("click", function(){
+    if(count != 0){
+      count--
+      newEvent(count)
+    }
+  })
+
+  // Listen to the nextStep button
+  d3.select("#nextStep").on("click", function(){
+    if(count+1 < popupData.length){
+      count++
+      newEvent(count)
+    }
+  })
 
   // Listen to the slider
   d3.select("#mySlider").on("change", function(d){
