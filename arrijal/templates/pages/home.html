@@ -134,6 +134,8 @@
 	</section>
   	<!-- categories section end -->
 
-  <section class="spad"></section>
+  {% if user.is_authenticated %}
+    <section class="spad"></section>
+  {% endif %}
 
 {% endblock later %}

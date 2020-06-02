@@ -1,0 +1,167 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+
+  <div class="container pt-3">
+    <div class="row flex space-around my-5">
+      <a href="#" id="prevStep" class="button round">&laquo;</a>
+      <a href="#" id="prev" class="button round">&#8249;</a>
+      <a href="#" id="next" class="button round">&#8250;</a>
+      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4>Map of Bangladesh</h4>
+      </div>
+      <div class="col">
+        <label for="mySlider"
+           style="display: inline-block; width: 240px; text-align: right">
+           Radius = <span id="nRadius-value"> 10 </span>
+        </label>
+        <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+
+<script type="module">
+
+var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height")
+
+var path = d3.geoPath().projection(projection);
+
+var g = svg.append("g");
+
+// d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
+// d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
+d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
+  console.log(bangladesh)
+  var bangladesh = g.selectAll("path")
+				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+        .attr("fill", "green")
+        .attr("hover", "red")
+        .attr("stroke", "white")
+        .attr("stroke-width", ".5px")
+        .append("title")
+        .text(function(d) {return d.properties.NAME_2});
+
+var popupData = [
+  {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
+  {"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
+];
+
+function rewrite(EventText){
+  svg.selectAll("text").remove()
+  svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
+  svg.append('text').attr('y',40).attr('x',90).text(EventText)
+}
+
+  function draw(d){
+    console.log("draw called")
+    rewrite(d.event)
+    var text = d.popupText
+    var x = projection([d.lon, d.lat])[0]
+    var y = projection([d.lon, d.lat])[1]
+    console.log(x,y)
+    g.selectAll("circle")
+	       .data([{"x":x, "y":y, "text":text}])
+	       .enter()
+	       .append("circle")
+	       .attr("cx", function(d) {return d.x})
+	       .attr("cy", function(d) {return d.y})
+	       .attr("r", 10)
+	       .style("fill", "red")
+	       .style("opacity", 0.6)
+         .append('title')
+         .text(function(d) {return d.text})
+  }
+
+  function remove(){
+    console.log("remove called")
+    g.selectAll("circle")
+         .remove()
+  }
+
+  let count = 0;
+
+  function newEvent(n){
+    remove()
+    draw(popupData[n])
+  }
+  newEvent(count)
+
+  // Listen to the next button
+  d3.select("#next").on("click", function(){
+    if(count+1 < popupData.length){
+      count++
+      newEvent(count)
+    }
+    else{
+      console.log("The last Event")
+    }
+  })
+
+  // Listen to the prev button
+  d3.select("#prev").on("click", function(){
+    if(count != 0){
+      count--
+      newEvent(count)
+    }
+    else{
+      console.log("The first Event")
+    }
+  })
+
+  // Listen to the prevStep button
+  d3.select("#prevStep").on("click", function(){
+    if(count != 0){
+      count--
+      newEvent(count)
+    }
+  })
+
+  // Listen to the nextStep button
+  d3.select("#nextStep").on("click", function(){
+    if(count+1 < popupData.length){
+      count++
+      newEvent(count)
+    }
+  })
+
+  // Listen to the slider
+  d3.select("#mySlider").on("change", function(d){
+    d3.select("#nRadius-value").text(this.value)
+    g.selectAll("circle")
+      .attr('r',this.value)
+  })
+})
+
+//zoom and pan functionality
+var zoom = d3.zoom()
+            .scaleExtent([0.8, 2])
+            .on("zoom",function() { g.attr("transform", d3.event.transform)})
+svg.call(zoom)
+
+</script>
+{% endblock pageSpecificJavascript %}

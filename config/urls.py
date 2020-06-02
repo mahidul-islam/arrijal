@@ -28,6 +28,7 @@ urlpatterns = [
     path("blog/", include("blog.urls", namespace="blog")),
     path("newsletter/", include("newsletters.urls", namespace="newsletter")),
     path("chemistry/", include("chemistry.urls", namespace="chemistry")),
+    path("isnad/", include("isnad.urls", namespace="isnad")),
     path('comment/', include('comment.urls')),
     path("map/", include("map.urls", namespace="map")),
     path("edumap/", include("edumap.urls", namespace="edumap")),
