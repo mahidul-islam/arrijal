@@ -44,14 +44,6 @@
       "isAromatic":true
     },
     {
-      "name":"C6H5OC6H5",
-      "url":"{% static 'chemistry/model/pdb/C6H5OC6H5.pdb' %}",
-      "positionX":-1200,
-      "positionY":-300,
-      "positionZ":0,
-      "isAromatic":true
-    },
-    {
       "name":"C6h5no2",
       "url":"{% static 'chemistry/model/pdb/C6h5no2.pdb' %}",
       "positionX":-1800,
@@ -128,14 +120,6 @@
       "url":"{% static 'chemistry/model/pdb/c6h5ch2cl.pdb' %}",
       "positionX":2000,
       "positionY":-700,
-      "positionZ":0,
-      "isAromatic":true
-    },
-    {
-      "name":"c6h5ccl3",
-      "url":"{% static 'chemistry/model/pdb/c6h5ccl3.pdb' %}",
-      "positionX":-2000,
-      "positionY":-800,
       "positionZ":0,
       "isAromatic":true
     },

@@ -1,120 +1,96 @@
 {% extends 'abstractbase.html' %}
 {% load static %}
-{% block css %}{% endblock css %}
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
 {% endblock pageStyle %}
 
 {% block map %}
-<div class="">
-  <content id="content"></content>
 
-  <div class="row align-items-center">
-    <div class="col-sm-2"><p id="value-simple"></p></div>
-    <div class="col-sm"><div id="slider-simple"></div></div>
-  </div>
-
-  <div class="row align-items-center">
-    <div class="col-sm-2"><p id="value-time"></p></div>
-    <div class="col-sm"><div id="slider-time"></div></div>
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>World Map Showing data with Legend</h4>
   </div>
 </div>
 
-
 {% endblock map %}
 
-{% block javascript %}{% endblock javascript %}
 {% block pageSpecificJavascript %}
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/topojson.v2.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<!-- <script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script> -->
 
 <script type="module">
+// The svg
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
 
-var width = window.innerWidth, height = (window.innerWidth/13)*5;
-var projection = d3.geoNaturalEarth1()
-  .rotate([10,0])
-  // .center([0, 0])
-  .center([-width/35, width/70]) //long and lat starting position
-  .scale(width/7.2) //starting zoom position
-
-var svg = d3.select("#content").append("svg")
-                          .attr("width", width)
-                          .attr("height", height)
-                          .attr("preserveAspectRatio", "xMinYMin meet")
-                          // .attr("viewBox", "0 0 width height")
-
+// Map and projection
+var projection = d3.geoNaturalEarth()
+    .scale(width / 2 / Math.PI)
+    .translate([width / 2, height / 2])
 var path = d3.geoPath()
-  .projection(projection);
+    .projection(projection);
 
-var g = svg.append("g");
+// Data and color scale
+var data = d3.map();
+var colorScheme = d3.schemeReds[6];
+colorScheme.unshift("#eee")
+var colorScale = d3.scaleThreshold()
+    .domain([1, 6, 11, 26, 101, 1001])
+    .range(colorScheme);
 
-d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json', function(error, topology) {
-  console.log(topology)
-  var world = g.selectAll("path")
-				.data(topojson.feature(topology, topology.objects.countries).features)
-				.enter()
-				.append("path")
-				.attr("d", path)
-});
+// Legend
+var g = svg.append("g")
+    .attr("class", "legendThreshold")
+    .attr("transform", "translate(20,20)");
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", 0)
+    .attr("y", -6)
+    .text("Students");
+var labels = ['0', '1-5', '6-10', '11-25', '26-100', '101-1000', '> 1000'];
+var legend = d3.legendColor()
+    .labels(function (d) { return labels[d.i]; })
+    .shapePadding(4)
+    .scale(colorScale);
+svg.select(".legendThreshold")
+    .call(legend);
 
-  // simple
-  var data = [0, 0.005, 0.01, 0.015, 0.02, 0.025];
+// Load external data and boot
+d3.queue()
+    .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
+    .defer(d3.csv, "{% static 'map/csv/data.csv' %}", function(d) { data.set(d.code, +d.total); })
+    .await(ready);
 
-  var sliderSimple = d3
-    .sliderBottom()
-    .min(d3.min(data))
-    .max(d3.max(data))
-    .width(width - (width/20))
-    .tickFormat(d3.format('.2%'))
-    .ticks(5)
-    .default(0.015)
-    .on('onchange', val => {
-      d3.select('p#value-simple').text(d3.format('.2%')(val));
-    });
+function ready(error, topo) {
+    if (error) throw error;
 
-  var gSimple = d3
-    .select('div#slider-simple')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
+    // Draw the map
+    svg.append("g")
+        .attr("class", "countries")
+        .selectAll("path")
+        .data(topo.features)
+        .enter()
+        .append("path")
+        .attr("fill", function (d){
+          // Pull data for this country
+          d.total = data.get(d.id) || 0;
+          // Set the color
+          return colorScale(d.total);
+        })
+        .attr("d", path);
+}
 
-  gSimple.call(sliderSimple);
-
-  d3.select('p#value-simple').text(d3.format('.2%')(sliderSimple.value()))
-
-  // Time
-  var dataTime = d3.range(0, 10).map(function(d) {
-    return new Date(1995 + d, 10, 3);
-  });
-
-  var sliderTime = d3
-    .sliderBottom()
-    .min(d3.min(dataTime))
-    .max(d3.max(dataTime))
-    .step(1000 * 60 * 60 * 24 * 365)
-    .width(width - (width/20))
-    .tickFormat(d3.timeFormat('%Y'))
-    .tickValues(dataTime)
-    .default(new Date(1998, 10, 3))
-    .on('onchange', val => {
-      d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
-    });
-
-  var gTime = d3
-    .select('div#slider-time')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
-
-  gTime.call(sliderTime);
-
-  d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
-
+svg.call(d3.zoom().on('zoom',()=>{
+	console.log("Zooming..")
+  g.attr('transform', d3.event.transform)
+}))
 
 </script>
 {% endblock pageSpecificJavascript %}
