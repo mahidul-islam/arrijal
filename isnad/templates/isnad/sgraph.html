@@ -11,6 +11,10 @@ var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_rawis.json' %}").then(function(graph) {
 
+var start=200,end=300;
+  graph.nodes = graph.nodes.filter( function(d){return  start <=d.id  && d.id <= end } )
+  graph.links = graph.links.filter( function(d){return start <= d.source && d.source <= end && start <= d.target && d.target <= end } )
+
 var label = {
     'nodes': [],
     'links': []
