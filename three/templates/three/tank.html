@@ -95,7 +95,8 @@ function main() {
   //   });
   // }
 
-  const objects = [];
+  const objects = []
+  const objects2 = []
 
   const radius = 1;
   const widthSegments = 10;
@@ -136,20 +137,59 @@ function main() {
   cmesh.castShadow = true
   co.add(cmesh)
 
+  // Material Example
+  const boxWidth = 1;
+  const boxHeight = 1;
+  const boxDepth = 1;
+  const geometry1 = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
+  const cubes = [];
 
+  const loader = new THREE.TextureLoader();
+
+  const material1 =  new THREE.MeshBasicMaterial({
+    map: loader.load('{% static "images/profile500.png" %}')
+  });
+
+  const materials = [
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-1.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-2.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-3.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-4.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-5.jpg' %}")}),
+    new THREE.MeshBasicMaterial({map: loader.load("{% static 'three/img/flower-6.jpg' %}")}),
+  ];
+
+  const cube = new THREE.Mesh(geometry1, material1);
+  cube.scale.set(5,5,5);
+  cube.position.set(-5, 5, 12);
+  cube.castShadow = true;
+  scene.add(cube);
+  cubes.push(cube);
+
+  const cube2 = new THREE.Mesh(geometry1, materials);
+  cube2.scale.set(5,5,5)
+  cube2.position.set(10, 5, -5)
+  cube2.castShadow = true
+  scene.add(cube2)
+  cubes.push(cube2)
+  objects2.push(cube, cube2)
+  // Material example end
+
+  // ground example
   const groundGeometry = new THREE.PlaneBufferGeometry(50, 50);
   const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
   groundMesh.rotation.x = Math.PI * -.5;
   groundMesh.receiveShadow = true;
   scene.add(groundMesh);
+  // ground example end
 
-  const carWidth = 4;
+  const carWidth = 3;
   const carHeight = 1;
   const carLength = 8;
 
-  const carWidth2 = 4;
+  const carWidth2 = 3;
   const carHeight2 = 1;
   const carLength2 = 6;
 
@@ -181,8 +221,6 @@ function main() {
   const wheelPositions = [
     [-carWidth / 2 - wheelThickness / 2, -carHeight / 2,  carLength / 3],
     [ carWidth / 2 + wheelThickness / 2, -carHeight / 2,  carLength / 3],
-    // [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, 0],
-    // [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, 0],
     [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
     [ carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3],
   ];
@@ -196,20 +234,6 @@ function main() {
     return mesh;
   });
 
-  // const targetGeometry = new THREE.SphereBufferGeometry(.5, 6, 3);
-  // const targetMaterial = new THREE.MeshPhongMaterial({color: 0x00FF00, flatShading: true});
-  // const targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
-  // const targetOrbit = new THREE.Object3D();
-  // const targetElevation = new THREE.Object3D();
-  // const targetBob = new THREE.Object3D();
-  // targetMesh.castShadow = true;
-  // scene.add(targetOrbit);
-  // targetOrbit.add(targetElevation);
-  // targetElevation.position.z = carLength * 2;
-  // targetElevation.position.y = 8;
-  // targetElevation.add(targetBob);
-  // targetBob.add(targetMesh);
-
   // Create a sine-like wave
   const curve = new THREE.SplineCurve( [
     new THREE.Vector2( 18, 18 ),
@@ -217,17 +241,9 @@ function main() {
     new THREE.Vector2( -15, -15 ),
     new THREE.Vector2( -15, 18 ),
     new THREE.Vector2( 18, 18 ),
-    // new THREE.Vector2( 5, 10 ),
-    // new THREE.Vector2( -5, 10 ),
-    // new THREE.Vector2( -10, -10 ),
-    // new THREE.Vector2( -15, -8 ),
-    // new THREE.Vector2( -10, 0 ),
   ] );
 
   const points = curve.getPoints( 50 );
-  // for(let i=0;i<50;i++){
-  //   console.log(points[i])
-  // }
   const geometry = new THREE.BufferGeometry().setFromPoints( points );
   const material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
   const splineObject = new THREE.Line( geometry, material );
@@ -294,6 +310,11 @@ function main() {
 
     objects.forEach((obj) => {
       obj.rotation.y = time;
+    });
+
+    objects2.forEach((obj) => {
+      obj.rotation.y = time
+      obj.rotation.x = time;
     });
 
     // move tank
