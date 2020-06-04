@@ -13,7 +13,7 @@ urlpatterns = [
     path("tank", views.tank, name="experimentTank"),
     path("guiexample", views.guiexample, name="guiexample"),
     path("base", views.base, name="base"),
-    path("texture", views.texture, name="texture"),
+    path("periodic", views.periodic, name="periodic"),
     path("alcohol", views.alcohol, name="alcohol"),
     path("molecules", views.molecules, name="molecules"),
 ]
