@@ -46,30 +46,60 @@ var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height")
 
+// svg.on("click", clicked)
+
 var path = d3.geoPath().projection(projection);
 
+var g2 = svg.append("g");
 var g = svg.append("g");
 
 // d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
 // d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
-d3.json("{% static  'map/json/bddistopo.json' %}", function(error, bangladesh) {
-  console.log(bangladesh)
-  var bangladesh = g.selectAll("path")
+// Promise.all([
+//   d3.json("{% static  'map/json/bddistopo.json' %}")
+// ]).then(([bangladesh])=> {
+d3.queue()
+    .defer(d3.json, "{% static  'map/json/bddistopo.json' %}")
+    .defer(d3.json, "{% static  'map/json/IND1topo20%.json' %}")
+    .await(ready);
+
+function ready(error, bangladesh, india) {
+  console.log(bangladesh, india)
+
+  g.selectAll("path")
 				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
 				.enter()
 				.append("path")
 				.attr("d", path)
         .attr("fill", "green")
-        .attr("hover", "red")
         .attr("stroke", "white")
         .attr("stroke-width", ".5px")
+        .on("click", clicked)
         .append("title")
         .text(function(d) {return d.properties.NAME_2});
+
+  // g2.selectAll("path")
+  //       .data(topojson.feature(india, india.objects.gadm36_IND_1).features)
+  //       .enter()
+  //       .append("path")
+  //       .attr("d", path)
+  //       .attr("fill", "lightblue")
+  //       .attr("stroke", "white")
+  //       .attr("stroke-width", ".5px")
+  //       .append("title")
+  //       .text("Hello");
+
+  newEvent(count)
+}
 
 var popupData = [
   {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
   {"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
 ];
+
+// var EventData = d3.json("{% static  'map/json/EventData.json' %}")
+// console.log(popupData, EventData)
+
 
 function rewrite(EventText){
   svg.selectAll("text").remove()
@@ -109,7 +139,7 @@ function rewrite(EventText){
     remove()
     draw(popupData[n])
   }
-  newEvent(count)
+
 
   // Listen to the next button
   d3.select("#next").on("click", function(){
@@ -155,12 +185,34 @@ function rewrite(EventText){
     g.selectAll("circle")
       .attr('r',this.value)
   })
-})
+
+var centered
+
+function clicked(d){
+  console.log("District", d.properties.NAME_2, "data", d)
+  var x = 0,
+      y = 0;
+
+  // If the click was on the centered state or the background, re-center.
+  // Otherwise, center the clicked-on state.
+  if (!d || centered === d) {
+    centered = null;
+  } else {
+    var centroid = path.centroid(d);
+    x = width / 2 - centroid[0];
+    y = height / 2 - centroid[1];
+    centered = d;
+  }
+  // Transition to the new transform.
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + x + "," + y + ")");
+}
 
 //zoom and pan functionality
 var zoom = d3.zoom()
             .scaleExtent([0.8, 2])
-            .on("zoom",function() { g.attr("transform", d3.event.transform)})
+            .on("zoom",function() {g.attr("transform", d3.event.transform)})
 svg.call(zoom)
 
 </script>
