@@ -48,8 +48,8 @@ def guiexample(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
-def texture(request):
-    template = loader.get_template('three/texture.html')
+def periodic(request):
+    template = loader.get_template('three/periodic.html')
     context = {}
     return HttpResponse(template.render(context, request))
 

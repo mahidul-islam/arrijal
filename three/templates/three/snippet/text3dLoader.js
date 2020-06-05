@@ -1,4 +1,4 @@
-function textLoader(base, text = 'Not Provided', color = 'red'){
+function text3dLoader(base, text = 'Not Provided', color = 'red'){
   const loader = new THREE.FontLoader();
   // promisify font loading
   function loadFont(url) {
