@@ -57,6 +57,6 @@ function init(position, toAdd) {
   	};
   }
   function movecamera( url ) {
-  	camera.position.z = position.position.z;
+    controls.reset()
   }
 }
