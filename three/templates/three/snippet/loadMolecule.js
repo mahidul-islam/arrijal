@@ -1,4 +1,4 @@
-function loadMolecule( url, root, text='not given', showLabel ) {
+function loadMolecule( url, root, text='Not Given', showLabel ) {
   while ( root.children.length > 0 ) {
 
     var object = root.children[ 0 ];
@@ -11,10 +11,16 @@ function loadMolecule( url, root, text='not given', showLabel ) {
   root.add(stationaryObject)
   objects.push(rotatingObject)
 
-  {% include 'three/snippet/textLoader.js' %}
+  // include function text3dloader
+  {% include 'three/snippet/text3dLoader.js' %}
+  // stationaryObject.position.y = 150
+  // stationaryObject.position.x = -150
+  // text3dLoader(stationaryObject, text)
+
+  {% include 'three/snippet/text2dLoader.js' %}
   stationaryObject.position.y = 150
   stationaryObject.position.x = -150
-  textLoader(stationaryObject, text)
+  text2dLoader(stationaryObject, text)
 
   loader.load( url, function ( pdb ) {
 
@@ -60,8 +66,8 @@ function loadMolecule( url, root, text='not given', showLabel ) {
 
       var object = new THREE.Mesh( sphereGeometry, material );
       object.position.copy( position );
-      object.position.multiplyScalar( 75 );
-      object.scale.multiplyScalar( 25 );
+      object.position.multiplyScalar( 50 );
+      object.scale.multiplyScalar( 20 );
       rotatingObject.add( object );
 
       // console.log(showLabel)
@@ -90,8 +96,8 @@ function loadMolecule( url, root, text='not given', showLabel ) {
       end.y = positions.getY( i + 1 );
       end.z = positions.getZ( i + 1 );
 
-      start.multiplyScalar( 75 );
-      end.multiplyScalar( 75 );
+      start.multiplyScalar( 50 );
+      end.multiplyScalar( 50 );
 
       var object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( 0xffffff ) );
       object.position.copy( start );

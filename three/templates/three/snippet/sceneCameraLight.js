@@ -1,7 +1,7 @@
 function init(position, toAdd) {
 
   scene = new THREE.Scene();
-  scene.background = new THREE.Color( 0xD4AF37 );
+  scene.background = new THREE.Color( 0xFEF1D2 );
 
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
   camera.position.z = position.position.z;
@@ -57,6 +57,6 @@ function init(position, toAdd) {
   	};
   }
   function movecamera( url ) {
-  	camera.position.z = position.position.z;
+    controls.reset()
   }
 }

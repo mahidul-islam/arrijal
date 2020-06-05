@@ -8,14 +8,25 @@ body {
 	overscroll-behavior: none;
 }
 
-#back-button {
+/* #back-button {
+  text-decoration: none;
   position: absolute;
   left: 1em;
   top: 1em;
   background: rgba(0,0,0,.8);
   padding: .5em;
   color: white;
-  /* font-family: monospace; */
+  font-family: monospace;
+} */
+
+#back-button a{
+  text-decoration: none;
+  /* position: absolute; */
+  left: 1em;
+  top: 1em;
+  background: rgba(0,0,0,.8);
+  color: white;
+  font-family: monospace;
 }
 
 a {
