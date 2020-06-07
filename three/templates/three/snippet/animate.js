@@ -19,6 +19,14 @@ function animate() {
       obj.rotation.x = time;
       obj.rotation.y = time * 0.7;
     });
+    objects2.forEach((obj) => {
+      obj.rotation.y = time;
+      obj.rotation.z = time * 0.7;
+    });
+    objects3.forEach((obj) => {
+      obj.rotation.x = time;
+      obj.rotation.z = time * 0.7;
+    });
   }
 
   render();
