@@ -1,19 +1,51 @@
 {% load static %}
 <html>
 <body>
+  <form>
+      Select your favorite fruit:
+      <select id="mySelect">
+        <option>Sahih Bukhari</option>
+        <option>Sahih Muslim</option>
+        <option>Sunan Abi Da'ud</option>
+        <option>Jami' al-Tirmidhi</option>
+        <option>Sunan an-Nasa'i</option>
+        <option>Sunan Ibn Majah</option>
+
+      </select>
+      <input type="text" id="myText" value="1">
+      <br><br>
+      <input type="button" onclick="getOption()" value="Click Me!">
+  </form>
+
+  <p id="demo"></p>
+  <p id="demo1"></p>
 <svg id='viz'></svg>
 </body>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
+
+//.................
+function getOption() {
+  //document.getElementById("viz").contentWindow.location.reload(true);
+  //svg.selectAll("*").remove();
+  var obj = document.getElementById("mySelect");
+  document.getElementById("demo").innerHTML =
+  obj.options[obj.selectedIndex].text;
+
+  var x = document.getElementById("myText").value;
+  document.getElementById("demo1").innerHTML =x;
+
+//}
+//....
 var width = 1400;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
   var start=0,end=20;
-    graph.nodes = graph.nodes.filter( function(d, i){return  start <=d.id  && d.id <= end } )
-    graph.links = graph.links.filter( function(d, i){return start <= d.source && d.source <= end && start <= d.target && d.target <= end } )
+   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==obj.options[obj.selectedIndex].text ) || (d.level==3 && d.book==obj.options[obj.selectedIndex].text) || (d.level== 5 && d.list.includes(x))   } )
+   graph.links = graph.links.filter( function(d){return  d.book==obj.options[obj.selectedIndex].text && d.hadith_no==x  } )
 
 
 var label = {
@@ -217,5 +249,7 @@ function dragended(d) {
 }
 
 }); // d3.json
+
+} //
 </script>
 </html>
