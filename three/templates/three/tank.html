@@ -94,19 +94,21 @@ function main() {
   co.position.x = 5
   const am = new THREE.MeshPhongMaterial({color: 0x898900})
   const amesh = new THREE.Mesh(sphereGeometry, am)
-  // amesh.position.set(0,5,0)
+  amesh.name = "sun"
   amesh.scale.set(5,5,5)
   amesh.castShadow = true
   ao.add(amesh)
 
   const bm = new THREE.MeshPhongMaterial({color: 0x890000})
   const bmesh = new THREE.Mesh(sphereGeometry, bm)
+  bmesh.name = "earth"
   bmesh.scale.set(1,1,1)
   bmesh.castShadow = true
   bo.add(bmesh)
 
   const cm = new THREE.MeshPhongMaterial({color: 0x008988})
   const cmesh = new THREE.Mesh(sphereGeometry, cm)
+  cmesh.name = "moon"
   cmesh.scale.set(.5,.5,.5)
   cmesh.castShadow = true
   co.add(cmesh)
@@ -135,6 +137,7 @@ function main() {
   ];
 
   const cube = new THREE.Mesh(geometry1, material1);
+  cube.name = "logoCube"
   cube.scale.set(5,5,5);
   cube.position.set(-5, 5, 12);
   cube.castShadow = true;
@@ -142,6 +145,7 @@ function main() {
   cubes.push(cube);
 
   const cube2 = new THREE.Mesh(geometry1, materials);
+  cube2.name = "flowerCube"
   cube2.scale.set(5,5,5)
   cube2.position.set(10, 5, -5)
   cube2.castShadow = true
@@ -154,6 +158,7 @@ function main() {
   const groundGeometry = new THREE.PlaneBufferGeometry(50, 50);
   const groundMaterial = new THREE.MeshPhongMaterial({color: 0xCC8866});
   const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
+  groundMesh.name = "ground"
   groundMesh.rotation.x = Math.PI * -.5;
   groundMesh.receiveShadow = true;
   scene.add(groundMesh);
@@ -180,6 +185,8 @@ function main() {
   bodyMesh.castShadow = true;
   bodyMesh.receiveShadow = true;
   bodyMesh2.receiveShadow = true;
+  bodyMesh.name = "lowerCar"
+  bodyMesh2.name = "upperCar"
   tank.add(bodyMesh);
   tank.add(bodyMesh2);
 
@@ -201,6 +208,7 @@ function main() {
   const wheelMeshes = wheelPositions.map((position) => {
     const mesh = new THREE.Mesh(wheelGeometry, wheelMaterial);
     mesh.position.set(...position);
+    mesh.name = "wheel"
     mesh.rotation.z = Math.PI * .5;
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -221,10 +229,23 @@ function main() {
   const geometry = new THREE.BufferGeometry().setFromPoints( points );
   const material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
   const splineObject = new THREE.Line( geometry, material );
+  splineObject.name = "redCurve"
   splineObject.rotation.x = Math.PI * .5;
   splineObject.position.y = 0.05;
   scene.add(splineObject);
 
+  const objectList = []
+  function traverseAdd(root){
+    if(root.type == "Mesh" || root.type == "Line"){
+      objectList.push(root)
+    }
+    if(root.children.length){
+      for(let i=0;i<root.children.length;i++){
+        traverseAdd(root.children[i])
+      }
+    }
+  }
+  traverseAdd(scene)
 
   function getCanvasRelativePosition(event) {
     const rect = canvas.getBoundingClientRect();
@@ -242,14 +263,18 @@ function main() {
     pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
 
     const raycaster = new THREE.Raycaster();
-
     raycaster.setFromCamera(pickPosition, camera);
+
     // get the list of objects the ray intersected
-    const intersectedObjects = raycaster.intersectObjects(scene.children);
+    const intersectedObjects = raycaster.intersectObjects(objectList);
 
     if (intersectedObjects.length) {
       // pick the first object. It's the closest one
-      console.log(intersectedObjects[0])
+      if(intersectedObjects[0].object.name){
+        console.log(intersectedObjects[0].object.name)
+      } else {
+        console.log(intersectedObjects[0].object)
+      }
     }
   }
 
