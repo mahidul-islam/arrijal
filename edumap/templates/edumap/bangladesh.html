@@ -7,7 +7,8 @@
 {% block map %}
 
 <div class="base">
-  <svg id="svg_map" width="960" height="600"></svg>
+  <svg id="svg_map" width="960" height="600" viewBox="0 0 960 600"
+  preserveAspectRatio="xMidYMid meet"></svg>
 
   <div class="container pt-3">
     <div class="row flex space-around my-5">
@@ -39,6 +40,7 @@
 <script src="https://d3js.org/topojson.v2.min.js"></script>
 
 <script type="module">
+
 
 var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
 
@@ -178,7 +180,20 @@ function draw(d){
        .style("fill", "red")
        .style("opacity", 0.6)
        .append('title')
-       .text(function(d) {return d.text})
+       .text(function(d) {return d.text});
+
+       g6.append("defs")
+
+          .append("pattern")
+          .attr("id", "bg")
+          .attr("width", 1)
+                .attr("height", 1)
+                .attr("patternUnits", "objectBoundingBox")
+               .append("image")
+
+            		.attr("width", 15)
+                .attr("height", 20)
+           .attr("xlink:href", "http://lorempixel.com/200/200/")
 
        g6.selectAll("rect")
        .data([{"x":x-2, "y":y-35, "text":text}])
@@ -187,8 +202,10 @@ function draw(d){
        .attr("x", function(d) {return d.x})
        .attr("y", function(d) {return d.y})
        .attr("width",5)
-       .attr("height",10)
+       .attr("height",20)
+       .attr("fill", "url(#bg)")
        .text(function(d) {return d.text});
+
        var x1=x;
        var y1=y-10;
 var y2=y1-15;
@@ -302,6 +319,6 @@ var zoom= d3.zoom()
             .on("zoom",function() { g6.attr("transform", d3.event.transform)})
 svg.call(zoom)
 
-
 </script>
+
 {% endblock pageSpecificJavascript %}
