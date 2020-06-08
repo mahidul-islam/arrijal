@@ -88,12 +88,16 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     for (let i=0;i<mol.molecules.length;i++){
       const url = mol.molecules[i].url
       const name = mol.molecules[i].name
+      let html = "none"
+      if(mol.molecules[i].html){
+        html = mol.molecules[i].html
+      }
       const place = new THREE.Group()
       root.add(place)
       place.position.x = mol.molecules[i].positionX
       place.position.y = mol.molecules[i].positionY
       place.position.z = mol.molecules[i].positionZ
-      loadMolecule( url, place, name, showLabel )
+      loadMolecule( url, place, name, showLabel, html )
     }
 
     // draw the links between molecules
@@ -133,6 +137,56 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   // animation all
   {% include 'three/snippet/animate.js' %}
 
+  const objectList = []
+  function traverseAdd(root){
+    // if(root.type == "Mesh" || root.type == "Line"){
+    //   objectList.push(root)
+    // }
+    if(root.name){
+      // console.log(root.name)
+      objectList.push(root)
+    }
+    if(root.children.length){
+      for(let i=0;i<root.children.length;i++){
+        traverseAdd(root.children[i])
+      }
+    }
+  }
+  traverseAdd(scene)
+  // console.log(objectList.length)
+
+  function getCanvasRelativePosition(event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: (event.clientX - rect.left) * canvas.width  / rect.width,
+      y: (event.clientY - rect.top ) * canvas.height / rect.height,
+    };
+  }
+
+  function setPickPosition(event) {
+    const pos = getCanvasRelativePosition(event);
+    const pickPosition = {x: 0, y: 0};
+
+    pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
+    pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(pickPosition, camera);
+
+    // get the list of objects the ray intersected
+    const intersectedObjects = raycaster.intersectObjects(objectList);
+
+    if (intersectedObjects.length) {
+      // pick the first object. It's the closest one
+      if(intersectedObjects[0].object.name){
+        console.log(intersectedObjects[0].object.name)
+      } else {
+        console.log(intersectedObjects[0].object)
+      }
+    }
+  }
+
+  document.addEventListener('mousedown', setPickPosition);
 
 </script>
 {% endblock pageSpecificJavascript %}

@@ -5,6 +5,7 @@
   [
     {
       "name":"C6H6",
+      "html":"C<sub>6</sub>H<sub>6</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h6.pdb' %}",
       "positionX":0,
       "positionY":300,
@@ -13,6 +14,7 @@
     },
     {
       "name":"c6h5ch3",
+      "html":"C<sub>6</sub>H<sub>5</sub>CH<sub>3</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5ch3.pdb' %}",
       "positionX":-400,
       "positionY":-200,
@@ -21,6 +23,7 @@
     },
     {
       "name":"c6h5ch2oh",
+      "html":"C<sub>6</sub>H<sub>5</sub>CH<sub>2</sub>OH",
       "url":"{% static 'chemistry/model/pdb/c6h5ch2oh.pdb' %}",
       "positionX":400,
       "positionY":-200,
@@ -29,6 +32,7 @@
     },
     {
       "name":"C6H5NaCl",
+      "html":"C<sub>6</sub>H<sub>5</sub>NaCl",
       "url":"{% static 'chemistry/model/pdb/C6H5NaCl.pdb' %}",
       "positionX":-500,
       "positionY":-800,
@@ -37,6 +41,7 @@
     },
     {
       "name":"c6h5ona",
+      "html":"C<sub>6</sub>H<sub>5</sub>ONa",
       "url":"{% static 'chemistry/model/pdb/c6h5ona.pdb' %}",
       "positionX":-700,
       "positionY":400,
@@ -45,6 +50,7 @@
     },
     {
       "name":"C6h5no2",
+      "html":"C<sub>6</sub>H<sub>5</sub>NO<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/C6h5no2.pdb' %}",
       "positionX":-1800,
       "positionY":300,
@@ -53,6 +59,7 @@
     },
     {
       "name":"c6h5nh2",
+      "html":"C<sub>6</sub>H<sub>5</sub>NH<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5nh2.pdb' %}",
       "positionX":-1000,
       "positionY":1000,
@@ -61,6 +68,7 @@
     },
     {
       "name":"c6h5cooh",
+      "html":"C<sub>6</sub>H<sub>5</sub>COOH",
       "url":"{% static 'chemistry/model/pdb/c6h5cooh.pdb' %}",
       "positionX":0,
       "positionY":1000,
@@ -69,6 +77,7 @@
     },
     {
       "name":"c6h5cn",
+      "html":"C<sub>6</sub>H<sub>5</sub>CN",
       "url":"{% static 'chemistry/model/pdb/c6h5cn.pdb' %}",
       "positionX":700,
       "positionY":1000,
@@ -77,6 +86,7 @@
     },
     {
       "name":"c6h5F",
+      "html":"C<sub>6</sub>H<sub>5</sub>F",
       "url":"{% static 'chemistry/model/pdb/c6h5F.pdb' %}",
       "positionX":1400,
       "positionY":1000,
@@ -85,6 +95,7 @@
     },
     {
       "name":"c6h5l",
+      "html":"C<sub>6</sub>H<sub>5I",
       "url":"{% static 'chemistry/model/pdb/c6h5l.pdb' %}",
       "positionX":800,
       "positionY":400,
@@ -93,6 +104,7 @@
     },
     {
       "name":"c6h5coona",
+      "html":"C<sub>6</sub>H<sub>5</sub>COONa",
       "url":"{% static 'chemistry/model/pdb/c6h5coona.pdb' %}",
       "positionX":1000,
       "positionY":-700,
@@ -101,6 +113,7 @@
     },
     {
       "name":"c6h5Cl",
+      "html":"C<sub>6</sub>H<sub>5</sub>Cl",
       "url":"{% static 'chemistry/model/pdb/c6h5Cl.pdb' %}",
       "positionX":1500,
       "positionY":-100,
@@ -109,6 +122,7 @@
     },
     {
       "name":"c6h5cho",
+      "html":"C<sub>6</sub>H<sub>5</sub>CHO",
       "url":"{% static 'chemistry/model/pdb/c6h5cho.pdb' %}",
       "positionX":2000,
       "positionY":500,
@@ -117,6 +131,7 @@
     },
     {
       "name":"c6h5ch2cl",
+      "html":"C<sub>6</sub>H<sub>5</sub>CH<sub>2</sub>Cl",
       "url":"{% static 'chemistry/model/pdb/c6h5ch2cl.pdb' %}",
       "positionX":2000,
       "positionY":-700,
@@ -125,6 +140,7 @@
     },
     {
       "name":"tnt",
+      "html":"Tri Nitro Toluene",
       "url":"{% static 'chemistry/model/pdb/tnt.pdb' %}",
       "positionX":-1800,
       "positionY":1000,
@@ -133,6 +149,7 @@
     },
     {
       "name":"c6h5n2cl",
+      "html":"C<sub>6</sub>H<sub>5</sub>N<sub>2</sub>Cl",
       "url":"{% static 'chemistry/model/pdb/c6h5n2cl.pdb' %}",
       "positionX":-1200,
       "positionY":-1000,
@@ -141,6 +158,7 @@
     },
     {
       "name":"c6h5c6h5",
+      "html":"C<sub>6</sub>H<sub>5</sub>C<sub>6</sub>H<sub>5</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5c6h5.pdb' %}",
       "positionX":2800,
       "positionY":1000,
@@ -149,6 +167,7 @@
     },
     {
       "name":"c6h4o2",
+      "html":"C<sub>6</sub>H<sub>4</sub>O<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h4o2.pdb' %}",
       "positionX":2800,
       "positionY":200,
@@ -157,6 +176,7 @@
     },
     {
       "name":"c6h5chcl2",
+      "html":"C<sub>6</sub>H<sub>5</sub>CHCl<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5chcl2.pdb' %}",
       "positionX":-2800,
       "positionY":1000,
@@ -165,6 +185,7 @@
     },
     {
       "name":"c6h4ch3no2",
+      "html":"C<sub>6</sub>H<sub>4</sub>CH<sub>3</sub>NO<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h4ch3no2.pdb' %}",
       "positionX":-2800,
       "positionY":200,
@@ -173,6 +194,7 @@
     },
     {
       "name":"c6h5coch3",
+      "html":"C<sub>6</sub>H<sub>5</sub>COCH<sub>3</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5coch3.pdb' %}",
       "positionX":-2800,
       "positionY":-600,
@@ -181,6 +203,7 @@
     },
     {
       "name":"c6h5oh",
+      "html":"C<sub>6</sub>H<sub>5</sub>OH",
       "url":"{% static 'chemistry/model/pdb/c6h5oh.pdb' %}",
       "positionX":2800,
       "positionY":-600,
@@ -189,6 +212,7 @@
     },
     {
       "name":"c6h5no2no2ch3",
+      "html":"C<sub>6</sub>H<sub>3</sub>NO<sub>2</sub>NO<sub>2</sub>CH<sub>3</sub>",
       "url":"{% static 'chemistry/model/pdb/c6h5no2no2ch3.pdb' %}",
       "positionX":300,
       "positionY":-800,
