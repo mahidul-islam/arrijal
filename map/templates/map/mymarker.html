@@ -36,7 +36,7 @@ var path = d3.geoPath()
     .projection(projection);
 
 d3.queue()
-    .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
+    .defer(d3.json, "https://enjalot.github.io/wwsd/data/world/world-110m.geojson")
     .defer(d3.json, "{% static 'map/json/demoMarker.json' %}")
     .await(ready);
 

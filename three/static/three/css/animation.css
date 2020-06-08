@@ -84,9 +84,14 @@ button:active {
   color: #000000;
   background-color: rgba(0,255,255,1);
 }
-
 .label {
+	color: #000;
+	font-family: sans-serif;
+  font-size: 20px;
+	padding: 2px;
+}
+/* .label {
   text-shadow: -1px 1px 1px rgb(0,0,0);
   margin-left: 25px;
   font-size: 20px;
-}
+} */

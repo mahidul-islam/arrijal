@@ -1,4 +1,4 @@
-function loadMolecule( url, root, text='Not Given', showLabel ) {
+function loadMolecule( url, root, text='Not Given', showLabel, html ) {
   while ( root.children.length > 0 ) {
 
     var object = root.children[ 0 ];
@@ -9,7 +9,15 @@ function loadMolecule( url, root, text='Not Given', showLabel ) {
   const stationaryObject = new THREE.Object3D()
   root.add(rotatingObject)
   root.add(stationaryObject)
-  objects.push(rotatingObject)
+  const num = Math.floor(Math.random() * 3);
+  // console.log(num)
+  if(num == 0){
+    objects.push(rotatingObject)
+  }else if (num == 1) {
+    objects2.push(rotatingObject)
+  }else{
+    objects3.push(rotatingObject)
+  }
 
   // include function text3dloader
   {% include 'three/snippet/text3dLoader.js' %}
@@ -20,7 +28,7 @@ function loadMolecule( url, root, text='Not Given', showLabel ) {
   {% include 'three/snippet/text2dLoader.js' %}
   stationaryObject.position.y = 150
   stationaryObject.position.x = -150
-  text2dLoader(stationaryObject, text)
+  text2dLoader(stationaryObject, text, html)
 
   loader.load( url, function ( pdb ) {
 

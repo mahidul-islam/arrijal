@@ -1,4 +1,4 @@
-function text3dLoader(base, text = 'Not Provided', color = 'red'){
+function text3dLoader(base, text = 'Not Provided', color = 'red', size = 40){
   const loader = new THREE.FontLoader();
   // promisify font loading
   function loadFont(url) {
@@ -10,11 +10,11 @@ function text3dLoader(base, text = 'Not Provided', color = 'red'){
       const font = await loadFont('https://threejsfundamentals.org/threejs/resources/threejs/fonts/helvetiker_regular.typeface.json');
       const geometry = new THREE.TextBufferGeometry(text, {
       font: font,
-      size:  40,
+      size:  size,
       height:  10,
       curveSegments: 11,
       bevelEnabled: false,
-      bevelThickness: 0.24,
+      bevelThickness: 0.34,
       bevelSize: 0.48,
       bevelSegments: 8,
     });
