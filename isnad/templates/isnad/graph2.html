@@ -2,7 +2,7 @@
 <html>
 <body>
   <form>
-      Select your favorite fruit:
+      Select Hadith:
       <select id="mySelect">
         <option>Sahih Bukhari</option>
         <option>Sahih Muslim</option>
@@ -17,8 +17,6 @@
       <input type="button" onclick="getOption()" value="Click Me!">
   </form>
 
-  <p id="demo"></p>
-  <p id="demo1"></p>
 <svg id='viz'></svg>
 </body>
 
@@ -30,11 +28,9 @@ function getOption() {
   //document.getElementById("viz").contentWindow.location.reload(true);
   //svg.selectAll("*").remove();
   var obj = document.getElementById("mySelect");
-  document.getElementById("demo").innerHTML =
-  obj.options[obj.selectedIndex].text;
+  var book= obj.options[obj.selectedIndex].text;
 
   var x = document.getElementById("myText").value;
-  document.getElementById("demo1").innerHTML =x;
 
 //}
 //....
@@ -44,8 +40,8 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
   var start=0,end=20;
-   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==obj.options[obj.selectedIndex].text ) || (d.level==3 && d.book==obj.options[obj.selectedIndex].text) || (d.level== 5 && d.list.includes(x))   } )
-   graph.links = graph.links.filter( function(d){return  d.book==obj.options[obj.selectedIndex].text && d.hadith_no==x  } )
+   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level== 5 && d.list.includes(x))   } )
+   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x && d.level!=4  } )
 
 
 var label = {

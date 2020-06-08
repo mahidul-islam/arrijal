@@ -158,7 +158,8 @@ def iload(request):
                 'source': chapter ,
                 'target': index,
                 'hadith_no':a['hadith_no'].strip(),
-                'book':a['source'].strip()
+                'book':a['source'].strip(),
+                'level':4
             })
 
     for index,c in enumerate(cdata['info']):
