@@ -22,12 +22,9 @@
 {% block pageSpecificJavascript %}
 <script type="module">
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
-import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
-import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
 import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
 import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
 import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
-
 
   var camera, scene, renderer, labelRenderer;
   var controls
@@ -47,6 +44,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   initialCameraPosition.position.z = 3000
 
   init(initialCameraPosition, menu);
+
 
   const startStopRotationButton = document.createElement( 'button' );
   startStopRotationButton.innerHTML = "Start/Stop rotating";
@@ -73,57 +71,22 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   // root for the whole scenegraph
   const root = new THREE.Group();
+  const headerTextPlace = new THREE.Group();
   scene.add( root );
+  root.add( headerTextPlace )
+  headerTextPlace.position.x = -2000
+  headerTextPlace.position.y = 1700
+  text3dLoader(headerTextPlace, "Aromatic Chart For Class 11-12", "red", 200)
 
   // load the molecules from json
-
-  drawAllMolsAndLinks();
-
-  function drawAllMolsAndLinks() {
-
-    const text = {% include "three/snippet/aromaticMolecules.json" %}
-
-    // draw the molecules
-    const mol = JSON.parse(JSON.stringify(text))
-    for (let i=0;i<mol.molecules.length;i++){
-      const url = mol.molecules[i].url
-      const name = mol.molecules[i].name
-      let html = "none"
-      if(mol.molecules[i].html){
-        html = mol.molecules[i].html
-      }
-      const place = new THREE.Group()
-      root.add(place)
-      place.position.x = mol.molecules[i].positionX
-      place.position.y = mol.molecules[i].positionY
-      place.position.z = mol.molecules[i].positionZ
-      loadMolecule( url, place, name, showLabel, html )
-    }
-
-    // draw the links between molecules
-    for (let i=0;i<mol.links.length;i++){
-      const fromMol = mol.links[i].from
-      const toMol = mol.links[i].to
-      const placeFrom = new THREE.Group()
-      const placeTo = new THREE.Group()
-
-      for (let i=0;i<mol.molecules.length;i++){
-        if(mol.molecules[i].name == fromMol){
-          placeFrom.position.x = mol.molecules[i].positionX
-          placeFrom.position.y = mol.molecules[i].positionY
-          placeFrom.position.z = mol.molecules[i].positionZ
-        }
-        if(mol.molecules[i].name == toMol){
-          placeTo.position.x = mol.molecules[i].positionX
-          placeTo.position.y = mol.molecules[i].positionY
-          placeTo.position.z = mol.molecules[i].positionZ
-        }
-      }
-      drawArrow(placeFrom, placeTo)
-    }
-  }
+  const text = {% include "three/snippet/aromaticMolecules.json" %}
+  const mol = JSON.parse(JSON.stringify(text))
+  drawAllMolsAndLinks(mol, root);
 
   animate();
+
+  // init function
+  {% include 'three/snippet/drawAllMolsAndLinks.js' %}
 
   // init function
   {% include 'three/snippet/sceneCameraLight.js' %}
@@ -136,6 +99,10 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
 
   // animation all
   {% include 'three/snippet/animate.js' %}
+
+  // text3dLoader
+  {% include 'three/snippet/text3dLoader.js' %}
+
 
   const objectList = []
   function traverseAdd(root){
@@ -153,7 +120,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     }
   }
   traverseAdd(scene)
-  // console.log(objectList.length)
+  console.log(objectList.length)
 
   function getCanvasRelativePosition(event) {
     const rect = canvas.getBoundingClientRect();
@@ -173,6 +140,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
     const raycaster = new THREE.Raycaster();
     raycaster.setFromCamera(pickPosition, camera);
 
+    console.log("Working")
     // get the list of objects the ray intersected
     const intersectedObjects = raycaster.intersectObjects(objectList);
 

@@ -52,8 +52,8 @@
       "name":"C6h5no2",
       "html":"C<sub>6</sub>H<sub>5</sub>NO<sub>2</sub>",
       "url":"{% static 'chemistry/model/pdb/C6h5no2.pdb' %}",
-      "positionX":-1800,
-      "positionY":300,
+      "positionX":-1200,
+      "positionY":-1000,
       "positionZ":0,
       "isAromatic":true
     },
@@ -95,7 +95,7 @@
     },
     {
       "name":"c6h5l",
-      "html":"C<sub>6</sub>H<sub>5I",
+      "html":"C<sub>6</sub>H<sub>5</sub>I",
       "url":"{% static 'chemistry/model/pdb/c6h5l.pdb' %}",
       "positionX":800,
       "positionY":400,
@@ -151,8 +151,8 @@
       "name":"c6h5n2cl",
       "html":"C<sub>6</sub>H<sub>5</sub>N<sub>2</sub>Cl",
       "url":"{% static 'chemistry/model/pdb/c6h5n2cl.pdb' %}",
-      "positionX":-1200,
-      "positionY":-1000,
+      "positionX":-1800,
+      "positionY":300,
       "positionZ":0,
       "isAromatic":true
     },
