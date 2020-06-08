@@ -40,8 +40,8 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
   var start=0,end=20;
-   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level==3 && d.book==book) || (d.level== 5 && d.list.includes(x))   } )
-   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x  } )
+   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level== 5 && d.list.includes(x))   } )
+   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x && d.level!=4  } )
 
 
 var label = {
