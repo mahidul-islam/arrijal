@@ -1,17 +1,31 @@
 {% load static %}
 <html>
 <body>
+  <form>
+      Scholar id range:
+      <input type="text" id="start" value="1">
+      <input type="text" id="end" value="50">
+      <br><br>
+      <input type="button" onclick="getOption()" value="Click Me!">
+  </form>
 <svg id='viz'></svg>
 </body>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
+//.................
+function getOption() {
+
+  var start = document.getElementById("start").value;
+  var end = document.getElementById("end").value;
+//}
+//....
 var width = 1400;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_rawis.json' %}").then(function(graph) {
 
-var start=200,end=300;
+//var start=200,end=300;
   graph.nodes = graph.nodes.filter( function(d){return  start <=d.id  && d.id <= end } )
   graph.links = graph.links.filter( function(d){return start <= d.source && d.source <= end && start <= d.target && d.target <= end } )
 
@@ -217,5 +231,6 @@ function dragended(d) {
 }
 
 }); // d3.json
+} //
 </script>
 </html>

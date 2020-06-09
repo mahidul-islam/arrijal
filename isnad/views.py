@@ -67,13 +67,13 @@ def sload(request):
                 'name':a['name'],
                 'group':a['grade']
             })
-    for l in ldata['links']:
+    for index,l in enumerate(ldata['links']):
         for t in l['target']:
             if not (str(t)) == "NA":
-                if start <= t <= end and start <= l['source'] <= end :
+                if start <= t <= end and start <= l['source'] <= end:
                     wdata['links'].append({
                         'source': l['source'],
-                        'target': t
+                        'target': t,
                     })
     with open('isnad/static/isnad/datasets/some_rawis.json', 'w') as outfile:
         json.dump(wdata, outfile)
