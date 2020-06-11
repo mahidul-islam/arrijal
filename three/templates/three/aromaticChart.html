@@ -29,6 +29,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   let rotatate = false // if the rotatable object will rotate
   var state = []
   var arrows = []
+  let secondButtonOn = false
 
   // objects will be stored here to rotate later in animate
   const objects = [];
@@ -302,21 +303,28 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   }
 
   function onlyRelatives(group){
-    let stateNo = 0
-    for(let i=0;i<state.length;i++){
-      if(state[i].name == group.name){
-        stateNo = i
-      }
+    if(secondButtonOn == true){
+      secondButtonOn = false
+      restoreAllMolsAndLinks(mols, root)
     }
+    else{
+      secondButtonOn = true
+      let stateNo = 0
+      for(let i=0;i<state.length;i++){
+        if(state[i].name == group.name){
+          stateNo = i
+        }
+      }
 
-    console.log("second button clicked", stateNo)
+      console.log("second button clicked", stateNo)
 
-    for(let i=0;i<mols.molecules.length;i++){
-      if(!contains(state[i].linked, group.name)) {
-        found = 0
-        findGroup(scene, state[i].name)
-        if(found.name != group.name){
-          removeGroup(found)
+      for(let i=0;i<mols.molecules.length;i++){
+        if(!contains(state[i].linked, group.name)) {
+          found = 0
+          findGroup(scene, state[i].name)
+          if(found.name != group.name){
+            removeGroup(found)
+          }
         }
       }
     }
