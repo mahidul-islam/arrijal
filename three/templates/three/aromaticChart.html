@@ -81,7 +81,7 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
   const text = {% include "three/snippet/aromaticMolecules.json" %}
   const mols = JSON.parse(JSON.stringify(text))
   for(let i=0;i<mols.molecules.length;i++){
-    const mol = {"name":"", "state":false}
+    const mol = {"name":"", "state":false, "linked":[]}
     mol.name = mols.molecules[i].name
     state.push(mol)
   }
@@ -125,6 +125,15 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
           placeTo.position.x = mol.molecules[i].positionX
           placeTo.position.y = mol.molecules[i].positionY
           placeTo.position.z = mol.molecules[i].positionZ
+        }
+      }
+      for(let i=0;i<state.length;i++){
+        // console.log(state[i])
+        if(state[i].name == fromMol){
+          state[i].linked.push(toMol)
+        }
+        if(state[i].name == toMol){
+          state[i].linked.push(fromMol)
         }
       }
       const arrow = drawArrow(placeFrom, placeTo)
@@ -228,6 +237,12 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
         if(serial == 1){
           removeGroup(found)
         }
+        if(serial == 2){
+          onlyRelatives(found)
+        }
+        if(serial == 3){
+          details(found)
+        }
         found = 0
       } else {
         console.log(intersectedObjects[0].object)
@@ -270,12 +285,45 @@ import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resourc
       }
     }
 
-    console.log(group.name, objectList.length)
     for(let i=0;i<arrows.length;i++){
       if(arrows[i].arrow.to == group.name || arrows[i].arrow.from == group.name){
         arrows[i].arrow.visible = false
       }
     }
+  }
+
+  function contains(array, name){
+    for(let i=0;i<array.length;i++){
+      if(array[i] == name){
+        return true
+      }
+    }
+    return false
+  }
+
+  function onlyRelatives(group){
+    let stateNo = 0
+    for(let i=0;i<state.length;i++){
+      if(state[i].name == group.name){
+        stateNo = i
+      }
+    }
+
+    console.log("second button clicked", stateNo)
+
+    for(let i=0;i<mols.molecules.length;i++){
+      if(!contains(state[i].linked, group.name)) {
+        found = 0
+        findGroup(scene, state[i].name)
+        if(found.name != group.name){
+          removeGroup(found)
+        }
+      }
+    }
+  }
+
+  function details(group){
+    console.log("coming soon...")
   }
 
 </script>
