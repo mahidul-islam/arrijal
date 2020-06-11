@@ -47,7 +47,7 @@ function init(position, toAdd) {
 
 
   const cbutton = document.createElement( 'button' );
-  cbutton.innerHTML = "Back To Initial Camera";
+  cbutton.innerHTML = "Initial Camera";
   toAdd.appendChild( cbutton );
   cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
 

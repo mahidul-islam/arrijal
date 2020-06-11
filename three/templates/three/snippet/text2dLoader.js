@@ -4,13 +4,12 @@ function text2dLoader(base, text2 = 'Not Provided', html , color = 'red') {
 	text.textContent = text2;
 	text.style.marginTop = '-1em';
 	var Label = new CSS2DObject( text );
+  Label.name = "2dlabel"
   if(html != "none"){
     Label.element.innerHTML = html
-    // Label.element.style.
   }
 	Label.position.set( 0, 0, 0 );
 	base.add( Label );
-  console.log(Label.element)
 
   const box = new THREE.BoxGeometry(80, 80, 10);
   const material1 = new THREE.MeshPhongMaterial({color: 0x002B3B})
@@ -29,6 +28,9 @@ function text2dLoader(base, text2 = 'Not Provided', html , color = 'red') {
   button2.position.y = -130
   button3.position.y = -230
   button1.name = text2 + '1'
+  button1.serial = '1'
   button2.name = text2 + '2'
+  button2.serial = '2'
   button3.name = text2 + '3'
+  button3.serial = '3'
 }

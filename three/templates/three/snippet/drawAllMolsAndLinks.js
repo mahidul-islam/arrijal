@@ -13,6 +13,8 @@ function drawAllMolsAndLinks(mol, root) {
     place.position.y = mol.molecules[i].positionY
     place.position.z = mol.molecules[i].positionZ
     loadMolecule( url, place, name, showLabel, html )
+    if(i == 0)
+      testmol = place.clone() 
   }
 
   // draw the links between molecules
