@@ -3,6 +3,9 @@
 {% block css %}{% endblock css %}
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'edumap/css/map.css' %}"/>
+
+
+
 {% endblock pageStyle %}
 
 {% block map %}
@@ -19,8 +22,8 @@
 var width = window.innerWidth, height = window.innerHeight;
 var projection = d3.geoNaturalEarth1()
   .rotate([10,0])
-  .center([-width/35, width/70]) //long and lat starting position
-  .scale(width/7.2) //starting zoom position
+   .center([width/13.2, width/52.8]) //long and lat starting position
+  .scale(width/0.25) //starting zoom position
 
 var svg = d3.select("body").append("svg")
                           .attr("width", width)
@@ -35,14 +38,19 @@ console.log(window.innerHeight)
 
 var g = svg.append("g");
 
-d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json', function(error, topology) {
+d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, topology) {
 
   var world = g.selectAll("path")
-				.data(topojson.feature(topology, topology.objects.countries).features)
-				.enter()
-				.append("path")
-				.attr("d", path)
+				.data(topojson.feature(topology, topology.objects.map).features)
+        .enter()
+        .append("path")
+        .attr("d", path);
+
+
+
 });
+
+
 
 // d3.json('https://unpkg.com/world-atlas@1.1.4/world/110m.json')
 //   .then(data => {
