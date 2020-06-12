@@ -1,0 +1,324 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'edumap/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <svg id="svg_map" width="960" height="600" viewBox="0 0 960 600"
+  preserveAspectRatio="xMidYMid meet"></svg>
+
+  <div class="container pt-3">
+    <div class="row flex space-around my-5">
+      <a href="#" id="prevStep" class="button round">&laquo;</a>
+      <a href="#" id="prev" class="button round">&#8249;</a>
+      <a href="#" id="next" class="button round">&#8250;</a>
+      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4>Map of Bangladesh</h4>
+      </div>
+      <div class="col">
+        <label for="mySlider"
+           style="display: inline-block; width: 240px; text-align: right">
+           Radius = <span id="nRadius-value"> 10 </span>
+        </label>
+        <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+
+<script type="module">
+
+
+var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height")
+
+var path = d3.geoPath().projection(projection);
+
+var g = svg.append("g");
+var g2=svg.append("g");
+var g3=svg.append("g");
+var g4=svg.append("g");
+var g5=svg.append("g");
+d3.queue()
+    .defer(d3.json, "{% static  'edumap/json/bddistopo.json' %}")
+    .defer(d3.json, "{% static  'edumap/json/gadm36_IND_1.json' %}")
+    .defer(d3.json, "{% static  'edumap/json/gadm36_MMR_1.json' %}")
+    .defer(d3.json, "{% static  'edumap/json/gadm36_BTN_1.json' %}")
+    .defer(d3.json, "{% static  'edumap/json/gadm36_NPL_1.json' %}")
+    .await(ready);
+
+function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
+  console.log(bangladesh, india)
+
+  g.selectAll("path")
+				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+        .attr("fill", "blue")
+        .attr("stroke", "white")
+        .attr("stroke-width", ".5px")
+        .on("click", clicked)
+        .append("title")
+        .text(function(d) {return d.properties.NAME_2});
+
+        g2.selectAll("path")
+      				.data(topojson.feature(india, india.objects.gadm36_IND_1).features)
+      				.enter()
+      				.append("path")
+      				.attr("d", path)
+              .attr("fill", "green")
+              .attr("hover", "red")
+              .attr("stroke", "white")
+              .attr("stroke-width", ".5px")
+              .on("click", clicked)
+              .append("title")
+              .text(function(d) {return d.properties.NAME_2});
+        g3.selectAll("path")
+                    .data(topojson.feature(myanmar, myanmar.objects.gadm36_MMR_1).features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .attr("fill", "yellow")
+                    .attr("hover", "red")
+                    .attr("stroke", "white")
+                    .attr("stroke-width", ".5px")
+                    .on("click", clicked)
+                    ;
+
+                    g4.selectAll("path")
+                         .data(topojson.feature(bhutan, bhutan.objects.gadm36_BTN_1).features)
+                         .enter()
+                         .append("path")
+                         .attr("d", path)
+                         .attr("fill", "pink")
+                         .attr("hover", "red")
+                         .attr("stroke", "white")
+                         .attr("stroke-width", ".5px")
+                         .on("click", clicked);
+                         g5.selectAll("path")
+                               .data(topojson.feature(nepal, nepal.objects.gadm36_NPL_1).features)
+                               .enter()
+                               .append("path")
+                               .attr("d", path)
+                               //       .attr("fill", "lightblue")
+                               .attr("fill", "blue")
+                               .attr("hover", "red")
+                               .attr("stroke", "white")
+                               .attr("stroke-width", ".5px")
+                               .on("click", clicked)
+
+                               .append("title")
+                               .text(function(d) {return d.properties.NAME_2});
+
+
+
+  // g2.selectAll("path")
+  //       .data(topojson.feature(india, india.objects.gadm36_IND_1).features)
+  //       .enter()
+  //       .append("path")
+  //       .attr("d", path)
+  //       .attr("stroke", "white")
+  //       .attr("stroke-width", ".5px")
+  //       .append("title")
+  //       .text("Hello");
+
+  newEvent(count)
+}
+
+// d3.json('https://raw.githubusercontent.com/techslides/D3-Maps/master/data/world/country/Bangladesh.topo.json', function(error, bangladesh) {
+// d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json', function(error, bangladesh) {
+
+var g6=svg.selectAll("g");
+var popupData = [
+{"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
+{"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
+];
+
+
+
+// var EventData = d3.json("{% static  'map/json/EventData.json' %}")
+// console.log(popupData, EventData)
+
+function rewrite(EventText){
+svg.selectAll("text").remove()
+svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
+svg.append('text').attr('y',40).attr('x',90).text(EventText)
+}
+
+function draw(d){
+  console.log("draw called")
+  rewrite(d.event)
+  var text = d.popupText
+  var x = projection([d.lon, d.lat])[0]
+  var y = projection([d.lon, d.lat])[1]
+  console.log(x,y)
+  g6.selectAll("circle")
+
+       .data([{"x":x, "y":y, "text":text}])
+       .enter()
+       .append("circle")
+       .attr("cx", function(d) {return d.x})
+       .attr("cy", function(d) {return d.y})
+       .attr("r", 10)
+       .style("fill", "red")
+       .style("opacity", 0.6)
+       .append('title')
+       .text(function(d) {return d.text});
+
+       g6.append("defs")
+
+          .append("pattern")
+          .attr("id", "bg")
+          .attr("width", 1)
+                .attr("height", 1)
+                .attr("patternUnits", "objectBoundingBox")
+               .append("image")
+
+            		.attr("width", 15)
+                .attr("height", 20)
+           .attr("xlink:href", "http://lorempixel.com/200/200/")
+
+       g6.selectAll("rect")
+       .data([{"x":x-2, "y":y-35, "text":text}])
+       .enter()
+       .append("rect")
+       .attr("x", function(d) {return d.x})
+       .attr("y", function(d) {return d.y})
+       .attr("width",5)
+       .attr("height",20)
+       .attr("fill", "url(#bg)")
+       .text(function(d) {return d.text});
+
+       var x1=x;
+       var y1=y-10;
+var y2=y1-15;
+var y3=y1-15;
+var x2=x+10;
+var x3=x1-10;
+console.log(x,y)
+console.log(x1,y1)
+console.log(x2,y2)
+var points=x1  + ' ' + y1 + ', ' + x2 + ' ' + y2 + ', ' + x3 + ' ' + y3 ;
+
+
+       g6.append("polyline")       // attach a polygon
+         .style("stroke", "black")  // colour the line
+         .style("fill", "black")     // remove any fill colour
+         .attr("points", points);
+
+}
+
+function remove(){
+  console.log("remove called")
+  g6.selectAll("circle")
+       .remove()
+       g6.selectAll("rect")
+       .remove()
+       g6.selectAll("polyline")
+       .remove()
+
+}
+
+let count = 0;
+
+function newEvent(n){
+  remove()
+  draw(popupData[n])
+}
+
+
+// Listen to the next button
+d3.select("#next").on("click", function(){
+  if(count+1 < popupData.length){
+    count++
+    newEvent(count)
+  }
+  else{
+    console.log("The last Event")
+  }
+})
+
+// Listen to the prev button
+d3.select("#prev").on("click", function(){
+  if(count != 0){
+    count--
+    newEvent(count)
+  }
+  else{
+    console.log("The first Event")
+  }
+})
+
+// Listen to the prevStep button
+d3.select("#prevStep").on("click", function(){
+  if(count != 0){
+    count--
+    newEvent(count)
+  }
+})
+
+// Listen to the nextStep button
+d3.select("#nextStep").on("click", function(){
+  if(count+1 < popupData.length){
+    count++
+    newEvent(count)
+  }
+})
+
+// Listen to the slider
+d3.select("#mySlider").on("change", function(d){
+  d3.select("#nRadius-value").text(this.value)
+  g6.selectAll("circle")
+    .attr('r',this.value)
+
+
+})
+
+var centered
+
+function clicked(d){
+  console.log("District", d.properties.NAME_2, "data", d)
+  var x = 0,
+      y = 0;
+
+  // If the click was on the centered state or the background, re-center.
+  // Otherwise, center the clicked-on state.
+  if (!d || centered === d) {
+    centered = null;
+  } else {
+    var centroid = path.centroid(d);
+    x = width / 2 - centroid[0];
+    y = height / 2 - centroid[1];
+    centered = d;
+  }
+  // Transition to the new transform.
+  g6.transition()
+      .duration(750)
+      .attr("transform", "translate(" + x + "," + y + ")");
+}
+//zoom and pan functionality
+var zoom= d3.zoom()
+            .scaleExtent([0.8, 2])
+            .on("zoom",function() { g6.attr("transform", d3.event.transform)})
+svg.call(zoom)
+
+</script>
+
+{% endblock pageSpecificJavascript %}

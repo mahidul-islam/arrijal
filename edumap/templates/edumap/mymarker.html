@@ -1,0 +1,89 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>Map of World with Marker</h4>
+  </div>
+</div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<script type="module">
+// The svg
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+// Map and projection
+var projection = d3.geoNaturalEarth()
+    .scale(width / 2 / Math.PI)
+    .translate([width / 2, height / 2])
+var path = d3.geoPath()
+    .projection(projection);
+
+d3.queue()
+    .defer(d3.json, "http://enjalot.github.io/wwsd/data/world/world-110m.geojson")
+    .defer(d3.json, "{% static 'map/json/demoMarker.json' %}")
+    .await(ready);
+
+function ready(error, topo, marker) {
+    if (error) throw error;
+
+    // const getSalesInformation =(d)=> {
+    //   //console.log(d.properties.NAME_3, count++);
+    //   const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
+    //   let selectedDistrict = salesData.filter(obj => {
+    //       return obj.name === districtName;
+    //     // console.log(selectedDistrict);
+    //   })
+    //   //console.log(selectedDistrict);
+    //   let outputString = `City: ${selectedDistrict[0].name}\nCity ID: ${selectedDistrict[0].id} \nExtreme Level: ${selectedDistrict[0].extreme} \nPoor Level: ${selectedDistrict[0].poor}`;
+    //   return outputString;
+    // }
+
+    var g = svg.append("g")
+    // Draw the map
+    g.selectAll("path")
+        .data(topo.features)
+        .enter()
+        .append("path")
+        .attr("fill", "#69b3a2")
+        .attr("stroke-width", "0.25px")
+        .attr("d", path)
+
+    var locations = g.selectAll("circle")
+    			       .data(marker)
+    			       .enter()
+    			       .append("circle")
+    			       .attr("cx", function(d) {return projection([d.lon, d.lat])[0];})
+    			       .attr("cy", function(d) {return projection([d.lon, d.lat])[1];})
+    			       .attr("r", 5)
+    			       .style("fill", "red")
+    			       .style("opacity", 0.6)
+                 .append('title')
+                 .text(function(d) {return d.eventInformation})
+
+    for(let i=0;i<marker.length;i++){
+      console.log(projection([marker[i].lon, marker[i].lat]))
+    }
+
+  	// locations.append('title').text((d)=>getEventInformation(d));
+}
+
+
+</script>
+{% endblock pageSpecificJavascript %}

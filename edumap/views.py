@@ -17,3 +17,8 @@ def firstMap(request):
     template = loader.get_template('edumap/firstMap.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def bangladesh(request):
+    template = loader.get_template('edumap/bangladesh.html')
+    context = {}
+    return HttpResponse(template.render(context, request))

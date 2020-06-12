@@ -1,10 +1,4 @@
-function loadMolecule( url, root, text='Not Given', showLabel, html ) {
-  while ( root.children.length > 0 ) {
-
-    var object = root.children[ 0 ];
-    object.parent.remove( object );
-  }
-
+function loadMolecule2( url, root, text='Not Given', html ) {
   root.name = text
 
   const rotatingObject = new THREE.Object3D()
@@ -20,12 +14,6 @@ function loadMolecule( url, root, text='Not Given', showLabel, html ) {
   }else{
     objects3.push(rotatingObject)
   }
-
-  // include function text3dloader
-  {% include 'three/snippet/text3dLoader.js' %}
-  // stationaryObject.position.y = 150
-  // stationaryObject.position.x = -150
-  // text3dLoader(stationaryObject, text)
 
   {% include 'three/snippet/text2dLoader.js' %}
   stationaryObject.position.y = 150
@@ -64,14 +52,6 @@ function loadMolecule( url, root, text='Not Given', showLabel, html ) {
       color.g = colors.getY( i );
       color.b = colors.getZ( i );
 
-      var atom = json.atoms[ i ];
-      var text = document.createElement( 'div' );
-      text.className = 'label';
-      text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
-      text.textContent = atom[ 4 ];
-
-      {% include 'three/snippet/changeColor.js' %}
-
       var material = new THREE.MeshPhongMaterial( { color: color } );
 
       var object = new THREE.Mesh( sphereGeometry, material );
@@ -79,16 +59,6 @@ function loadMolecule( url, root, text='Not Given', showLabel, html ) {
       object.position.multiplyScalar( 50 );
       object.scale.multiplyScalar( 20 );
       rotatingObject.add( object );
-
-      // console.log(showLabel)
-      if(showLabel){
-        var label = new CSS2DObject( text );
-        label.position.copy( object.position );
-        rotatingObject.add( label );
-      }
-      else{
-      }
-      // console.log(rotatingObject.children)
     }
 
     positions = geometryBonds.getAttribute( 'position' );
@@ -116,6 +86,5 @@ function loadMolecule( url, root, text='Not Given', showLabel, html ) {
       object.lookAt( end );
       rotatingObject.add( object );
     }
-    render();
   } );
 }
