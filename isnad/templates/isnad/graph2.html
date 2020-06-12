@@ -17,8 +17,9 @@
       <input type="button" onclick="getOption()" value="Click Me!">
   </form>
   <section id='chart'></section>
-
 <svg id='viz'></svg>
+<iframe id="myFrame" width="1300" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
+
 </body>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
@@ -67,6 +68,15 @@ setTimeout(function() {
 
   var x = document.getElementById("myText").value;
 
+var b=12;
+if (book =="Sahih Bukhari") b = 12;
+else if(book =="Sahih Muslim") b = 22;
+else if(book =="Sunan Abi Da'ud") b = 25;
+else if(book =="Jami' al-Tirmidhi") b = 19;
+else if(book =="Sunan an-Nasa'i") b = 6;
+else if(book =="Sunan Ibn Majah") b = 9;
+
+ document.getElementById("myFrame").src = "https://www.hadithbd.com/hadith/filter/?book="+b+"&hadith="+x;
 //}
 //....
 var width = 1400;
