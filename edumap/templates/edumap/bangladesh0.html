@@ -1,0 +1,40 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'edumap/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <svg viewBox="0 0 220 100 ">
+    <!-- Simple rectangle -->
+    <rect width="100" height="100" />
+
+    <!-- Rounded corner rectangle -->
+    <rect x="120" width="100" height="100" rx="15" />
+  </svg>
+
+  <div class="container pt-3">
+    <div class="row flex space-around my-5">
+      <a href="#" id="prevStep" class="button round">&laquo;</a>
+      <a href="#" id="prev" class="button round">&#8249;</a>
+      <a href="#" id="next" class="button round">&#8250;</a>
+      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4>Map of Bangladesh</h4>
+      </div>
+      <div class="col">
+        <label for="mySlider"
+           style="display: inline-block; width: 240px; text-align: right">
+           Radius = <span id="nRadius-value"> 10 </span>
+        </label>
+        <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock map %}
