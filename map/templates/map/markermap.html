@@ -140,7 +140,7 @@ function draw(d){
   var text = d.popupText
   var x = projection([d.lon, d.lat])[0]
   var y = projection([d.lon, d.lat])[1]
-  console.log(x,y)
+
   g6.selectAll("circle")
       .data([{"x":x, "y":y, "text":text}])
       .enter()
@@ -160,27 +160,26 @@ function draw(d){
       .attr("height", 1)
       .attr("patternUnits", "objectBoundingBox")
       .append("image")
-      .attr("width", 15)
-      .attr("height", 20)
-      .attr("xlink:href", "http://lorempixel.com/200/200/")
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("xlink:href", "{% static 'map/img/murgi.jpg' %}")
 
   g6.selectAll("rect")
-      .data([{"x":x-2, "y":y-35, "text":text}])
+      .data([{"x":x-50, "y":y-130}])
       .enter()
       .append("rect")
       .attr("x", function(d) {return d.x})
       .attr("y", function(d) {return d.y})
-      .attr("width",5)
-      .attr("height",20)
+      .attr("width",100)
+      .attr("height",100)
       .attr("fill", "url(#bg)")
-      .text(function(d) {return d.text});
 
   var x1=x;
-  var y1=y-10;
-  var y2=y1-15;
-  var y3=y1-15;
-  var x2=x+10;
-  var x3=x1-10;
+  var y1=y - 10;
+  var y2=y - 30;
+  var y3=y - 30;
+  var x2=x + 20;
+  var x3=x - 20;
   console.log(x,y)
   console.log(x1,y1)
   console.log(x2,y2)
