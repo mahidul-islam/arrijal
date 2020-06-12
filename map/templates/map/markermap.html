@@ -55,22 +55,23 @@ var g3 = svg.append("g");
 var g4 = svg.append("g");
 var g5 = svg.append("g");
 d3.queue()
-    .defer(d3.json, "{% static  'edumap/json/bddistopo.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_IND_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_MMR_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_BTN_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_NPL_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/bddistopo.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_IND_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_MMR_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_BTN_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_NPL_1.json' %}")
     .await(ready);
 
 function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
   console.log(bangladesh, india)
 
   g.selectAll("path")
+      .attr("id", "bangla")
       .data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#36C590")
+      .attr("fill", "#00A856")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -82,7 +83,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#02AFAE")
+      .attr("fill", "#FFD0D0")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -92,7 +93,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#FCF471")
+      .attr("fill", "#BCAED9")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -102,7 +103,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#A1D97D")
+      .attr("fill", "#E5CCE6")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -112,7 +113,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#FDC966")
+      .attr("fill", "#FFFBC3")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -189,6 +190,14 @@ function draw(d){
       .style("stroke", "black")  // colour the line
       .style("fill", "black")     // remove any fill colour
       .attr("points", points);
+
+  console.log(d)
+  var tx = width/2 - x
+  var ty = height/2 - y
+  console.log("This is: ", tx, ty)
+  g6.transition()
+      .duration(750)
+      .attr("transform", "translate(" + tx + "," + ty + ")");
 }
 
 function remove(){
@@ -254,7 +263,6 @@ d3.select("#mySlider").on("change", function(d){
 
 var centered
 function clicked(d){
-  console.log("District", d.properties.NAME_2, "data", d)
   var x = 0,
       y = 0;
 
@@ -272,13 +280,18 @@ function clicked(d){
   g6.transition()
       .duration(750)
       .attr("transform", "translate(" + x + "," + y + ")");
+
+  console.log("District", d.properties.NAME_2, "coordinate", x,y)
 }
 
 //zoom and pan functionality
 var zoom = d3.zoom()
             .scaleExtent([0.8, 2])
+            .translateExtent([[-200, -200],[1100, 800]])
             .on("zoom",function() { g6.attr("transform", d3.event.transform)})
 svg.call(zoom)
+
+console.log(svg._groups[0][0].children[0].children)
 
 </script>
 
