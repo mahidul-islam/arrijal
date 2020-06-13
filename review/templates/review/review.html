@@ -15,7 +15,9 @@
           <form class='form' id="login_form" method="post" action={% url 'review:review' %}  >
           {% csrf_token %}
           <button class="btn active" type="submit"  value="Submit0" name="Submit0">All reviews</button>
+          {% if user.is_authenticated %}
           <button class="btn" type="submit"  value="Submit1" name="Submit1">My reviews</button>
+          {% endif %}
           <button class="btn" type="submit"  value="Submit2" name="Submit2">Old reviews</button>
           <button class="btn" type="submit"  value="Submit3" name="Submit3">Big reviews</button>
           <button class="btn" type="submit"  value="Submit4" name="Submit4">Small reviews</button>
