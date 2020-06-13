@@ -19,7 +19,7 @@ def review(request):
         name= request.user.username
         u= User.objects.get(username=name)
     template = loader.get_template('review/review.html')
-    review = Review.objects.all()
+    review = Review.objects.all().order_by('-date')
     try:
         page = int(request.GET.get('page', '1'))
     except:
