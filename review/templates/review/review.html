@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block pageSpecificCSS %}
+{% endblock pageSpecificCSS %}
+
 {% block spadof %} {% endblock spadof %}
 
 {% block later %}
@@ -8,6 +11,16 @@
 <section class="blog-page pb-0 spad">
   <div class="container">
     <div class="row">
+        <div id="myBtnContainer">
+          <form class='form' id="login_form" method="post" action={% url 'review:review' %}  >
+          {% csrf_token %}
+          <button class="btn active" type="submit"  value="Submit0" name="Submit0">All reviews</button>
+          <button class="btn" type="submit"  value="Submit1" name="Submit1">My reviews</button>
+          <button class="btn" type="submit"  value="Submit2" name="Submit2">Old reviews</button>
+          <button class="btn" type="submit"  value="Submit3" name="Submit3">Big reviews</button>
+          <button class="btn" type="submit"  value="Submit4" name="Submit4">Small reviews</button>
+          </form>
+        </div>
       <div class="col-lg-12">
       {% for review in reviews %}
         <!-- blog post -->
@@ -90,7 +103,7 @@
     <form method="POST" class="signup-form form-horizontal" enctype="multipart/form-data" >
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="site-btn">Save</button>
+        <button type="submit" class="site-btn" value="submit" name="submit">Save</button>
     </form>
       </div>
     {% endif %}
@@ -101,6 +114,10 @@
     {% endif %}
   </div>
 </section>
+
+{% block pageSpecificJavascript %}
+{% endblock pageSpecificJavascript %}
+
 
 {% endblock %}
 {% block registerNow %}
