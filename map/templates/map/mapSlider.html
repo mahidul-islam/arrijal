@@ -6,16 +6,21 @@
 
 {% block map %}
 
-<div class="base">
-  <svg id="svg_map" width="960" height="600" viewBox="0 0 960 600"
+<div class="base2">
+  <svg id="svg_map2" width="960" height="600" viewBox="0 0 960 600"
   preserveAspectRatio="xMidYMid meet"></svg>
 
   <div class="container pt-3">
-    <div class="row flex space-around my-5">
-      <a href="#" id="prevStep" class="button round">&laquo;</a>
-      <a href="#" id="prev" class="button round">&#8249;</a>
-      <a href="#" id="next" class="button round">&#8250;</a>
-      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    <div class="row flex space-around">
+      <div class="col-2 text-center my-5">
+        <a href="#" id="prev" class="button round">&#8249;</a>
+      </div>
+      <div class="col-8">
+        <div id="slider-time"></div>
+      </div>
+      <div class="col-2 text-center my-5">
+        <a href="#" id="next" class="button round">&#8250;</a>
+      </div>
     </div>
     <div class="row">
       <div class="col">
@@ -29,15 +34,19 @@
         <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
       </div>
     </div>
+    <div class="row">
+      <div class="col text-center">
+        <h2 id="value-time"></h2>
+      </div>
+    </div>
   </div>
 </div>
 
 {% endblock map %}
-
 {% block pageSpecificJavascript %}
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
 
 <script type="module">
 
@@ -49,7 +58,7 @@ var svg = d3.select("svg"),
 
 var path = d3.geoPath().projection(projection);
 
-var Data
+var Data, data2
 
 var g = svg.append("g");
 var g2 = svg.append("g");
@@ -63,10 +72,13 @@ d3.queue()
     .defer(d3.json, "{% static  'map/json/gadm36_BTN_1.json' %}")
     .defer(d3.json, "{% static  'map/json/gadm36_NPL_1.json' %}")
     .defer(d3.json, "{% static  'map/json/Eventdata.json' %}")
+    .defer(d3.json, "{% static  'map/json/eventData.json' %}")
     .await(ready);
 
-function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
+function ready(error, bangladesh, india, myanmar, bhutan, nepal, data, newData) {
   Data = data
+  data2 = newData
+  console.log(data2)
 
   g.selectAll("path")
       .attr("id", "bangla")
@@ -77,7 +89,6 @@ function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
       .attr("fill", "#00A856")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
-      .on("click", clicked)
       .append("title")
       .text(function(d) {return d.properties.NAME_2});
 
@@ -89,7 +100,6 @@ function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
       .attr("fill", "#FFD0D0")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
-      .on("click", clicked)
 
   g3.selectAll("path")
       .data(topojson.feature(myanmar, myanmar.objects.gadm36_MMR_1).features)
@@ -99,7 +109,6 @@ function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
       .attr("fill", "#BCAED9")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
-      .on("click", clicked)
 
   g4.selectAll("path")
       .data(topojson.feature(bhutan, bhutan.objects.gadm36_BTN_1).features)
@@ -109,7 +118,6 @@ function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
       .attr("fill", "#E5CCE6")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
-      .on("click", clicked)
 
   g5.selectAll("path")
       .data(topojson.feature(nepal, nepal.objects.gadm36_NPL_1).features)
@@ -119,7 +127,6 @@ function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
       .attr("fill", "#FFFBC3")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
-      .on("click", clicked)
 
   newEvent(count)
 }
@@ -228,22 +235,6 @@ d3.select("#prev").on("click", function(){
   }
 })
 
-// Listen to the prevStep button
-d3.select("#prevStep").on("click", function(){
-  if(count != 0){
-    count--
-    newEvent(count)
-  }
-})
-
-// Listen to the nextStep button
-d3.select("#nextStep").on("click", function(){
-  if(count+1 < Data.length){
-    count++
-    newEvent(count)
-  }
-})
-
 // Listen to the slider
 d3.select("#mySlider").on("change", function(d){
   d3.select("#nRadius-value").text(this.value)
@@ -251,33 +242,43 @@ d3.select("#mySlider").on("change", function(d){
     .attr('r',this.value)
 })
 
-var centered
-function clicked(d){
-  var x = 0,
-      y = 0;
+// slider code
+  var dataTime = d3.range(0, 10).map(function(d) {
+    return new Date(1995 + d, 10, 3);
+  });
 
-  // If the click was on the centered state or the background, re-center.
-  // Otherwise, center the clicked-on state.
-  if (!d || centered === d) {
-    centered = null;
-  } else {
-    var centroid = path.centroid(d);
-    x = width / 2 - centroid[0];
-    y = height / 2 - centroid[1];
-    centered = d;
-  }
-  // Transition to the new transform.
-  g6.transition()
-      .duration(750)
-      .attr("transform", "translate(" + x + "," + y + ")");
+  // console.log(dataTime)
 
-  // console.log("District", d.properties.NAME_2, "coordinate", x, y)
-}
+  var sliderTime = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(d3.max(dataTime))
+    .step(1000 * 60 * 60 * 24 * 365)
+    .width(300)
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default(new Date(1998, 10, 3))
+    .on('onchange', val => {
+      d3.select('#value-time').text(d3.timeFormat('%Y')(val));
+    });
+
+  var gTime = d3
+    .select('#slider-time')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTime.call(sliderTime);
+
+  d3.select('#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+  // slider code end
 
 //zoom and pan functionality
 var zoom = d3.zoom()
             .scaleExtent([0.8, 2])
-            .translateExtent([[-200, -200],[1100, 800]])
+            .translateExtent([[-200, 0],[1000, 800]])
             .on("zoom",function() { g6.attr("transform", d3.event.transform)})
 svg.call(zoom)
 
