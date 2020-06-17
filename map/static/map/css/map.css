@@ -42,13 +42,13 @@ body {
   left: 0;
 } */
 
-.base{
+/* .base{
   position: absolute;
   top: 43%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .base2{
   position: absolute;

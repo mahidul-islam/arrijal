@@ -3,6 +3,7 @@
 {% block pageStyle %}
 <link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
 {% endblock pageStyle %}
 
 {% block map %}
@@ -29,14 +30,21 @@
       <div class="svgcontainer"></div>
     </div>
   </div>
-</div>
+  <h2>Time</h2>
 
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-2"><p id="value-time"></p></div>
+      <div class="col-sm"><div id="slider-time"></div></div>
+    </div>
+  </div>
+</div>
 
 {% endblock map %}
 
 {% block pageSpecificJavascript %}
 <script type="module">
-  const message = d3.select("div.hello").html("Bye");
+  const message = d3.select("div.hello").html("Bye")
   d3.select("div.hello").classed("red", true)
   d3.select(".red").html("No red")
 
@@ -77,6 +85,39 @@
       .delay(5000)
       .style("background-color", "lightblue")
       .duration(5000)
+
+
+        // slider code
+        var dataTime = d3.range(0, 10).map(function(d) {
+          return new Date(1995 + d, 10, 3);
+        });
+
+        var sliderTime = d3
+          .sliderBottom()
+          .min(d3.min(dataTime))
+          .max(d3.max(dataTime))
+          .step(1000 * 60 * 60 * 24 * 365)
+          .width(300)
+          .tickFormat(d3.timeFormat('%Y'))
+          .tickValues(dataTime)
+          .default(new Date(1998, 10, 3))
+          .on('onchange', val => {
+            d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+          });
+
+        var gTime = d3
+          .select('div#slider-time')
+          .append('svg')
+          .attr('width', 500)
+          .attr('height', 100)
+          .append('g')
+          .attr('transform', 'translate(30,30)');
+
+        gTime.call(sliderTime);
+
+        d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
+        // slider code end
 
 </script>
 {% endblock pageSpecificJavascript %}

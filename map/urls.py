@@ -13,4 +13,5 @@ urlpatterns = [
     path("markermap", views.markermap, name="markermap"),
     path("mymarker", views.mymarker, name="mymarker"),
     path("mapSlider", views.mapSlider, name="mapSlider"),
+    path("debug", views.debug, name="debug"),
 ]

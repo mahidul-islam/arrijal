@@ -1,0 +1,257 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+
+<div class="base">
+  <!-- <svg id="svg_map" width="960" height="600"></svg> -->
+
+  <!-- <div class="container pt-3">
+    <div class="row flex space-around my-5">
+      <a href="#" id="prevStep" class="button round">&laquo;</a>
+      <a href="#" id="prev" class="button round">&#8249;</a>
+      <a href="#" id="next" class="button round">&#8250;</a>
+      <a href="#" id="nextStep" class="button round">&raquo;</a>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h4>Map of Bangladesh</h4>
+      </div>
+      <div class="col">
+        <label for="mySlider"
+           style="display: inline-block; width: 240px; text-align: right">
+           Radius = <span id="nRadius-value"> 10 </span>
+        </label>
+        <input type="range" name="mySlider" id=mySlider min="4" max="40" value="10">
+      </div>
+    </div>
+  </div> -->
+</div>
+
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-2"><p id="value-time"></p></div>
+      <div class="col-sm"><div id="slider-time"></div></div>
+    </div>
+  </div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script> -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+
+<script type="module">
+
+// slider code
+var dataTime = d3.range(0, 10).map(function(d) {
+  return new Date(1995 + d, 10, 3);
+});
+var times = d3.utcYears(Date.UTC(2012, 0, 1), Date.UTC(2022, 0, 1))
+
+var sliderTime = d3.sliderBottom()
+      .min(d3.min(times))
+      .max(d3.max(times))
+      .marks(times)
+      .width(300)
+      .tickFormat(d3.utcFormat("%Y"))
+      .tickValues(times)
+      .on('onchange', val => {
+        d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+      });
+
+var gTime = d3
+  .select('div#slider-time')
+  .append('svg')
+  .attr('width', 1000)
+  .attr('height', 100)
+  .append('g')
+  .attr('transform', 'translate(30,30)');
+
+gTime.call(sliderTime);
+
+d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
+
+const slider = d3.sliderBottom()
+      .min(d3.min(times))
+      .max(d3.max(times))
+      .marks(times)
+      .width(300)
+      .tickFormat(d3.utcFormat("%Y"))
+      .tickValues(times)
+      .on('onchange', val => {
+        d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+      });
+
+const svg = d3.create("svg")
+    .attr("viewBox", [-20, -20, 340, 60])
+    .attr("width", 340)
+    .attr("height", 60)
+    .call(slider);
+
+  // return Object.defineProperty(
+  //   svg.node(),
+  //   "value",
+  //   {get: () => slider.value()}
+  // );
+
+
+
+
+
+
+
+
+// slider code end
+
+// var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
+//
+// var svg = d3.select("svg"),
+//     width = +svg.attr("width"),
+//     height = +svg.attr("height")
+
+// svg.on("click", clicked)
+
+// var path = d3.geoPath().projection(projection);
+//
+// var g = svg.append("g");
+//
+// d3.queue()
+//     .defer(d3.json, "{% static  'map/json/bddistopo.json' %}")
+    // .await(ready);
+
+// function ready(error, bangladesh) {
+//
+//   g.selectAll("path")
+// 				.data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
+// 				.enter()
+// 				.append("path")
+// 				.attr("d", path)
+//         .attr("fill", "green")
+//         .attr("stroke", "white")
+//         .attr("stroke-width", ".5px")
+//
+//   newEvent(count)
+// }
+
+// var popupData = [
+//   {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
+//   {"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
+// ];
+//
+// function rewrite(EventText){
+//   svg.selectAll("text").remove()
+//   svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
+//   svg.append('text').attr('y',40).attr('x',90).text(EventText)
+// }
+
+  // function draw(d){
+  //   console.log("draw called")
+  //   rewrite(d.event)
+  //   var text = d.popupText
+  //   var x = projection([d.lon, d.lat])[0]
+  //   var y = projection([d.lon, d.lat])[1]
+  //   console.log(x,y)
+  //   g.selectAll("circle")
+	//        .data([{"x":x, "y":y, "text":text}])
+	//        .enter()
+	//        .append("circle")
+	//        .attr("cx", function(d) {return d.x})
+	//        .attr("cy", function(d) {return d.y})
+	//        .attr("r", 10)
+	//        .style("fill", "red")
+	//        .style("opacity", 0.6)
+  //        .append('title')
+  //        .text(function(d) {return d.text})
+  // }
+
+  // function remove(){
+  //   console.log("remove called")
+  //   g.selectAll("circle")
+  //        .remove()
+  // }
+
+  // let count = 0;
+  //
+  // function newEvent(n){
+  //   remove()
+  //   draw(popupData[n])
+  // }
+
+
+  // // Listen to the next button
+  // d3.select("#next").on("click", function(){
+  //   if(count+1 < popupData.length){
+  //     count++
+  //     newEvent(count)
+  //   }
+  //   else{
+  //     console.log("The last Event")
+  //   }
+  // })
+  //
+  // // Listen to the prev button
+  // d3.select("#prev").on("click", function(){
+  //   if(count != 0){
+  //     count--
+  //     newEvent(count)
+  //   }
+  //   else{
+  //     console.log("The first Event")
+  //   }
+  // })
+  //
+  // // Listen to the prevStep button
+  // d3.select("#prevStep").on("click", function(){
+  //   if(count != 0){
+  //     count--
+  //     newEvent(count)
+  //   }
+  // })
+  //
+  // // Listen to the nextStep button
+  // d3.select("#nextStep").on("click", function(){
+  //   if(count+1 < popupData.length){
+  //     count++
+  //     newEvent(count)
+  //   }
+  // })
+  //
+  // // Listen to the slider
+  // d3.select("#mySlider").on("change", function(d){
+  //   d3.select("#nRadius-value").text(this.value)
+  //   g.selectAll("circle")
+  //     .attr('r',this.value)
+  // })
+
+// var centered
+//
+// function clicked(d){
+//   console.log("District", d.properties.NAME_2, "data", d)
+//   var x = 0,
+//       y = 0;
+//
+//   // If the click was on the centered state or the background, re-center.
+//   // Otherwise, center the clicked-on state.
+//   if (!d || centered === d) {
+//     centered = null;
+//   } else {
+//     var centroid = path.centroid(d);
+//     x = width / 2 - centroid[0];
+//     y = height / 2 - centroid[1];
+//     centered = d;
+//   }
+//   // Transition to the new transform.
+//   g.transition()
+//       .duration(750)
+//       .attr("transform", "translate(" + x + "," + y + ")");
+// }
+
+</script>
+{% endblock pageSpecificJavascript %}

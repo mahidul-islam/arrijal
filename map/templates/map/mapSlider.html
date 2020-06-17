@@ -6,7 +6,7 @@
 
 {% block map %}
 
-<div class="base2">
+<div class="container">
   <svg id="svg_map2" width="960" height="600" viewBox="0 0 960 600"
   preserveAspectRatio="xMidYMid meet"></svg>
 
@@ -15,8 +15,8 @@
       <div class="col-2 text-center my-5">
         <a href="#" id="prev" class="button round">&#8249;</a>
       </div>
-      <div class="col-8">
-        <div id="slider-time"></div>
+      <div class="col-8 mt-4">
+        <div class="col-sm"><div id="slider-time"></div></div>
       </div>
       <div class="col-2 text-center my-5">
         <a href="#" id="next" class="button round">&#8250;</a>
@@ -24,7 +24,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <h4>Map of Bangladesh</h4>
+        <h4>Map with showing Data</h4>
       </div>
       <div class="col">
         <label for="mySlider"
@@ -40,6 +40,11 @@
       </div>
     </div>
   </div>
+  <h2>Time</h2>
+  <div class="row align-items-center">
+    <div class="col-sm-2"><p id="value-time"></p></div>
+    <div class="col-sm"><div id="slider-time"></div></div>
+  </div>
 </div>
 
 {% endblock map %}
@@ -49,6 +54,38 @@
 <script src="https://unpkg.com/d3-simple-slider"></script>
 
 <script type="module">
+
+// slider code
+var dataTime = d3.range(0, 10).map(function(d) {
+  return new Date(1995 + d, 10, 3);
+});
+
+var sliderTime = d3
+  .sliderBottom()
+  .min(d3.min(dataTime))
+  .max(d3.max(dataTime))
+  .step(1000 * 60 * 60 * 24 * 365)
+  .width(300)
+  .tickFormat(d3.timeFormat('%Y'))
+  .tickValues(dataTime)
+  .default(new Date(1998, 10, 3))
+  .on('onchange', val => {
+    d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+  });
+
+var gTime = d3
+  .select('div#slider-time')
+  .append('svg')
+  .attr('width', 500)
+  .attr('height', 100)
+  .append('g')
+  .attr('transform', 'translate(30,30)');
+
+gTime.call(sliderTime);
+
+d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
+// slider code end
 
 var projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
 
@@ -78,7 +115,7 @@ d3.queue()
 function ready(error, bangladesh, india, myanmar, bhutan, nepal, data, newData) {
   Data = data
   data2 = newData
-  console.log(data2)
+  // console.log(data2)
 
   g.selectAll("path")
       .attr("id", "bangla")
@@ -241,39 +278,6 @@ d3.select("#mySlider").on("change", function(d){
   g6.selectAll("circle")
     .attr('r',this.value)
 })
-
-// slider code
-  var dataTime = d3.range(0, 10).map(function(d) {
-    return new Date(1995 + d, 10, 3);
-  });
-
-  // console.log(dataTime)
-
-  var sliderTime = d3
-    .sliderBottom()
-    .min(d3.min(dataTime))
-    .max(d3.max(dataTime))
-    .step(1000 * 60 * 60 * 24 * 365)
-    .width(300)
-    .tickFormat(d3.timeFormat('%Y'))
-    .tickValues(dataTime)
-    .default(new Date(1998, 10, 3))
-    .on('onchange', val => {
-      d3.select('#value-time').text(d3.timeFormat('%Y')(val));
-    });
-
-  var gTime = d3
-    .select('#slider-time')
-    .append('svg')
-    .attr('width', 500)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
-
-  gTime.call(sliderTime);
-
-  d3.select('#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
-  // slider code end
 
 //zoom and pan functionality
 var zoom = d3.zoom()

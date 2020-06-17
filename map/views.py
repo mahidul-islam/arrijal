@@ -52,3 +52,8 @@ def mapSlider(request):
     template = loader.get_template('map/mapSlider.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def debug(request):
+    template = loader.get_template('map/debug.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
