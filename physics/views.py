@@ -17,3 +17,8 @@ def firstGame(request):
     template = loader.get_template('physics/firstGame.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def mod2d(request):
+    template = loader.get_template('physics/mod2d.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
