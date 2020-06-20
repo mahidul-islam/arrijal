@@ -1,30 +1,29 @@
+{% extends 'abstractbase.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | PhysicsGame</title>
-    <link rel="shortcut icon" href="{% static 'physics/firstGame/TemplateData/favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'physics/firstGame/TemplateData/style.css' %}">
-    <script src="{% static 'physics/firstGame/TemplateData/UnityProgress.js' %}"></script>
-    <script src="{% static 'physics/firstGame/Build/UnityLoader.js' %}"></script>
-    <script>
-      var unityInstance = UnityLoader.instantiate(
-        "unityContainer",
-        "{% static 'physics/firstGame/Build/webgl2.json' %}",
-        {onProgress: UnityProgress}
-      );
-    </script>
-  </head>
-  <body>
-    <div class="webgl-content">
-      <div id="unityContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
-        <div class="title">PhysicsGame</div>
-      </div>
+  <title>Unity WebGL Player | PhysicsGame</title>
+{% block css %}
+  <link rel="stylesheet" href="{% static 'physics/firstGame/TemplateData/style.css' %}">
+{% endblock css %}
+{% block pageStyle %}
+  <script src="{% static 'physics/firstGame/TemplateData/UnityProgress.js' %}"></script>
+  <script src="{% static 'physics/firstGame/Build/UnityLoader.js' %}"></script>
+  <script>
+    var unityInstance = UnityLoader.instantiate(
+      "unityContainer",
+      "{% static 'physics/firstGame/Build/webgl2.json' %}",
+      {onProgress: UnityProgress}
+    );
+  </script>
+{% endblock pageStyle %}
+
+{% block base %}
+  <div class="webgl-content">
+    <div id="unityContainer" style="width: 960px; height: 600px"></div>
+    <div class="footer">
+      <div class="webgl-logo"></div>
+      <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+      <div class="title">PhysicsGame</div>
     </div>
-  </body>
-</html>
+  </div>
+{% endblock base %}
+{% block javascript %}{% endblock %}
