@@ -1,17 +1,10 @@
 {% load static %}
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
-  <form>
+  <form ng-app="myApp" ng-controller="myCtrl">
       Select Hadith:
-      <select id="mySelect">
-        <option>Sahih Bukhari</option>
-        <option>Sahih Muslim</option>
-        <option>Sunan Abi Da'ud</option>
-        <option>Jami' al-Tirmidhi</option>
-        <option>Sunan an-Nasa'i</option>
-        <option>Sunan Ibn Majah</option>
-
-      </select>
+      <select id="mySelect" ng-model="selectedName" ng-options="x for x in names"> </select>
       <input type="text" id="myText" value="1">
       <br><br>
       <input type="button" onclick="getOption()" value="Click Me!">
@@ -25,7 +18,12 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script>
-
+//.........
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.names = ["Sahih Bukhari", "Sahih Muslim", "Sunan Abi Da'ud", "Jami' al-Tirmidhi", "Sunan an-Nasa'i", "Sunan Ibn Majah"];
+});
+//.........
 //.................
 function getOption() {
 //.............

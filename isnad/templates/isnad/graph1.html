@@ -1,23 +1,37 @@
 {% load static %}
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
-  <form>
+  <form data-ng-app="myApp" name="myForm" ng-controller="myCtrl">
       Scholar id range:
-      <input type="text" id="start" value="1">
-      <input type="text" id="end" value="50">
+      <input name="start" required type="number" id="start"  data-ng-model="start">
+      <span ng-show="myForm.start.$error.number">Not a valid number</span>
+      <input name="end" required type="number" id="end"  data-ng-model="end">
+      <span ng-show="myForm.end.$error.number">Not a valid number</span>
       <br><br>
       <input type="button" onclick="getOption()" value="Click Me!">
+      <p>Range: <span data-ng-bind="start"></span>-to-<span data-ng-bind="end"></span> </p>
   </form>
 <svg id='viz'></svg>
 </body>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
+//.......
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+$scope.start = 1;
+$scope.end = 40;
+});
+//.......
 //.................
 function getOption() {
 
   var start = document.getElementById("start").value;
   var end = document.getElementById("end").value;
+
+
+
 //}
 //....
 var width = 1400;
