@@ -25,8 +25,11 @@
 </div>
 
 <section id='chart'></section>
-<svg id='viz'></svg>
-<iframe id="myFrame" width="1300" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
+<svg id='viz' >
+<text x="500" y="20" font-family="sans-serif" font-size="20px" fill="red">Chain of Narrators</text>
+</svg>
+<h3 style="text-align:center;">hadith text</h3>
+<iframe  id="myFrame" width="1200" style="border:2px solid green;" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
 
 {% endblock content %}
 
@@ -77,11 +80,11 @@ var chartConfig = {
 
 // loader settings
 var opts = {
-  lines: 9, // The number of lines to draw
-  length: 9, // The length of each line
-  width: 5, // The line thickness
-  radius: 14, // The radius of the inner circle
-  color: '#EE3124', // #rgb or #rrggbb or array of colors
+  lines: 19, // The number of lines to draw
+  length: 19, // The length of each line
+  width: 15, // The line thickness
+  radius: 64, // The radius of the inner circle
+  color: 'green', // #rgb or #rrggbb or array of colors
   speed: 1.9, // Rounds per second
   trail: 40, // Afterglow percentage
   className: 'spinner', // The CSS class to assign to the spinner
@@ -116,8 +119,9 @@ else if(book =="Sunan Ibn Majah") b = 9;
  document.getElementById("myFrame").src = "https://www.hadithbd.com/hadith/filter/?book="+b+"&hadith="+x;
 //}
 //....
-var width = 1400;
-var height = 600;
+var width = 1200;
+var height = 800;
+var style="border:2px solid yellow;";
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
@@ -165,7 +169,7 @@ function neigh(a, b) {
     return a == b || adjlist[a + "-" + b];
 }
 
-var svg = d3.select("#viz").attr("width", width).attr("height", height);
+var svg = d3.select("#viz").attr("width", width).attr("height", height).attr("style", style);
 var container = svg.append("g");
 
 svg.call(
