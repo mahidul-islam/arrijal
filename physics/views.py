@@ -22,3 +22,8 @@ def mod2d(request):
     template = loader.get_template('physics/mod2d.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def threed(request):
+    template = loader.get_template('physics/threed.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
