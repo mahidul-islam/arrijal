@@ -1,21 +1,49 @@
+{% extends "base.html" %}
 {% load static %}
-<html>
+{% block pageStyle %}
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<body>
-  <form data-ng-app="myApp" name="myForm" ng-controller="myCtrl">
+{% endblock pageStyle %}
+
+{% block content %}
+  <!-- <form data-ng-app="myApp" name="myForm" ng-controller="myCtrl">
       Scholar id range:
       <input name="start" required type="number" id="start"  data-ng-model="start">
       <span ng-show="myForm.start.$error.number">Not a valid number</span>
+
       <input name="end" required type="number" id="end"  data-ng-model="end">
       <span ng-show="myForm.end.$error.number">Not a valid number</span>
       <span ng-show="error">*Max 1000 Scholars</span>
       <br><br>
       <input ng-disabled="error || incomplete || positive" type="button" onclick="getOption()" value="Click Me!">
       <p>Range: <span data-ng-bind="start"></span>-to-<span data-ng-bind="end"></span> </p>
-  </form>
-<svg id='viz'></svg>
-</body>
+  </form> -->
 
+
+  <div class="container">
+    <h2>Search Scholars</h2><br>
+    <form ng-app="myApp" ng-controller="myCtrl" name="myForm">
+      <div class="form-group">
+        <label for="numberExample">From:</label>
+        <input ng-model="start" name="start" type="number" class="form-control" id="start" placeholder="Enter Scholar id">
+        <span ng-show="myForm.start.$error.number">Not a valid number</span>
+      </div>
+      <div class="form-group">
+        <label for="numberExample">To:</label>
+        <input ng-model="end" name="end" type="number" class="form-control" id="end" placeholder="Enter Scholar id">
+        <span ng-show="myForm.end.$error.number">Not a valid number</span>
+        <span ng-show="error">*Max 1000 Scholars</span>
+      </div>
+      <button ng-disabled="error || incomplete || positive" type="submit" onclick="getOption()" class="btn btn-primary" value="Click Me!">Submit</button>
+      <p ng-show="selectedName"><span data-ng-bind="selectedName"></span> - <span data-ng-bind="myText"></span></p>
+    </form>
+  </div>
+<br>
+<svg id='viz'>
+  <text x="500" y="20" font-family="sans-serif" font-size="20px" fill="red">Chain of Scholars</text>
+</svg>
+{% endblock content %}
+
+{% block pageSpecificJavascript %}
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
 //.......
@@ -60,8 +88,9 @@ function getOption() {
 
 //}
 //....
-var width = 1400;
-var height = 600;
+var width = 1200;
+var height = 900;
+var style="border:2px solid yellow;";
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_rawis.json' %}").then(function(graph) {
 
@@ -107,7 +136,7 @@ function neigh(a, b) {
 }
 
 
-var svg = d3.select("#viz").attr("width", width).attr("height", height);
+var svg = d3.select("#viz").attr("width", width).attr("height", height).attr("style", style);
 var container = svg.append("g");
 
 svg.call(
@@ -273,4 +302,4 @@ function dragended(d) {
 }); // d3.json
 } //
 </script>
-</html>
+{% endblock pageSpecificJavascript %}
