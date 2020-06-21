@@ -4,18 +4,18 @@
   "molecules":
   [
     {
-      "name":"CH3NH2",
-      "html":"CH<sub>3</sub>NH<sub>2</sub>",
-      "url":"{% static 'chemistry/model/pdb/ch3nh2.pdb' %}",
+      "name":"CH3CH2NH2",
+      "html":"CH<sub>3</sub>CH<sub>2</sub>NH<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/.pdb' %}",
       "positionX":0,
       "positionY":300,
       "positionZ":0,
       "isAromatic":true
     },
     {
-      "name":"CH3CONH2",
-      "html":"CH<sub>3</sub>CONH<sub>2</sub>",
-      "url":"{% static 'chemistry/model/pdb/ch3coNH2.pdb' %}",
+      "name":"CH3CH2CONH2",
+      "html":"CH<sub>3</sub>CH<sub>2</sub>CONH<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/.pdb' %}",
       "positionX":-400,
       "positionY":-200,
       "positionZ":0,
@@ -53,7 +53,7 @@
       "html":"C<sub>2</sub>H<sub>5</sub>OC<sub>2</sub>H<sub>5</sub>",
       "url":"{% static 'chemistry/model/pdb/.pdb' %}",
       "positionX":-1200,
-      "positionY":-1000,
+      "positionY":-900,
       "positionZ":0,
       "isAromatic":true
     },
@@ -94,7 +94,7 @@
       "isAromatic":true
     },
     {
-      "name":" CH3MgCl",
+      "name":"CH3MgCl",
       "html":"CH<sub>3</sub>MgCl",
       "url":"{% static 'chemistry/model/pdb/ch3MgCl.pdb' %}",
       "positionX":800,
@@ -138,12 +138,137 @@
       "positionZ":0,
       "isAromatic":true
     },
+    {
+      "name":"C2H5COOC2H5",
+      "html":"C<sub>2</sub>H<sub>5</sub>COOC<sub>2</sub>H<sub>5</sub>",
+      "url":"{% static 'chemistry/model/pdb/.pdb' %}",
+      "positionX":2000,
+      "positionY":-1300,
+      "positionZ":0,
+      "isAromatic":true
+    },
   ],
   "links":
   [
     {
+      "from":"CH3CH3",
+      "to":"CH3CH2Br",
+    },
+    {
+      "from":"CH3CH2Br",
+      "to":"CH2CH2",
+    },
+    {
+      "from":"CH3CH2Br",
+      "to":"CH3MgCl",
+    },
+    {
+      "from":"CH2CH2",
+      "to":"CH3CH2Br",
+    },
+    {
+      "from":"CH2CH2",
+      "to":"CH3CH3",
+    },
+    {
+      "from":"CH2CH2",
+      "to":"CH2ClCH2Cl",
+    },
+    {
+      "from":"CH2ClCH2Cl",
+      "to":"C2H2",
+    },
+    {
+      "from":"C2H2",
+      "to":"CH3CH3",
+    },
+    {
+      "from":"C2H2",
+      "to":"C6H6",
+    },
+    {
+      "from":"CH3MgCl",
+      "to":"CH3CH2OH",
+    },
+    {
+      "from":"CH3MgCl",
+      "to":"(CH3)2CHOH",
+    },
+    {
+      "from":"CH3MgCl",
+      "to":"(CH3)3COH",
+    },
+    {
       "from":"CH3CH2OH",
-      "to":"CH3NH2",
+      "to":"CH3COOH",
+    },
+    {
+      "from":"CH3CH2OH",
+      "to":"CH3CHO",
+    },
+    {
+      "from":"CH3CHO",
+      "to":"CH3COOH",
+    },
+    {
+      "from":"CH3CHO",
+      "to":"CH3CH3",
+    },
+    {
+      "from":"CH3COOH",
+      "to":"CH3COONa",
+    },
+    {
+      "from":"CH3COOH",
+      "to":"CH3COCL",
+    },
+    {
+      "from":"CH3COOH",
+      "to":"C2H5COOC2H5",
+    },
+    {
+      "from":"CH3COOH",
+      "to":"CH3CH2OH",
+    },
+    {
+      "from":"CH3COCL",
+      "to":"CH3COOH",
+    },
+    {
+      "from":"CH3COCL",
+      "to":"CH3CH2CONH2",
+    },
+    {
+      "from":"CH3COCL",
+      "to":"CH3CH2OH",
+    },
+    {
+      "from":"CH3COONa",
+      "to":"CH3CH3",
+    },
+    {
+      "from":"CH3Br",
+      "to":"CH3CH2CN",
+    },
+    {
+      "from":"CH3CH2CN",
+      "to":"CH3CH2NH2",
+    },
+    {
+      "from":"C2H5COOC2H5",
+      "to":"CH3CH3",
+    },
+    {
+      "from":"CH3CH2CONH2",
+      "to":"CH3CH2NH2",
+    },
+    {
+      "from":"C2H5OC2H5",
+      "to":"C2H5COOC2H5",
+    },
+    {
+      "from":"CH3CH2OH",
+      "to":"C2H5OC2H5",
     },
   ]
 }
