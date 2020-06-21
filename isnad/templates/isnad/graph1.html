@@ -8,8 +8,9 @@
       <span ng-show="myForm.start.$error.number">Not a valid number</span>
       <input name="end" required type="number" id="end"  data-ng-model="end">
       <span ng-show="myForm.end.$error.number">Not a valid number</span>
+      <span ng-show="error">*Max 1000 Scholars</span>
       <br><br>
-      <input type="button" onclick="getOption()" value="Click Me!">
+      <input ng-disabled="error || incomplete || positive" type="button" onclick="getOption()" value="Click Me!">
       <p>Range: <span data-ng-bind="start"></span>-to-<span data-ng-bind="end"></span> </p>
   </form>
 <svg id='viz'></svg>
@@ -22,6 +23,31 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {
 $scope.start = 1;
 $scope.end = 40;
+
+$scope.$watch('start',function() {$scope.test();});
+$scope.$watch('end',function() {$scope.test();});
+$scope.test = function() {
+  if (($scope.end-$scope.start)>1000) {
+    $scope.error = true;
+    } else {
+    $scope.error = false;
+  }
+
+  $scope.incomplete = false;
+  if (!$scope.start ||
+  !$scope.end) {
+     $scope.incomplete = true;
+  }
+
+  $scope.positive = false;
+  if ($scope.start<0 ||
+  $scope.end<0) {
+     $scope.positive = true;
+  }
+
+
+};
+
 });
 //.......
 //.................
