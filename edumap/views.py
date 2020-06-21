@@ -22,3 +22,7 @@ def bangladesh(request):
     template = loader.get_template('edumap/bangladesh.html')
     context = {}
     return HttpResponse(template.render(context, request))
+def bangladesh0(request):
+    template = loader.get_template('edumap/bangladesh0.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
