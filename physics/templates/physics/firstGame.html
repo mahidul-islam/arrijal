@@ -1,0 +1,29 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+  <title>Unity WebGL Player | PhysicsGame</title>
+{% block css %}
+  <link rel="stylesheet" href="{% static 'physics/firstGame/TemplateData/style.css' %}">
+{% endblock css %}
+{% block pageStyle %}
+  <script src="{% static 'physics/firstGame/TemplateData/UnityProgress.js' %}"></script>
+  <script src="{% static 'physics/firstGame/Build/UnityLoader.js' %}"></script>
+  <script>
+    var unityInstance = UnityLoader.instantiate(
+      "unityContainer",
+      "{% static 'physics/firstGame/Build/webgl2.json' %}",
+      {onProgress: UnityProgress}
+    );
+  </script>
+{% endblock pageStyle %}
+
+{% block base %}
+  <div class="webgl-content">
+    <div id="unityContainer" style="width: 960px; height: 600px"></div>
+    <div class="footer">
+      <div class="webgl-logo"></div>
+      <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+      <div class="title">PhysicsGame</div>
+    </div>
+  </div>
+{% endblock base %}
+{% block javascript %}{% endblock %}

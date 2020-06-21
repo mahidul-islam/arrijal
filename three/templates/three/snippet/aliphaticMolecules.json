@@ -4,18 +4,137 @@
   "molecules":
   [
     {
-      "name":"ch3ch2oh",
-      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
-      "positionX":-300,
-      "positionY":0,
+      "name":"CH3NH2",
+      "html":"CH<sub>3</sub>NH<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/ch3nh2.pdb' %}",
+      "positionX":0,
+      "positionY":300,
       "positionZ":0,
       "isAromatic":true
     },
     {
-      "name":"ch3nh2",
-      "url":"{% static 'chemistry/model/pdb/ch3nh2.pdb' %}",
-      "positionX":500,
-      "positionY":200,
+      "name":"CH3CONH2",
+      "html":"CH<sub>3</sub>CONH<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/ch3coNH2.pdb' %}",
+      "positionX":-400,
+      "positionY":-200,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3CH2CN",
+      "html":"CH<sub>3</sub>CH<sub>2</sub>CN",
+      "url":"{% static 'chemistry/model/pdb/.pdb' %}",
+      "positionX":400,
+      "positionY":-200,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3COCH3",
+      "html":"CH<sub>3</sub>COCH<sub>3</sub>",
+      "url":"{% static 'chemistry/model/pdb/ch3coch3.pdb' %}",
+      "positionX":-500,
+      "positionY":-800,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3CH2OH",
+      "html":"CH<sub>3</sub>CH<sub>2</sub>OH",
+      "url":"{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}",
+      "positionX":-700,
+      "positionY":400,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":" C2H5OC2H5",
+      "html":"C<sub>2</sub>H<sub>5</sub>OC<sub>2</sub>H<sub>5</sub>",
+      "url":"{% static 'chemistry/model/pdb/.pdb' %}",
+      "positionX":-1200,
+      "positionY":-1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3COCL",
+      "html":"CH<sub>3</sub>COCl",
+      "url":"{% static 'chemistry/model/pdb/ch3coCl.pdb' %}",
+      "positionX":-1000,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3CHO",
+      "html":"CH<sub>3</sub>CHO",
+      "url":"{% static 'chemistry/model/pdb/ch3cho.pdb' %}",
+      "positionX":0,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3COOH",
+      "html":"CH<sub>3</sub>COOH",
+      "url":"{% static 'chemistry/model/pdb/ch3cooh.pdb' %}",
+      "positionX":700,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3COONa",
+      "html":"CH<sub>3</sub>COONa",
+      "url":"{% static 'chemistry/model/pdb/ch3cooNa.pdb' %}",
+      "positionX":1400,
+      "positionY":1000,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":" CH3MgCl",
+      "html":"CH<sub>3</sub>MgCl",
+      "url":"{% static 'chemistry/model/pdb/ch3MgCl.pdb' %}",
+      "positionX":800,
+      "positionY":400,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":" CH3Br",
+      "html":"CH<sub>3</sub>Br",
+      "url":"{% static 'chemistry/model/pdb/ch3Br.pdb' %}",
+      "positionX":1000,
+      "positionY":-700,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH3CH3",
+      "html":"CH<sub>3</sub>CH<sub>3</sub>",
+      "url":"{% static 'chemistry/model/pdb/ethane.pdb' %}",
+      "positionX":1500,
+      "positionY":-100,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"CH2CH2",
+      "html":"CH<sub>2</sub>CH<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/ethylene.pdb' %}",
+      "positionX":2000,
+      "positionY":500,
+      "positionZ":0,
+      "isAromatic":true
+    },
+    {
+      "name":"C2H2",
+      "html":"C<sub>2</sub>H<sub>2</sub>",
+      "url":"{% static 'chemistry/model/pdb/ethyne.pdb' %}",
+      "positionX":2000,
+      "positionY":-700,
       "positionZ":0,
       "isAromatic":true
     },
@@ -23,8 +142,8 @@
   "links":
   [
     {
-      "from":"ch3ch2oh",
-      "to":"ch3nh2",
+      "from":"CH3CH2OH",
+      "to":"CH3NH2",
     },
   ]
 }

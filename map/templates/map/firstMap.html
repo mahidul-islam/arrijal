@@ -87,10 +87,5 @@ function ready(error, topo) {
         .attr("d", path);
 }
 
-svg.call(d3.zoom().on('zoom',()=>{
-	console.log("Zooming..")
-  g.attr('transform', d3.event.transform)
-}))
-
 </script>
 {% endblock pageSpecificJavascript %}

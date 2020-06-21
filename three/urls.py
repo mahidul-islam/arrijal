@@ -16,4 +16,5 @@ urlpatterns = [
     path("periodic", views.periodic, name="periodic"),
     path("alcohol", views.alcohol, name="alcohol"),
     path("molecules", views.molecules, name="molecules"),
+    path("desmos", views.desmos, name="desmos"),
 ]

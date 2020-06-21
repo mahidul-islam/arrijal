@@ -49,28 +49,32 @@ var svg = d3.select("svg"),
 
 var path = d3.geoPath().projection(projection);
 
+var Data
+
 var g = svg.append("g");
 var g2 = svg.append("g");
 var g3 = svg.append("g");
 var g4 = svg.append("g");
 var g5 = svg.append("g");
 d3.queue()
-    .defer(d3.json, "{% static  'edumap/json/bddistopo.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_IND_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_MMR_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_BTN_1.json' %}")
-    .defer(d3.json, "{% static  'edumap/json/gadm36_NPL_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/bddistopo.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_IND_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_MMR_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_BTN_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/gadm36_NPL_1.json' %}")
+    .defer(d3.json, "{% static  'map/json/Eventdata.json' %}")
     .await(ready);
 
-function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
-  console.log(bangladesh, india)
+function ready(error, bangladesh, india, myanmar, bhutan, nepal, data) {
+  Data = data
 
   g.selectAll("path")
+      .attr("id", "bangla")
       .data(topojson.feature(bangladesh, bangladesh.objects.bddis).features)
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#36C590")
+      .attr("fill", "#00A856")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -82,7 +86,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#02AFAE")
+      .attr("fill", "#FFD0D0")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -92,7 +96,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#FCF471")
+      .attr("fill", "#BCAED9")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -102,7 +106,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#A1D97D")
+      .attr("fill", "#E5CCE6")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -112,7 +116,7 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("fill", "#FDC966")
+      .attr("fill", "#FFFBC3")
       .attr("stroke", "white")
       .attr("stroke-width", ".5px")
       .on("click", clicked)
@@ -122,11 +126,6 @@ function ready(error, bangladesh,india,myanmar,bhutan,nepal) {
 
 var g6=svg.selectAll("g");
 
-var popupData = [
-  {"event":"The First Event", "popupText":"The First PopUp", "lat":23.777176, "lon":90.399452},
-  {"event":"The Second Event", "popupText":"My location", "lat":23.983354, "lon":91.107775}
-];
-
 function rewrite(EventText){
   svg.selectAll("text").remove()
   svg.append('text').attr('y',40).attr('x',20).text("EVENT :")
@@ -134,12 +133,11 @@ function rewrite(EventText){
 }
 
 function draw(d){
-  console.log("draw called")
   rewrite(d.event)
   var text = d.popupText
   var x = projection([d.lon, d.lat])[0]
   var y = projection([d.lon, d.lat])[1]
-  console.log(x,y)
+
   g6.selectAll("circle")
       .data([{"x":x, "y":y, "text":text}])
       .enter()
@@ -159,40 +157,41 @@ function draw(d){
       .attr("height", 1)
       .attr("patternUnits", "objectBoundingBox")
       .append("image")
-      .attr("width", 15)
-      .attr("height", 20)
-      .attr("xlink:href", "http://lorempixel.com/200/200/")
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("xlink:href", "{% static 'map/img/murgi.jpg' %}")
 
   g6.selectAll("rect")
-      .data([{"x":x-2, "y":y-35, "text":text}])
+      .data([{"x":x-50, "y":y-130}])
       .enter()
       .append("rect")
       .attr("x", function(d) {return d.x})
       .attr("y", function(d) {return d.y})
-      .attr("width",5)
-      .attr("height",20)
+      .attr("width",100)
+      .attr("height",100)
       .attr("fill", "url(#bg)")
-      .text(function(d) {return d.text});
 
   var x1=x;
-  var y1=y-10;
-  var y2=y1-15;
-  var y3=y1-15;
-  var x2=x+10;
-  var x3=x1-10;
-  console.log(x,y)
-  console.log(x1,y1)
-  console.log(x2,y2)
+  var y1=y - 10;
+  var y2=y - 30;
+  var y3=y - 30;
+  var x2=x + 20;
+  var x3=x - 20;
   var points=x1  + ' ' + y1 + ', ' + x2 + ' ' + y2 + ', ' + x3 + ' ' + y3 ;
 
   g6.append("polyline")       // attach a polygon
       .style("stroke", "black")  // colour the line
       .style("fill", "black")     // remove any fill colour
       .attr("points", points);
+
+  var tx = width/2 - x
+  var ty = height/2 - y
+  g6.transition()
+      .duration(750)
+      .attr("transform", "translate(" + tx + "," + ty + ")");
 }
 
 function remove(){
-  console.log("remove called")
   g6.selectAll("circle")
       .remove()
   g6.selectAll("rect")
@@ -204,12 +203,12 @@ function remove(){
 let count = 0;
 function newEvent(n){
   remove()
-  draw(popupData[n])
+  draw(Data[n])
 }
 
 // Listen to the next button
 d3.select("#next").on("click", function(){
-  if(count+1 < popupData.length){
+  if(count+1 < Data.length){
     count++
     newEvent(count)
   }
@@ -239,7 +238,7 @@ d3.select("#prevStep").on("click", function(){
 
 // Listen to the nextStep button
 d3.select("#nextStep").on("click", function(){
-  if(count+1 < popupData.length){
+  if(count+1 < Data.length){
     count++
     newEvent(count)
   }
@@ -254,7 +253,6 @@ d3.select("#mySlider").on("change", function(d){
 
 var centered
 function clicked(d){
-  console.log("District", d.properties.NAME_2, "data", d)
   var x = 0,
       y = 0;
 
@@ -272,13 +270,18 @@ function clicked(d){
   g6.transition()
       .duration(750)
       .attr("transform", "translate(" + x + "," + y + ")");
+
+  // console.log("District", d.properties.NAME_2, "coordinate", x, y)
 }
 
 //zoom and pan functionality
 var zoom = d3.zoom()
             .scaleExtent([0.8, 2])
+            .translateExtent([[-200, -200],[1100, 800]])
             .on("zoom",function() { g6.attr("transform", d3.event.transform)})
 svg.call(zoom)
+
+// console.log(svg._groups[0][0].children[0].children)
 
 </script>
 

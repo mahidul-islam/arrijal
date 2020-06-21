@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block spadof %} {% endblock %}
+
+{% block navbar %}
+	{% include 'navbar4.html' %}
+{% endblock %}
+
+{% block later %}
+
+<!-- categories section -->
+	<section class="categories-section spad">
+		<div class="container">
+			<div class="section-title">
+				<h2>Physics Games</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+			</div>
+			<div class="row">
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'physics:firstGame' %}">
+                <h5>First Game</h5>
+              </a>
+							<p>First Game</p>
+							<span>Size: No</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-text">
+              <a href="{% url 'physics:mod2d' %}">
+                <h5>Mod Game</h5>
+              </a>
+							<p>Mod 2d Game of Unity</p>
+							<span>Size: No</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+			</div>
+		</div>
+	</section>
+	<!-- categories section end -->
+{% endblock later %}
