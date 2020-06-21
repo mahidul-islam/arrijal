@@ -1,24 +1,36 @@
+{% extends "base.html" %}
 {% load static %}
-<html>
+{% block pageStyle %}
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<body>
+{% endblock pageStyle %}
+
+{% block content %}
+
+<div class="container">
+  <h2>Search Isnad</h2><br>
   <form ng-app="myApp" ng-controller="myCtrl" name="myForm">
-      Select Hadith:
-      <select id="mySelect" ng-model="selectedName" ng-options="x for x in names"> </select>
-      <input ng-model="myText" name="myText" type="number" id="myText" required>
+    <div class="form-group">
+      <label for="exampleFormControlSelect2">Hadith Book:</label>
+      <select class="custom-select my-1 mr-sm-2" id="mySelect" ng-model="selectedName" ng-options="x for x in names"> </select>
+    </div>
+    <div class="form-group">
+      <label for="numberExample">Hadith No:</label>
+      <input ng-model="myText" name="myText" type="number" class="form-control" id="myText" placeholder="Enter Hadith No.">
       <span ng-show="myForm.myText.$error.number">Not a valid number</span>
       <span ng-show="positive">Negative number not valid</span>
-      <br><br>
-      <input ng-disabled="error || incomplete || positive" type="button" onclick="getOption()" value="Click Me!">
-      <p ng-show="selectedName">Book: "<span data-ng-bind="selectedName"></span>"<br>Hadith No: "<span data-ng-bind="myText"></span>"</p>
-      <p ng-show="selectedName">"<span data-ng-bind="selectedName"></span>" is a book of Hadith.</p>
+    </div>
+    <button ng-disabled="error || incomplete || positive" type="submit" onclick="getOption()" class="btn btn-primary" value="Click Me!">Submit</button>
+    <p ng-show="selectedName"><span data-ng-bind="selectedName"></span> - <span data-ng-bind="myText"></span></p>
   </form>
-  <section id='chart'></section>
+</div>
+
+<section id='chart'></section>
 <svg id='viz'></svg>
 <iframe id="myFrame" width="1300" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
 
-</body>
+{% endblock content %}
 
+{% block pageSpecificJavascript %}
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script>
@@ -323,4 +335,4 @@ function dragended(d) {
 
 } //getOption
 </script>
-</html>
+{% endblock pageSpecificJavascript %}
