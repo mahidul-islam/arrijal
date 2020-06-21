@@ -1,15 +1,132 @@
+{% extends "base.html" %}
 {% load static %}
-<html>
-<body>
-<svg id='viz'></svg>
-</body>
+{% block pageStyle %}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+{% endblock pageStyle %}
 
+{% block content %}
+
+<div class="container">
+  <h2>Search Isnad</h2><br>
+  <form ng-app="myApp" ng-controller="myCtrl" name="myForm">
+    <div class="form-group">
+      <label for="exampleFormControlSelect2">Hadith Book:</label>
+      <select class="custom-select my-1 mr-sm-2" id="mySelect" ng-model="selectedName" ng-options="x for x in names"> </select>
+    </div>
+    <div class="form-group">
+      <label for="numberExample">Hadith No:</label>
+      <input ng-model="myText" name="myText" type="number" class="form-control" id="myText" placeholder="Enter Hadith No.">
+      <span ng-show="myForm.myText.$error.number">Not a valid number</span>
+      <span ng-show="positive">Negative number not valid</span>
+    </div>
+    <button ng-disabled="error || incomplete || positive" type="submit" onclick="getOption()" class="btn btn-primary" value="Click Me!">Submit</button>
+    <p ng-show="selectedName"><span data-ng-bind="selectedName"></span> - <span data-ng-bind="myText"></span></p>
+  </form>
+</div>
+
+<section id='chart'></section>
+<svg id='viz'></svg>
+<iframe id="myFrame" width="1300" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
+
+{% endblock content %}
+
+{% block pageSpecificJavascript %}
 <script src='https://d3js.org/d3.v5.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script>
+//.........
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+  $scope.myText=1;
+  $scope.names = ["Sahih Bukhari", "Sahih Muslim", "Sunan Abi Da'ud", "Jami' al-Tirmidhi", "Sunan an-Nasa'i", "Sunan Ibn Majah"];
+
+  $scope.$watch('selectedName',function() {$scope.test();});
+  $scope.$watch('myText',function() {$scope.test();});
+  $scope.test = function() {
+    if ($scope.myText>10000) {
+      $scope.error = true;
+      } else {
+      $scope.error = false;
+    }
+    $scope.incomplete = false;
+    if (!$scope.selectedName.length ||
+    !$scope.myText) {
+       $scope.incomplete = true;
+    }
+    $scope.positive = false;
+    if ($scope.myText<0 ) {
+       $scope.positive = true;
+    }
+
+  };
+
+
+});
+//.........
+//.................
+function getOption() {
+//.............
+// config references
+var chartConfig = {
+    target : 'chart',
+    data_url : '{% static 'isnad/datasets/some_hadiths.json' %}',
+    width: 900,
+    height: 450,
+    val: 90
+};
+
+// loader settings
+var opts = {
+  lines: 9, // The number of lines to draw
+  length: 9, // The length of each line
+  width: 5, // The line thickness
+  radius: 14, // The radius of the inner circle
+  color: '#EE3124', // #rgb or #rrggbb or array of colors
+  speed: 1.9, // Rounds per second
+  trail: 40, // Afterglow percentage
+  className: 'spinner', // The CSS class to assign to the spinner
+};
+
+var target = document.getElementById(chartConfig.target);
+
+// callback function wrapped for loader in 'init' function
+// trigger loader
+var spinner = new Spinner(opts).spin(target);
+
+// slow the json load intentionally, so we can see it every load
+setTimeout(function() {
+
+//............
+
+  //document.getElementById("viz").contentWindow.location.reload(true);
+  //svg.selectAll("*").remove();
+  var obj = document.getElementById("mySelect");
+  var book= obj.options[obj.selectedIndex].text;
+
+  var x = document.getElementById("myText").value;
+
+var b=12;
+if (book =="Sahih Bukhari") b = 12;
+else if(book =="Sahih Muslim") b = 22;
+else if(book =="Sunan Abi Da'ud") b = 25;
+else if(book =="Jami' al-Tirmidhi") b = 19;
+else if(book =="Sunan an-Nasa'i") b = 6;
+else if(book =="Sunan Ibn Majah") b = 9;
+
+ document.getElementById("myFrame").src = "https://www.hadithbd.com/hadith/filter/?book="+b+"&hadith="+x;
+//}
+//....
 var width = 1400;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
+
+  var start=0,end=20;
+   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level== 5 && d.list.includes(x))   } )
+   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x && d.level!=4  } )
+
+   // stop spin.js loader
+   spinner.stop(); //
 
 var label = {
     'nodes': [],
@@ -47,7 +164,6 @@ graph.links.forEach(function(d) {
 function neigh(a, b) {
     return a == b || adjlist[a + "-" + b];
 }
-
 
 var svg = d3.select("#viz").attr("width", width).attr("height", height);
 var container = svg.append("g");
@@ -213,5 +329,10 @@ function dragended(d) {
 }
 
 }); // d3.json
+
+}, 1500);   //setTimeout
+
+
+} //getOption
 </script>
-</html>
+{% endblock pageSpecificJavascript %}

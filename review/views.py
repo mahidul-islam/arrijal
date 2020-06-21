@@ -19,7 +19,17 @@ def review(request):
         name= request.user.username
         u= User.objects.get(username=name)
     template = loader.get_template('review/review.html')
-    review = Review.objects.all()
+    review = Review.objects.all().order_by('-date')
+    if request.method=='POST' and 'Submit0' in request.POST:
+        review = Review.objects.all().order_by('-date')
+    elif request.method=='POST' and 'Submit1' in request.POST:
+        review = Review.objects.filter(user=u)
+    elif request.method=='POST' and 'Submit2' in request.POST:
+        review = Review.objects.order_by('date')
+    elif request.method=='POST' and 'Submit3' in request.POST:
+        review = Review.objects.extra(select={'length':'Length(description)'}).order_by('-length')
+    elif request.method=='POST' and 'Submit4' in request.POST:
+        review = Review.objects.extra(select={'length':'Length(description)'}).order_by('length')
     try:
         page = int(request.GET.get('page', '1'))
     except:
@@ -31,7 +41,7 @@ def review(request):
         review = paginator.page(1)
     except EmptyPage:
         review = paginator.page(paginator.num_pages)
-    if request.method == 'POST':
+    if request.method == 'POST' and 'submit' in request.POST:
         form = ReviewForm(request.POST)
         if form.is_valid():
             instance=form.save()

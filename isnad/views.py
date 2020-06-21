@@ -52,7 +52,7 @@ def graph5(request):
 
 def sload(request):
     start=0;
-    end=300;
+    end=40023;
     wdata = {}
     wdata['nodes'] = []
     wdata['links'] = []
@@ -67,13 +67,13 @@ def sload(request):
                 'name':a['name'],
                 'group':a['grade']
             })
-    for l in ldata['links']:
+    for index,l in enumerate(ldata['links']):
         for t in l['target']:
             if not (str(t)) == "NA":
-                if start <= t <= end and start <= l['source'] <= end :
+                if start <= t <= end and start <= l['source'] <= end:
                     wdata['links'].append({
                         'source': l['source'],
-                        'target': t
+                        'target': t,
                     })
     with open('isnad/static/isnad/datasets/some_rawis.json', 'w') as outfile:
         json.dump(wdata, outfile)
@@ -83,12 +83,13 @@ def sload(request):
 def iload(request):
     name=""
     start=0
-    end=40
+    end=34442
     j=0
     all="hadiths"
     source=""
     chapter=""
     rawis=[]
+    dic={}
     wdata = {}
     wdata['nodes'] = []
     wdata['links'] = []
@@ -105,8 +106,10 @@ def iload(request):
     wdata['nodes'].append({
         'id': all,
         'group':all,
-        'level':1
+        'level':1,
+        'book':'all'
     })
+
     for index,a in enumerate(aldata['info']):
         if start <= index <= end:
             wdata['nodes'].append({
@@ -114,7 +117,9 @@ def iload(request):
                 'name': a['hadith_no'],
                 'group':"hadith",
                 'level':4,
-                'text':a['text_en']
+                'text':a['text_en'],
+                'hadith_no':a['hadith_no'].strip(),
+                'book':a['source'].strip()
             })
             if a['hadith_no'] == " 1 ":
                 source = aldata['info'][index]['source']
@@ -122,11 +127,14 @@ def iload(request):
                     'id': a['source'],
                     'name':a['source'],
                     'group': "source",
-                    'level':2
+                    'level':2,
+                    'book':a['source'].strip()
                 })
                 wdata['links'].append({
                     'source': all ,
-                    'target': a['source']
+                    'target': a['source'],
+                    'book':a['source'].strip()
+
                 })
             if a['id'] == 0:
                 chapter = aldata['info'][index]['chapter']
@@ -135,15 +143,23 @@ def iload(request):
                     'id': a['chapter'],
                     'name':a['chapter'],
                     'group':"chapter",
-                    'level':3
+                    'level':3,
+                    'chapter':a['chapter'],
+                    'book':a['source'].strip()
                 })
             wdata['links'].append({
                 'source': source ,
-                'target': chapter
+                'target': chapter,
+                'chapter':a['chapter'],
+                'book':a['source'].strip()
+
             })
             wdata['links'].append({
                 'source': chapter ,
-                'target': index
+                'target': index,
+                'hadith_no':a['hadith_no'].strip(),
+                'book':a['source'].strip(),
+                'level':4
             })
 
     for index,c in enumerate(cdata['info']):
@@ -160,11 +176,23 @@ def iload(request):
                         'id': str(c['chain_indx'][j]),
                         'name':name,
                         'group':"rawis",
-                        'level':5
+                        'level':5,
+                        'list':list(aldata['info'][index]['hadith_no'].strip().split(" "))
                     })
+                    #dic.add(len(rawis)-1, len(wdata['nodes'])-1)
+                    dic[len(rawis)-1]=len(wdata['nodes'])-1
+                else:
+                    p=rawis.index(str(c['chain_indx'][j]))
+                    k=dic[p]
+                    wdata['nodes'][k]['list'].append(aldata['info'][index]['hadith_no'].strip())
+
+
                 wdata['links'].append({
                     'source': hadith_id,
-                    'target': str(c['chain_indx'][j])
+                    'target': str(c['chain_indx'][j]),
+                    'hadith_no':aldata['info'][index]['hadith_no'].strip(),
+                    'book':aldata['info'][index]['source'].strip()
+
                 })
                 if str(cdata['info'][index]['chain_indx'][j]) in getindex:
                     hadith_id = str(c['chain_indx'][j])

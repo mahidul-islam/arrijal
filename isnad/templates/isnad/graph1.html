@@ -1,15 +1,73 @@
 {% load static %}
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
+  <form data-ng-app="myApp" name="myForm" ng-controller="myCtrl">
+      Scholar id range:
+      <input name="start" required type="number" id="start"  data-ng-model="start">
+      <span ng-show="myForm.start.$error.number">Not a valid number</span>
+      <input name="end" required type="number" id="end"  data-ng-model="end">
+      <span ng-show="myForm.end.$error.number">Not a valid number</span>
+      <span ng-show="error">*Max 1000 Scholars</span>
+      <br><br>
+      <input ng-disabled="error || incomplete || positive" type="button" onclick="getOption()" value="Click Me!">
+      <p>Range: <span data-ng-bind="start"></span>-to-<span data-ng-bind="end"></span> </p>
+  </form>
 <svg id='viz'></svg>
 </body>
 
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script>
+//.......
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+$scope.start = 1;
+$scope.end = 40;
+
+$scope.$watch('start',function() {$scope.test();});
+$scope.$watch('end',function() {$scope.test();});
+$scope.test = function() {
+  if (($scope.end-$scope.start)>1000) {
+    $scope.error = true;
+    } else {
+    $scope.error = false;
+  }
+
+  $scope.incomplete = false;
+  if (!$scope.start ||
+  !$scope.end) {
+     $scope.incomplete = true;
+  }
+
+  $scope.positive = false;
+  if ($scope.start<0 ||
+  $scope.end<0) {
+     $scope.positive = true;
+  }
+
+
+};
+
+});
+//.......
+//.................
+function getOption() {
+
+  var start = document.getElementById("start").value;
+  var end = document.getElementById("end").value;
+
+
+
+//}
+//....
 var width = 1400;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
-d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
+d3.json("{% static 'isnad/datasets/some_rawis.json' %}").then(function(graph) {
+
+//var start=200,end=300;
+  graph.nodes = graph.nodes.filter( function(d){return  start <=d.id  && d.id <= end } )
+  graph.links = graph.links.filter( function(d){return start <= d.source && d.source <= end && start <= d.target && d.target <= end } )
 
 var label = {
     'nodes': [],
@@ -119,7 +177,7 @@ var labelNode = container.append("g").attr("class", "labelNodes")
     .style("fill", "#555")
     .style("font-family", "Arial")
     .style("font-size", 12)
-    .style("opacity", 1)    //
+    .style("opacity", .6)
     .style("pointer-events", "none"); // to prevent mouseover/drag capture
 
 node.on("mouseover", focus).on("mouseout", unfocus);
@@ -169,9 +227,8 @@ function focus(d) {
       return neigh(index, o.node.index) ? "block": "none";
     });
     labelNode.style("opacity", function(o) {     //.........
-        return neigh(index, o.node.index) ? 1 : .9;
+        return neigh(index, o.node.index) ? 1 : 0.1;
     });
-
 
 }
 
@@ -214,5 +271,6 @@ function dragended(d) {
 }
 
 }); // d3.json
+} //
 </script>
 </html>
