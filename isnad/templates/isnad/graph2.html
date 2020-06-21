@@ -2,12 +2,14 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
-  <form ng-app="myApp" ng-controller="myCtrl">
+  <form ng-app="myApp" ng-controller="myCtrl" name="myForm">
       Select Hadith:
       <select id="mySelect" ng-model="selectedName" ng-options="x for x in names"> </select>
-      <input ng-model="myText" type="number" id="myText">
+      <input ng-model="myText" name="myText" type="number" id="myText" required>
+      <span ng-show="myForm.myText.$error.number">Not a valid number</span>
+      <span ng-show="positive">Negative number not valid</span>
       <br><br>
-      <input type="button" onclick="getOption()" value="Click Me!">
+      <input ng-disabled="error || incomplete || positive" type="button" onclick="getOption()" value="Click Me!">
       <p ng-show="selectedName">Book: "<span data-ng-bind="selectedName"></span>"<br>Hadith No: "<span data-ng-bind="myText"></span>"</p>
       <p ng-show="selectedName">"<span data-ng-bind="selectedName"></span>" is a book of Hadith.</p>
   </form>
@@ -25,6 +27,28 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {
   $scope.myText=1;
   $scope.names = ["Sahih Bukhari", "Sahih Muslim", "Sunan Abi Da'ud", "Jami' al-Tirmidhi", "Sunan an-Nasa'i", "Sunan Ibn Majah"];
+
+  $scope.$watch('selectedName',function() {$scope.test();});
+  $scope.$watch('myText',function() {$scope.test();});
+  $scope.test = function() {
+    if ($scope.myText>10000) {
+      $scope.error = true;
+      } else {
+      $scope.error = false;
+    }
+    $scope.incomplete = false;
+    if (!$scope.selectedName.length ||
+    !$scope.myText) {
+       $scope.incomplete = true;
+    }
+    $scope.positive = false;
+    if ($scope.myText<0 ) {
+       $scope.positive = true;
+    }
+
+  };
+
+
 });
 //.........
 //.................
