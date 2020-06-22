@@ -80,6 +80,7 @@ $scope.test = function() {
 //.......
 //.................
 function getOption() {
+  d3.selectAll("g > *").remove()  //  Repainting/Refreshing Graph in D3
 
   var start = document.getElementById("start").value;
   var end = document.getElementById("end").value;
