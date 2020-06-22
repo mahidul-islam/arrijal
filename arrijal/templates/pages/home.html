@@ -9,260 +9,124 @@
 
 {% block later %}
 
-<!-- isnad section -->
-<section class="course-section spad">
-  <div class="course-warp">
-    <div class="container">
-      <div class="section-title">
-        <h2>Our Isnad Graphs</h2>
-        <p>Hadith (an Arabic word) refers to the words and actions of Prophet Mohammed.
-          Those collections of Hadiths have been transmitted through generations of Muslim scholars
-           until they have been collected and written in big collections.
-           The chain of narrators is a main area of study in Islamic scholarship
-            because a single hadith may have multiple chains of narrators (that may or may not overlap). </p>
-      </div>
-    </div>
-    <ul class="course-filter controls pt-0">
-      <li class="control active" data-filter="all">All</li>
-      <li class="control" data-filter=".isnad">Isnad Graphs</li>
-      <li class="control" data-filter=".scholar">Muslim Scholars</li>
-      <li class="control" data-filter=".others">Others</li>
-    </ul>
-    <div class="row course-items-area">
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 isnad">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'isnad/img/scholar.jpeg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:igraph' %}">
-              <h5> السند  </h5>
-            </a>
-            <p> Hadith text, translation  and interactive chain of narrators (isnad)  </p>
-            <span>The chain of narration</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 scholar">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'isnad/img/scholar.jpeg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:sgraph' %}">
-              <h5>  علماء المسلمين   </h5>
-            </a>
-            <p> Authentic Inter-linked graph of Muslim Scholars </p>
-            <span>Muslim Scholars</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:graph1' %}">
-              <h5>graph1</h5>
-            </a>
-            <p>graph1</p>
-            <span>Size: bad de pm</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:graph2' %}">
-              <h5>graph2</h5>
-            </a>
-            <p>graph2</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:graph3' %}">
-              <h5>VR mode: graph3</h5>
-            </a>
-            <p>for big graph</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:graph4' %}">
-              <h5>graph4</h5>
-            </a>
-            <p>graph4</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:graph5' %}">
-              <h5>graph5</h5>
-            </a>
-            <p>graph5</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:sload' %}">
-              <h5>Load Scholars</h5>
-            </a>
-            <p>--Load scholar data to json file--</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-      <div class="mix col-lg-3 col-md-4 col-sm-6 others">
-        <div class="categorie-item">
-          <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-          <div class="ci-text">
-            <a href="{% url 'isnad:iload' %}">
-              <h5>Load Isnad</h5>
-            </a>
-            <p>--Load Isnad data to json file--</p>
-            <span>Size: Unknown</span>
-          </div>
-        </div>
-      </div>
-      <!-- categorie -->
-    </div>
-  </div>
-</section>
-<!-- isnad section end -->
-
-
-
   <!-- course section -->
 	<section class="course-section spad">
     <div class="course-warp">
       <div class="container">
         <div class="section-title">
-          <h2>Our Animations</h2>
+          <h2>Our Featured Works</h2>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
         </div>
       </div>
-			<ul class="course-filter controls pt-0">
+			<ul class="course-filter controls pt-1">
 				<li class="control active" data-filter="all">All</li>
+        <li class="control" data-filter=".isnad">Isnad</li>
 				<li class="control" data-filter=".chemistry">Chemistry</li>
-				<li class="control" data-filter=".aromatic">Aromatic</li>
-				<li class="control" data-filter=".learning">Learning</li>
-				<li class="control" data-filter=".aliphatic">Aliphatic</li>
+        <li class="control" data-filter=".physics">Physics</li>
+        <li class="control" data-filter=".map">Maps</li>
+				<li class="control" data-filter=".animation">Animations</li>
 			</ul>
 			<div class="row course-items-area">
+<!-- .................... isnad   ............................. -->
         <!-- categorie -->
-				<div class="mix col-lg-3 col-md-4 col-sm-6 learning">
-					<div class="categorie-item">
-						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
-						<div class="ci-text">
-							<a href="{% url 'three:experimentTank' %}">
-								<h5>Experiment Tank</h5>
-							</a>
-							<p>Experimenting on the scenegraph.</p>
-							<span>Size: Unknown</span>
-						</div>
-					</div>
-				</div>
+        <div class="mix col-lg-3 col-md-4 col-sm-6 isnad">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'isnad/img/scholar.jpeg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'isnad:igraph' %}">
+                <h5> السند  </h5>
+              </a>
+              <p> Hadith text, translation  and interactive chain of narrators (isnad)  </p>
+              <span>The chain of narration</span>
+            </div>
+          </div>
+        </div>
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 full isnad">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'isnad/img/scholar.jpeg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'isnad:sgraph' %}">
+                <h5>  علماء المسلمين   </h5>
+              </a>
+              <p> Authentic Inter-linked graph of Muslim Scholars </p>
+              <span>Muslim Scholars</span>
+            </div>
+          </div>
+        </div>
+        <!-- categorie -->
+<!-- .................... chemistry   ............................. -->
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 chemistry">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'three:aliphaticChart' %}">
+                <h5>Aliphatic Chart</h5>
+              </a>
+              <p>Aliphatic Chart</p>
+              <span>Size: Unknown</span>
+            </div>
+          </div>
+        </div>
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 chemistry">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'three:aromaticChart' %}">
+                <h5>Aromatic Chart</h5>
+              </a>
+              <p>Aromatic Chart</p>
+              <span>Size: Unknown</span>
+            </div>
+          </div>
+        </div>
         <!-- categorie -->
 				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry">
 					<div class="categorie-item">
 						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
 						<div class="ci-text">
-              <a href="{% url 'three:equations' %}">
-                <h5>Many Molicules</h5>
+              <a href="{% url 'chemistry:molecule' %}">
+                <h5>Many Molecules</h5>
               </a>
-							<p>Many molicules</p>
+							<p>Many Molecules</p>
 							<span>Size: No</span>
 						</div>
 					</div>
 				</div>
 				<!-- categorie -->
-				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry aliphatic">
+        <div class="mix col-lg-3 col-md-4 col-sm-6 chemistry">
 					<div class="categorie-item">
-						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
 						<div class="ci-text">
-              <a href="{% url 'three:aliphaticChart' %}">
-                <h5>Aliphatic Chart</h5>
+              <a href="{% url 'three:equations' %}">
+                <h5>Equations</h5>
               </a>
-							<p>Aliphatic Chart</p>
-							<span>Size: Unknown</span>
+							<p>Equations</p>
+							<span>Size: No</span>
 						</div>
 					</div>
 				</div>
-				<!-- categorie -->
-				<div class="mix col-lg-3 col-md-4 col-sm-6 learning">
-					<div class="categorie-item">
-						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
-						<div class="ci-text">
-							<a href="{% url 'three:tankofnet' %}">
-								<h5>Tank</h5>
-							</a>
-							<p>A tank is playing by itself...</p>
-							<span>Size: bad de pm</span>
-						</div>
-					</div>
-				</div>
-				<!-- categorie -->
-				<div class="mix col-lg-3 col-md-4 col-sm-6 chemistry aromatic">
-					<div class="categorie-item">
-						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
-						<div class="ci-text">
-							<a href="{% url 'three:aromaticChart' %}">
-								<h5>Aromatic Chart</h5>
-							</a>
-							<p>Aromatic Chart</p>
-							<span>Size: Unknown</span>
-						</div>
-					</div>
-				</div>
-				<!-- categorie -->
-			</div>
-		</div>
-	</section>
-	<!-- course section end -->
-
-
-  <!-- course section -->
-	<section class="course-section">
-    <div class="course-warp">
-      <div class="container">
-        <div class="section-title">
-          <h2>Our Maps</h2>
-  				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
-        </div>
-      </div>
-			<ul class="course-filter controls pt-0">
-				<li>All</li>
-				<li>World</li>
-				<li>Bangladesh</li>
-				<li>Education</li>
-				<li>History</li>
-			</ul>
-			<div class="row map-items-area">
         <!-- categorie -->
-        <div class="mix col-lg-3 col-md-4 col-sm-6 world">
+<!-- .................... physics   ............................. -->
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 physics">
+          <div class="categorie-item">
+            <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+            <div class="ci-text">
+              <a href="{% url 'physics:threed' %}">
+                <h5>3d Game</h5>
+              </a>
+              <p>A Basic 3d Game of Unity</p>
+              <span>Size: No</span>
+            </div>
+          </div>
+        </div>
+        <!-- categorie -->
+<!-- .................... map   ............................. -->
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 map">
           <div class="categorie-item">
             <div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/1.jpg' %}"></div>
             <div class="ci-text">
@@ -275,10 +139,68 @@
           </div>
         </div>
         <!-- categorie -->
-      </div>
+        <div class="mix col-lg-3 col-md-4 col-sm-6 map">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/4.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'map:povertymap' %}">
+								<h5>Poverty Map</h5>
+							</a>
+							<p>Map of Bangladesh with poverty data</p>
+							<span>Size: No</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 map">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/2.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'map:bangladesh' %}">
+								<h5>bangladesh Map</h5>
+							</a>
+							<p>bangladesh Map</p>
+							<span>Size: No</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+<!-- .................... animation   ............................. -->
+				<!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 animation">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'three:experimentTank' %}">
+								<h5>Experiment Tank</h5>
+							</a>
+							<p>Experimenting on the scenegraph.</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+        <!-- categorie -->
+        <div class="mix col-lg-3 col-md-4 col-sm-6 animation">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:tank' %}">
+								<h5>Helicopter</h5>
+							</a>
+							<p>Experimenting on the scenegraph.</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+        <!-- categorie -->
+<!-- ....................     ............................. -->
+
+
+			</div>
 		</div>
 	</section>
-  	<!-- categories section end -->
+	<!-- course section end -->
+
 
   {% if user.is_authenticated %}
     <section class="spad"></section>
