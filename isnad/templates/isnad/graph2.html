@@ -37,6 +37,7 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script>
+
 //.........
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {
@@ -120,14 +121,17 @@ else if(book =="Sunan Ibn Majah") b = 9;
 //}
 //....
 var width = 1200;
-var height = 800;
-var style="border:2px solid yellow;";
+var height = 400;
+var style="border:2px solid yellow;    margin-right: 1150px; ";
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
-  var start=0,end=20;
-   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level== 5 && d.list.includes(x))   } )
-   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x && d.level!=4  } )
+  var start=0,end=20; //     ||    (d.level== 5 && d.list.includes(x))
+  var li=graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book) } )
+  var clist= li[0]['chain_indx']
+   graph.nodes = graph.nodes.filter( function(d){ return  (d.level==4 && d.hadith_no==x && d.book==book )   || (d.level== 5 && clist.includes(d.id))   } )
+   console.log(graph.nodes);
+   graph.links = graph.links.filter( function(d){ return  d.book==book && d.hadith_no==x && d.level!=4  } )
 
    // stop spin.js loader
    spinner.stop(); //
