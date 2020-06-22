@@ -205,7 +205,7 @@ var link = container.selectAll(".link")
     .append("line")
     .data(graph.links)
     .attr("stroke", "#aaa")
-    .attr("stroke-width", "1px")
+    .attr("stroke-width", "2px")
     .attr("class", "link")
     .style("marker-end",  "url(#suit)") // Modified line
 //..........
@@ -223,7 +223,7 @@ var node = container.append("g").attr("class", "nodes")
     .data(graph.nodes)
     .enter()
     .append("circle")
-    .attr("r", 13)
+    .attr("r", 20)
     .attr("fill", function(d) { return color(d.group); })
 
 node.on("mouseover", focus).on("mouseout", unfocus);
@@ -303,7 +303,7 @@ function unfocus() {
    node.style("opacity", 1);
    link.style("opacity", 1);
    labelNode.attr("display", "block");
-   labelNode.style("opacity", .5);   //............
+   labelNode.style("opacity", .9);   //............
 }
 
 function updateLink(link) {
