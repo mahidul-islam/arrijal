@@ -16,3 +16,4 @@ django-redis==4.11.0  # https://github.com/niwinz/django-redis
 django-widget-tweaks==1.4.8  # https://github.com/jazzband/django-widget-tweaks
 wagtail==2.9  #https://github.com/wagtail/wagtail
 django-comments-dab==1.4.0 # https://pypi.org/project/django-comments-dab/
+django wiki==0.6 # https://readthedocs.org/projects/django-wiki/downloads/pdf/latest/

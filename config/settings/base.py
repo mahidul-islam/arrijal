@@ -55,19 +55,32 @@ ROOT_URLCONF = "config.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "config.wsgi.application"
 
+
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    "django.contrib.sites",
+
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    'django.contrib.sites.apps.SitesConfig',
+    'django.contrib.humanize.apps.HumanizeConfig',
+    'django_nyt.apps.DjangoNytConfig',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki.apps.WikiConfig',
+    'wiki.plugins.attachments.apps.AttachmentsConfig',
+    'wiki.plugins.notifications.apps.NotificationsConfig',
+    'wiki.plugins.images.apps.ImagesConfig',
+    'wiki.plugins.macros.apps.MacrosConfig',
 ]
+
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "allauth",
@@ -106,7 +119,21 @@ Install=[
 
  'modelcluster',
  'taggit',]
+"""
+Wiki_Apps=[
+  'django.contrib.sites.apps.SitesConfig',
+  'django.contrib.humanize.apps.HumanizeConfig',
+  'django_nyt.apps.DjangoNytConfig',
+  'mptt',
+  'sekizai',
+  'sorl.thumbnail',
+  'wiki.apps.WikiConfig',
+  'wiki.plugins.attachments.apps.AttachmentsConfig',
+  'wiki.plugins.notifications.apps.NotificationsConfig',
+  'wiki.plugins.images.apps.ImagesConfig',
+  'wiki.plugins.macros.apps.MacrosConfig',]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
+"""
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS+Install
 
 # MIGRATIONS
@@ -165,6 +192,10 @@ MIDDLEWARE = [
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
+WIKI_ACCOUNT_HANDLING = True
+WIKI_ACCOUNT_SIGNUP_ALLOWED = True
+from django.urls import reverse_lazy
+LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
 # STATIC
 # ------------------------------------------------------------------------------
@@ -214,6 +245,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "arrijal.utils.context_processors.settings_context",
+                "sekizai.context_processors.sekizai",
             ],
         },
     }

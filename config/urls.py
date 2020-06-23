@@ -21,6 +21,8 @@ urlpatterns = [
     # User management
     path("users/", include("arrijal.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path('notifications/', include('django_nyt.urls')),
+    path('', include('wiki.urls')),
 
     # Your stuff: custom urls includes go here
     path("three/", include("three.urls", namespace="three")),
