@@ -27,3 +27,8 @@ def threed(request):
     template = loader.get_template('physics/threed.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def threed_mobile(request):
+    template = loader.get_template('physics/threed_mobile.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
