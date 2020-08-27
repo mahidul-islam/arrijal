@@ -115,11 +115,12 @@ def iload(request):
             wdata['nodes'].append({
                 'id': index,
                 'name': a['hadith_no'],
-                'group':"hadith",
-                'level':4,
-                'text':a['text_en'],
-                'hadith_no':a['hadith_no'].strip(),
-                'book':a['source'].strip()
+                'group': "hadith",
+                'level': 4,
+                'text': a['text_en'],
+                'hadith_no': a['hadith_no'].strip(),
+                'book': a['source'].strip(),
+                'chain_indx': a['chain_indx'].replace(" ", "").split(",")
             })
             if a['hadith_no'] == " 1 ":
                 source = aldata['info'][index]['source']

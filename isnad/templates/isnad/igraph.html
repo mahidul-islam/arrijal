@@ -25,8 +25,11 @@
 </div>
 
 <section id='chart'></section>
-<svg id='viz'></svg>
-<iframe id="myFrame" width="1300" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
+<svg id='viz' >
+<text x="500" y="20" font-family="sans-serif" font-size="20px" fill="red">Chain of Narrators</text>
+</svg>
+<h3 style="text-align:center;">hadith text</h3>
+<iframe  id="myFrame" width="1200" style="border:2px solid green;" height="700" src="{% static 'isnad/img/hadithbd.png' %}"></iframe>
 
 {% endblock content %}
 
@@ -34,6 +37,7 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.min.js'></script>
 <script>
+
 //.........
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {
@@ -65,6 +69,7 @@ app.controller('myCtrl', function($scope) {
 //.........
 //.................
 function getOption() {
+d3.selectAll("g > *").remove()  //  Repainting/Refreshing Graph in D3
 //.............
 // config references
 var chartConfig = {
@@ -77,11 +82,11 @@ var chartConfig = {
 
 // loader settings
 var opts = {
-  lines: 9, // The number of lines to draw
-  length: 9, // The length of each line
-  width: 5, // The line thickness
-  radius: 14, // The radius of the inner circle
-  color: '#EE3124', // #rgb or #rrggbb or array of colors
+  lines: 19, // The number of lines to draw
+  length: 19, // The length of each line
+  width: 15, // The line thickness
+  radius: 64, // The radius of the inner circle
+  color: 'green', // #rgb or #rrggbb or array of colors
   speed: 1.9, // Rounds per second
   trail: 40, // Afterglow percentage
   className: 'spinner', // The CSS class to assign to the spinner
@@ -116,14 +121,18 @@ else if(book =="Sunan Ibn Majah") b = 9;
  document.getElementById("myFrame").src = "https://www.hadithbd.com/hadith/filter/?book="+b+"&hadith="+x;
 //}
 //....
-var width = 1400;
-var height = 600;
+var width = 1200;
+var height = 400;
+var style="border:2px solid yellow;    margin-right: 1150px; ";
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 d3.json("{% static 'isnad/datasets/some_hadiths.json' %}").then(function(graph) {
 
-  var start=0,end=20;
-   graph.nodes = graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book ) || (d.level== 5 && d.list.includes(x))   } )
-   graph.links = graph.links.filter( function(d){return  d.book==book && d.hadith_no==x && d.level!=4  } )
+  var start=0,end=20; //     ||    (d.level== 5 && d.list.includes(x))
+  var li=graph.nodes.filter( function(d){return  (d.level==4 && d.hadith_no==x && d.book==book) } )
+  var clist= li[0]['chain_indx']
+   graph.nodes = graph.nodes.filter( function(d){ return  (d.level==4 && d.hadith_no==x && d.book==book )   || (d.level== 5 && clist.includes(d.id))   } )
+   console.log(graph.nodes);
+   graph.links = graph.links.filter( function(d){ return  d.book==book && d.hadith_no==x && d.level!=4  } )
 
    // stop spin.js loader
    spinner.stop(); //
@@ -165,7 +174,7 @@ function neigh(a, b) {
     return a == b || adjlist[a + "-" + b];
 }
 
-var svg = d3.select("#viz").attr("width", width).attr("height", height);
+var svg = d3.select("#viz").attr("width", width).attr("height", height).attr("style", style);
 var container = svg.append("g");
 
 svg.call(
@@ -196,7 +205,7 @@ var link = container.selectAll(".link")
     .append("line")
     .data(graph.links)
     .attr("stroke", "#aaa")
-    .attr("stroke-width", "1px")
+    .attr("stroke-width", "2px")
     .attr("class", "link")
     .style("marker-end",  "url(#suit)") // Modified line
 //..........
@@ -214,7 +223,7 @@ var node = container.append("g").attr("class", "nodes")
     .data(graph.nodes)
     .enter()
     .append("circle")
-    .attr("r", 13)
+    .attr("r", 20)
     .attr("fill", function(d) { return color(d.group); })
 
 node.on("mouseover", focus).on("mouseout", unfocus);
@@ -294,7 +303,7 @@ function unfocus() {
    node.style("opacity", 1);
    link.style("opacity", 1);
    labelNode.attr("display", "block");
-   labelNode.style("opacity", .5);   //............
+   labelNode.style("opacity", .9);   //............
 }
 
 function updateLink(link) {
