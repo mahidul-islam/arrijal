@@ -1,0 +1,409 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+{% block pageStyle %}
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<style>
+  #menu {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  button {
+    color: rgb(255,255,255);
+    background: transparent;
+    border: 0px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: rgba(0,255,255,0.5);
+  }
+  button:active {
+    color: #000000;
+    background-color: rgba(0,255,255,1);
+  }
+
+  .label {
+    text-shadow: -1px 1px 1px rgb(0,0,0);
+    margin-left: 25px;
+    font-size: 20px;
+  }
+</style>
+{% endblock pageStyle %}
+
+{% block animation %}
+<div id="container"></div>
+		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js webgl</a> - molecules</div>
+		<div id="menu"></div>
+
+{% endblock %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/OrbitControls.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
+  var camera, scene, renderer, labelRenderer;
+  var controls;
+  var root;
+
+  var MOLECULES = {
+		"Al2O3": "Al2O3.pdb",
+    "ch3cho": "ch3cho.pdb",
+    "ch3ch2oh": "ch3ch2oh.pdb",
+		"C13H24":"C13H24.pdb",
+		"CH3MgCl":"CH3MgCl.pdb",
+		"ch3coch3":"ch3coch3.pdb",
+		"ch3cooNa":"ch3cooNa.pdb",
+		"ch3cooch3":"ch3cooch3.pdb",
+		"ch3coCl":"ch3coCl.pdb",
+		"ch3coNH2":"ch3coNH2.pdb",
+		"C6H5OC6H5":"C6H5OC6H5.pdb",
+		"ch3Br":"ch3Br.pdb",
+		"ch3MgCl":"ch3MgCl.pdb",
+		"HCOOH":"HCOOH.pdb",
+		"h2co":"h2co.pdb",
+		"ch3cooh":"ch3cooh.pdb",
+		"ch3nh2":"ch3nh2.pdb",
+		"chCl3":"chCl3.pdb",
+		"c6h6":"c6h6.pdb",
+		"c6h5nh2":"c6h5nh2.pdb",
+		"c6h5no2":"c6h5no2.pdb",
+		"C6H5NaCl":"C6H5NaCl.pdb",
+		"":".pdb",
+		"c6h5ch3":"c6h5ch3.pdb",
+		"c6h5F":"c6h5F.pdb",
+		"c6h5l":"c6h5l.pdb",
+		"c6h5cn":"c6h5cn.pdb",
+		"c6h5cooh":"c6h5cooh.pdb",
+		"c6h5ch2oh":"c6h5ch2oh.pdb",
+		"c6h5coona":"c6h5coona.pdb",
+		"c6h5ch2cl":"c6h5ch2cl.pdb",
+		"c6h5ccl3":"c6h5ccl3.pdb",
+		"c6h5cho":"c6h5cho.pdb",
+		"c6h5Cl":"c6h5Cl.pdb",
+		"c6h5ona":"c6h5ona.pdb",
+		"tnt":"tnt.pdb",
+		"c6h5oh":"c6h5oh.pdb",
+		"c6h5n2cl":"c6h5n2cl.pdb",
+		"C6h5no2":"C6h5no2.pdb",
+		"c6h5chcl2":"c6h5chcl2.pdb",
+		"c6h4ch3no2":"c6h4ch3no2.pdb",
+		"c6h4o2":"c6h4o2.pdb",
+		"c6h5coch3":"c6h5coch3.pdb",
+		"c6h5c6h5":"c6h5c6h5.pdb",
+		"c6h5no2no2ch3":"c6h5no2no2ch3.pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+
+
+
+
+//Organic Molecules:
+		"methane": "methane.pdb",
+		"ethane": "ethane.pdb",
+		"ethanol": "ethanol.pdb",
+		"ethylene": "ethylene.pdb",
+		"ethyne":"ethyne.pdb",
+		"propane": "propane.pdb",
+		"butane": "butane.pdb",
+		"octane":"octane.pdb",
+		"c_60": "c_60.pdb",
+		"graphite": "graphite.pdb",
+		"diamond": "diamond.pdb",
+
+//Salts:
+		"barite_BaSO4":"barite_BaSO4.pdb",
+		"calcite_CaCO3_":"calcite_CaCO3_.pdb",
+		"quartz_SiO2":"quartz_SiO2.pdb",
+		"nacl":"nacl.pdb",
+
+//Biological Molecules:
+		"ala":"ala.pdb",
+		"ATP":"ATP.pdb",
+		"ATP_mg":"ATP_mg.pdb",
+		"fructose_6_phospate":"fructose_6_phospate.pdb",
+		"d_glucose":"d_glucose.pdb",
+		"glucose":"glucose.pdb",
+		"glutamine":"glutamine.pdb",
+		"heme":"heme.pdb",
+		"heroin":"heroin.pdb",
+		"NAD":"NAD.pdb",
+		"silk_fibroin":"silk_fibroin.pdb",
+
+//Water:
+		"water": "water.pdb",
+		"ice": "ice.pdb",
+		"water_five":"water_five.pdb",
+		"water_three":"water_three.pdb",
+		"water_two":"water_two.pdb",
+
+//Miscellaneous:
+		"phosphorous_penta_flouride":"phosphorous_penta_flouride.pdb",
+		"ammonia":"ammonia.pdb",
+		"sulfur_dioxide":"sulfur_dioxide.pdb",
+		"xenon_di_flouride":"xenon_di_flouride.pdb",
+		"chiral":"chiral.pdb",
+//...........
+		"C27H35N6O8P,REMDESIVIR (treatment to SARS-CoV2)":"C27H35N6O8P (treatment to SARS-CoV2).pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+		"":".pdb",
+
+  };
+
+  var loader = new PDBLoader();
+  var offset = new THREE.Vector3();
+
+  var menu = document.getElementById( 'menu' );
+
+  init();
+  animate();
+
+  function init() {
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x050505 );
+
+    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera.position.z = 1000;
+    scene.add( camera );
+
+    var light = new THREE.DirectionalLight( 0xffffff, 0.8 );
+    light.position.set( 1, 1, 1 );
+    scene.add( light );
+
+    var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    light.position.set( - 1, - 1, 1 );
+    scene.add( light );
+
+    root = new THREE.Group();
+    scene.add( root );
+
+    //
+
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+    labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize( window.innerWidth, window.innerHeight );
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.pointerEvents = 'none';
+    document.getElementById( 'container' ).appendChild( labelRenderer.domElement );
+
+    //
+
+    controls = new TrackballControls( camera, renderer.domElement );
+    controls.minDistance = 500;
+    controls.maxDistance = 2000;
+
+    //
+//......cbutton.............
+
+var cbutton = document.createElement( 'button' );
+cbutton.innerHTML = "camera";
+menu.appendChild( cbutton );
+cbutton.addEventListener( 'click', cgenerateButtonCallback(  ), false );
+//.................
+
+    loadMolecule( '{% static 'chemistry/model/pdb/ch3ch2oh.pdb' %}' );
+    createMenu();
+    //
+    window.addEventListener( 'resize', onWindowResize, false );
+
+  }
+
+  //
+//........cbutton..........
+function cgenerateButtonCallback( url ) {
+	return function () {
+		movecamera( url );
+	};
+}
+function movecamera( url ) {
+	camera.position.z = -1000;
+		}
+
+//....................
+
+  function generateButtonCallback( url ) {
+
+    return function () {
+
+			loadMolecule( url );
+
+    };
+
+  }
+
+  function createMenu() {
+
+    for ( var m in MOLECULES ) {
+
+      var button = document.createElement( 'button' );
+      button.innerHTML = m;
+      menu.appendChild( button );
+
+      var url = '{% static 'chemistry/model/pdb/' %}' + MOLECULES[ m ];
+
+      button.addEventListener( 'click', generateButtonCallback( url ), false );
+
+    }
+
+  }
+
+  //
+
+  function loadMolecule( url ) {
+
+    while ( root.children.length > 0 ) {
+
+      var object = root.children[ 0 ];
+      object.parent.remove( object );
+
+    }
+
+    loader.load( url, function ( pdb ) {
+
+      var geometryAtoms = pdb.geometryAtoms;
+      var geometryBonds = pdb.geometryBonds;
+      var json = pdb.json;
+
+      var boxGeometry = new THREE.BoxBufferGeometry( 1, 1, 1 );
+      var sphereGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
+
+      geometryAtoms.computeBoundingBox();
+      geometryAtoms.boundingBox.getCenter( offset ).negate();
+
+      geometryAtoms.translate( offset.x, offset.y, offset.z );
+      geometryBonds.translate( offset.x, offset.y, offset.z );
+
+      var positions = geometryAtoms.getAttribute( 'position' );
+      var colors = geometryAtoms.getAttribute( 'color' );
+
+      var position = new THREE.Vector3();
+      var color = new THREE.Color();
+
+      for ( var i = 0; i < positions.count; i ++ ) {
+
+        position.x = positions.getX( i );
+        position.y = positions.getY( i );
+        position.z = positions.getZ( i );
+
+        color.r = colors.getX( i );
+        color.g = colors.getY( i );
+        color.b = colors.getZ( i );
+
+        var material = new THREE.MeshPhongMaterial( { color: color } );
+
+        var object = new THREE.Mesh( sphereGeometry, material );
+        object.position.copy( position );
+        object.position.multiplyScalar( 75 );
+        object.scale.multiplyScalar( 25 );
+        root.add( object );
+
+        var atom = json.atoms[ i ];
+
+        var text = document.createElement( 'div' );
+        text.className = 'label';
+        text.style.color = 'rgb(' + atom[ 3 ][ 0 ] + ',' + atom[ 3 ][ 1 ] + ',' + atom[ 3 ][ 2 ] + ')';
+        text.textContent = atom[ 4 ];
+
+        var label = new CSS2DObject( text );
+        label.position.copy( object.position );
+        root.add( label );
+
+      }
+
+      positions = geometryBonds.getAttribute( 'position' );
+
+      var start = new THREE.Vector3();
+      var end = new THREE.Vector3();
+
+      for ( var i = 0; i < positions.count; i += 2 ) {
+
+        start.x = positions.getX( i );
+        start.y = positions.getY( i );
+        start.z = positions.getZ( i );
+
+        end.x = positions.getX( i + 1 );
+        end.y = positions.getY( i + 1 );
+        end.z = positions.getZ( i + 1 );
+
+        start.multiplyScalar( 75 );
+        end.multiplyScalar( 75 );
+
+        var object = new THREE.Mesh( boxGeometry, new THREE.MeshPhongMaterial( 0xffffff ) );
+        object.position.copy( start );
+        object.position.lerp( end, 0.5 );
+        object.scale.set( 5, 5, start.distanceTo( end ) );
+        object.lookAt( end );
+        root.add( object );
+
+      }
+
+      render();
+
+    } );
+
+  }
+
+  //
+
+  function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    labelRenderer.setSize( window.innerWidth, window.innerHeight );
+
+    render();
+
+  }
+
+  function animate() {
+
+    requestAnimationFrame( animate );
+    controls.update();
+
+    var time = Date.now() * 0.0004;
+
+    root.rotation.x = time;
+    root.rotation.y = time * 0.7;
+
+    render();
+
+  }
+
+  function render() {
+
+    renderer.render( scene, camera );
+    labelRenderer.render( scene, camera );
+
+  }
+
+</script>
+{% endblock pageSpecificJavascript %}

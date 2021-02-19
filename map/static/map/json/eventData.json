@@ -1,0 +1,48 @@
+[
+  {
+    "year": 1900,
+    "dataPerMonth":
+    [
+      {
+        "1":
+        [
+          {
+            "event":"The First Event",
+            "popupText":"The First PopUp",
+            "lat":23.777176,
+            "lon":90.399452
+          },
+          {
+            "event":"The Second Event",
+            "popupText":"My location",
+            "lat":23.983354,
+            "lon":91.107775
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "year": 1910,
+    "dataPerMonth":
+    [
+      {
+        "5":
+        [
+          {
+            "event":"The First Event",
+            "popupText":"The First PopUp",
+            "lat":23.777176,
+            "lon":90.399452
+          },
+          {
+            "event":"The Second Event",
+            "popupText":"My location",
+            "lat":23.983354,
+            "lon":91.107775
+          }
+        ]
+      }
+    ]
+  }
+]

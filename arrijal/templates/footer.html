@@ -1,0 +1,80 @@
+{% load static i18n %}
+
+<!-- footer section -->
+	<footer class="footer-section spad pb-0">
+		<div class="footer-top">
+			<div class="footer-warp">
+				<div class="row">
+					<div class="widget-item">
+						<h4>Contact Info</h4>
+						<ul class="contact-list">
+							<li>Sadar, Branhmanbaria, BD <br> and We have many friends<br> working with us</li>
+							<li>+880 1680 110838</li>
+							<li>mizihan84@gmail.com</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Animation</h4>
+						<ul>
+							<li><a href="{% url 'isnad:isnad' %}">Isnad Tree</a></li>
+							<li><a href="{% url 'chemistry:chemistry' %}">HSC Chemistry</a></li>
+							<li><a href="{% url 'edumap:edumap' %}">Map for Education</a></li>
+							<li><a href="{% url 'physics:physics' %}">Physics</a></li>
+							<li><a href="">SSC Physics(Coming Soon)</a></li>
+							<li><a href="">For others Class(Coming Soon)</a></li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Cheer US <br> EVERYWHERE!!!</h4>
+						<ul>
+							<li>
+								<span class="site-breadcrumb"> <a href=""> <i class="fa fa-github"></i> .......Ar Rijal</a></span>
+							</li>
+							<li>
+								<span class="site-breadcrumb"> <a href=""> <i class="fa fa-facebook"></i> ........Ar Rijal</a></span>
+							</li>
+							<li>
+								<span class="site-breadcrumb"> <a href=""> <i class="fa fa-youtube"></i> .......Ar Rijal</a></span>
+							</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Give us a Review</h4>
+						<ul>
+							<li> <p>Tell us how we are <br>
+								 		doing and please mention <br>
+										our lackings and weakness <br>
+										in your eyes </p> </li>
+							<li>
+								<span class="site-breadcrumb">
+									<a href="{% url 'review:review' %}">Review Page</a>
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div class="widget-item">
+						<h4>Newsletter</h4>
+						<form class="footer-newslatter" method="post" action="{% url 'newsletter:subscribe' %}">
+							{% csrf_token %}
+							<input type="email" name="email" placeholder="E-mail">
+							<button class="site-btn">Subscribe</button>
+							<p>*We don’t spam</p>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer-bottom">
+			<div class="footer-warp">
+				<ul class="footer-menu">
+					<li><a href="#">Terms & Conditions</a></li>
+					<li><a href="#">Register</a></li>
+					<li><a href="#">Privacy</a></li>
+				</ul>
+				<div class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
+			</div>
+		</div>
+	</footer>
+	<!-- footer section end -->

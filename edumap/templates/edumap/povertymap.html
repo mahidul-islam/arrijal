@@ -1,0 +1,100 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+{% endblock pageStyle %}
+
+{% block map %}
+<div class="base">
+  <svg id="svg_map" width="960" height="600"></svg>
+  <div class="container pt-3">
+    <h4>Map of Bangladesh Showing Poverty data</h4>
+  </div>
+</div>
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+<script src="https://unpkg.com/topojson@3"></script>
+
+<script type="module">
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height")
+
+const projection = d3.geoMercator().scale(4000).translate([-5850, 2000])
+const pathGenerator = d3.geoPath().projection(projection)
+const g= svg.append('g')
+const TipsText = "Tips: Hover on any area to see details"
+const HeaderText = "Poverty Map in Bangladesh"
+
+svg.style('background-color',"white")
+svg.append('text').attr('y',40).attr('x',300).text(HeaderText)
+svg.append('text').attr('y',height-150).attr('x',width-280).text(TipsText).attr('class',"tips")
+svg.call(d3.zoom().on('zoom',()=>{
+	console.log("Zooming..")
+  g.attr('transform', d3.event.transform)
+}))
+
+
+// Parsing Data
+let count = 0;
+Promise.all([
+  d3.json("{% static  'map/json/data.json' %}"),
+  d3.json('https://raw.githubusercontent.com/emon535/bangladesh-geojson/master/bangladesh.topo.json'),
+	d3.json("{% static  'map/json/bddistopo.json' %}")
+]).then(([salesData ,disTopoJsonData, newdata])=> {
+      console.log(disTopoJsonData, newdata)
+			// Get Sales information on hover
+      const getSalesInformation =(d)=> {
+        //console.log(d.properties.NAME_3, count++);
+        const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
+        let selectedDistrict = salesData.filter(obj => {
+            return obj.name === districtName;
+          // console.log(selectedDistrict);
+        })
+        //console.log(selectedDistrict);
+        let outputString = `City: ${selectedDistrict[0].name}\nCity ID: ${selectedDistrict[0].id} \nExtreme Level: ${selectedDistrict[0].extreme} \nPoor Level: ${selectedDistrict[0].poor}`;
+        return outputString;
+    	}
+
+      var myColor = d3.scaleLinear()
+  						.range(["white", "red"])
+              .domain([1,63.5]);
+
+      const getColor =(d)=> {
+        // console.log(d)
+        const districtName = d.properties.NAME_3.replace(/\s/g, "").toUpperCase();
+        let distPoverty = salesData.filter(obj => {
+            if( obj.name === districtName){
+							return obj.poor;
+            };
+        })
+       let povertyRate =distPoverty[0].poor;
+       //console.log(myColor(povertyRate));
+       return myColor(povertyRate);
+      }
+
+    // Parsing feature from Data
+		// console.log(disTopoJsonData)
+		// console.log(disTopoJsonData.objects["bangladesh[1]"])
+    const subdistrict = topojson.feature(disTopoJsonData, disTopoJsonData.objects["bangladesh[1]"])
+  	// console.log(subdistrict)
+
+    // Construct map path from feature data( subdistrict);
+    const dist = g.selectAll('path')
+						.data(subdistrict.features)
+						.enter()
+						.append('path')
+    				.style("fill", (d)=>getColor(d))
+            .attr('class', 'district')
+            .attr('d', pathGenerator);
+
+  	dist.append('title').text((d)=>getSalesInformation(d));
+
+});
+
+
+</script>
+{% endblock pageSpecificJavascript %}

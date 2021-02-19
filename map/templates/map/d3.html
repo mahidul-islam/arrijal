@@ -1,0 +1,123 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block pageStyle %}
+<link rel="stylesheet" href="{% static 'map/css/map.css' %}"/>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+{% endblock pageStyle %}
+
+{% block map %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="hello">
+        Hello:
+      </div>
+      <ul id = "list">
+         <li></li>
+         <li></li>
+      </ul>
+    </div>
+    <div class="col">
+      <svg width="500" height="200" fill="yellow">
+        <rect x = "100" y = "10" width = "300" height = "200" fill = "yellow"></rect>
+        <line x1 = "100" y1 = "100" x2 = "200" y2 = "200" style = "stroke:rgb(155,0,0);stroke-width:2" />
+      </svg>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="svgcontainer"></div>
+    </div>
+  </div>
+  <h2>Time</h2>
+
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-2"><p id="value-time"></p></div>
+      <div class="col-sm"><div id="slider-time"></div></div>
+    </div>
+  </div>
+</div>
+
+{% endblock map %}
+
+{% block pageSpecificJavascript %}
+<script type="module">
+  const message = d3.select("div.hello").html("Bye")
+  d3.select("div.hello").classed("red", true)
+  d3.select(".red").html("No red")
+
+  d3.select("#list").selectAll("li")
+    .data([10,20,30,40,50])
+    .text(function(d) {return d})
+    .enter()
+    .append("li")
+    .text(function(d) {return d})
+    .attr("style", "color:red")
+
+  var width = 300;
+    var height = 300;
+    //Create SVG element
+    var svg = d3.select(".svgcontainer")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+    //Append circle
+    svg.append("circle")
+      .attr("cx", 200)
+      .attr("cy", 50)
+      .attr("r", 300)
+      .attr("fill", "green");
+    svg.append("rect")
+      .attr("x", 20)
+      .attr("y", 20)
+      .attr("width", 100)
+      .attr("height", 100)
+      .attr("fill", "yellow")
+      .attr("transform", "translate(30, 30) rotate(45)")
+
+    d3.select("body")
+      .transition()
+      .style("background-color", "gray")
+      .duration(5000)
+      .transition()
+      .delay(5000)
+      .style("background-color", "lightblue")
+      .duration(5000)
+
+
+        // slider code
+        var dataTime = d3.range(0, 10).map(function(d) {
+          return new Date(1995 + d, 10, 3);
+        });
+
+        var sliderTime = d3
+          .sliderBottom()
+          .min(d3.min(dataTime))
+          .max(d3.max(dataTime))
+          .step(1000 * 60 * 60 * 24 * 365)
+          .width(300)
+          .tickFormat(d3.timeFormat('%Y'))
+          .tickValues(dataTime)
+          .default(new Date(1998, 10, 3))
+          .on('onchange', val => {
+            d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+          });
+
+        var gTime = d3
+          .select('div#slider-time')
+          .append('svg')
+          .attr('width', 500)
+          .attr('height', 100)
+          .append('g')
+          .attr('transform', 'translate(30,30)');
+
+        gTime.call(sliderTime);
+
+        d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
+        // slider code end
+
+</script>
+{% endblock pageSpecificJavascript %}

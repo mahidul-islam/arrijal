@@ -1,0 +1,17 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+
+{% block css %}{% endblock css %}
+
+{% block pageStyle %}
+<style>
+  body { margin: 0; }
+  canvas { display: block; }
+</style>
+{% endblock pageStyle %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+  <script type="module" src="{% static 'three/js/animation.js' %}"></script>
+{% endblock pageSpecificJavascript %}

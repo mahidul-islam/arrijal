@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block spadof %}
+{% endblock %}
+
+{% block navbar %}
+	{% include 'navbar3.html' %}
+{% endblock %}
+
+{% block later %}
+
+<!-- categories section -->
+	<section class="categories-section spad">
+		<div class="container">
+			<div class="section-title">
+				<h2>Our Animations</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris scelerisque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+			</div>
+			<div class="row">
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'chemistry/img/molecule-1.jpeg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:molecule' %}">
+								<h5>Molecules</h5>
+							</a>
+							<p>C</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static '/chemistry/img/helicopter-3.png' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:tank' %}">
+								<h5>Helicopter</h5>
+							</a>
+							<p>A Helicopter is playing by itself...</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/3.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:oxygen' %}">
+								<h5>Oxygen</h5>
+							</a>
+							<p>O2</p>
+							<span>Size: bad de pm</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+				<div class="col-lg-4 col-md-6">
+					<div class="categorie-item">
+						<div class="ci-thumb set-bg" data-setbg="{% static 'img/categories/5.jpg' %}"></div>
+						<div class="ci-text">
+							<a href="{% url 'chemistry:raycaster' %}">
+								<h5>Raycaster</h5>
+							</a>
+							<p>Raycaster</p>
+							<span>Size: Unknown</span>
+						</div>
+					</div>
+				</div>
+				<!-- categorie -->
+			</div>
+		</div>
+	</section>
+	<!-- categories section end -->
+{% endblock later %}

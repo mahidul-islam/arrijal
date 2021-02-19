@@ -1,0 +1,338 @@
+{% extends 'abstractbase.html' %}
+{% load static %}
+{% block css %}{% endblock css %}
+
+{% block pageStyle %}
+  <link rel="stylesheet" href="{% static 'three/css/animation.css' %}"/>
+{% endblock pageStyle %}
+
+{% block animation %}
+  <div id="container"></div>
+  <div id="back-button">
+    <a style="text-decoration: none; color: #FFFFFF" href="{% url 'three:three' %}">Back</a>
+  </div>
+  <div id="menu"></div>
+{% endblock %}
+
+{% block javascript %}{% endblock javascript %}
+
+{% block pageSpecificJavascript %}
+<script type="module">
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+import {PDBLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/loaders/PDBLoader.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/renderers/CSS2DRenderer.js';
+import {TrackballControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/examples/jsm/controls/TrackballControls.js';
+
+
+  var camera, scene, renderer, labelRenderer;
+  var controls
+  let rotatate = false // if the rotatable object will rotate
+  var state = []
+  var arrows = []
+  let secondButtonOn = false
+
+  // objects will be stored here to rotate later in animate
+  const objects = [];
+  const objects2 = [];
+  const objects3 = [];
+
+  var loader = new PDBLoader();
+  var offset = new THREE.Vector3();
+
+  const menu = document.getElementById( 'menu' );
+  const initialCameraPosition = new THREE.Object3D()
+  initialCameraPosition.position.z = 3000
+
+  init(initialCameraPosition, menu);
+
+
+  const startStopRotationButton = document.createElement( 'button' );
+  startStopRotationButton.innerHTML = "Start/Stop rotating";
+  menu.appendChild( startStopRotationButton );
+  startStopRotationButton.addEventListener( 'click', generateStartStopRotationButtonCallback(), false );
+
+  function generateStartStopRotationButtonCallback() {
+    return function () {
+      rotatate = !rotatate
+    }
+  }
+
+  const restoreButton = document.createElement( 'button' )
+  restoreButton.innerHTML = "Restore Molecules"
+  menu.appendChild( restoreButton )
+  restoreButton.addEventListener( 'click', restoreButtonCallback(), false )
+
+  function restoreButtonCallback() {
+    return function () {
+      restoreAllMolsAndLinks(mols, root)
+    }
+  }
+
+  // root for the whole scenegraph
+  const root = new THREE.Group();
+  root.name = "root"
+  const headerTextPlace = new THREE.Group();
+  scene.add( root );
+  root.add( headerTextPlace )
+  headerTextPlace.position.x = -2000
+  headerTextPlace.position.y = 1700
+  text3dLoader(headerTextPlace, "Aromatic Chart For Class 11-12", "red", 200)
+
+  // load the molecules from json
+  const text = {% include "three/snippet/aromaticMolecules.json" %}
+  const mols = JSON.parse(JSON.stringify(text))
+  for(let i=0;i<mols.molecules.length;i++){
+    const mol = {"name":"", "state":false, "linked":[]}
+    mol.name = mols.molecules[i].name
+    state.push(mol)
+  }
+
+  drawAllMolsAndLinks(mols, root);
+
+  function drawAllMolsAndLinks(mol, root) {
+
+    for (let i=0;i<mol.molecules.length;i++){
+      const url = mol.molecules[i].url
+      const name = mol.molecules[i].name
+      let html = "none"
+      if(mol.molecules[i].html){
+        html = mol.molecules[i].html
+      }
+      const place = new THREE.Group()
+      root.add(place)
+      place.position.x = mol.molecules[i].positionX
+      place.position.y = mol.molecules[i].positionY
+      place.position.z = mol.molecules[i].positionZ
+      loadMolecule2( url, place, name, html )
+      if(state[i].name == name){
+        state[i].state = true
+      }
+    }
+
+    // draw the links between molecules
+    for (let i=0;i<mol.links.length;i++){
+      const fromMol = mol.links[i].from
+      const toMol = mol.links[i].to
+      const placeFrom = new THREE.Group()
+      const placeTo = new THREE.Group()
+
+      for (let i=0;i<mol.molecules.length;i++){
+        if(mol.molecules[i].name == fromMol){
+          placeFrom.position.x = mol.molecules[i].positionX
+          placeFrom.position.y = mol.molecules[i].positionY
+          placeFrom.position.z = mol.molecules[i].positionZ
+        }
+        if(mol.molecules[i].name == toMol){
+          placeTo.position.x = mol.molecules[i].positionX
+          placeTo.position.y = mol.molecules[i].positionY
+          placeTo.position.z = mol.molecules[i].positionZ
+        }
+      }
+      for(let i=0;i<state.length;i++){
+        // console.log(state[i])
+        if(state[i].name == fromMol){
+          state[i].linked.push(toMol)
+        }
+        if(state[i].name == toMol){
+          state[i].linked.push(fromMol)
+        }
+      }
+      const arrow = drawArrow(placeFrom, placeTo)
+      arrow.from = fromMol
+      arrow.to = toMol
+      const ar = {"arrow": arrow, "visible": true}
+      arrows.push(ar)
+    }
+  }
+
+  // to restore all the molecule and links
+  function restoreAllMolsAndLinks(mol, root) {
+
+    // draw the removed molecule again
+    for (let i=0;i<mol.molecules.length;i++){
+      if(state[i].state == false){
+        const url = mol.molecules[i].url
+        const name = mol.molecules[i].name
+        let html = "none"
+        if(mol.molecules[i].html){
+          html = mol.molecules[i].html
+        }
+        const place = new THREE.Group()
+        root.add(place)
+        place.position.x = mol.molecules[i].positionX
+        place.position.y = mol.molecules[i].positionY
+        place.position.z = mol.molecules[i].positionZ
+        loadMolecule2( url, place, name, html )
+        if(state[i].name == name){
+          state[i].state = true
+        }
+      }
+    }
+
+    // make all the arrow visible
+    for(let i=0;i<arrows.length;i++){
+      arrows[i].arrow.visible = true
+    }
+
+    // and add object for clicking
+    objectList.splice(0, objectList.length)
+    traverseAdd(scene)
+  }
+
+  animate();
+
+  // init function
+  {% include 'three/snippet/sceneCameraLight.js' %}
+
+  // drawArrow function
+  {% include 'three/snippet/drawArrow.js' %}
+
+  // loadMolecule function
+  {% include 'three/snippet/loadMolecule2.js' %}
+
+  // animation all
+  {% include 'three/snippet/animate.js' %}
+
+  // text3dLoader
+  {% include 'three/snippet/text3dLoader.js' %}
+
+  const objectList = []
+  function traverseAdd(root){
+    if(root.name){
+      objectList.push(root)
+    }
+    if(root.children.length){
+      for(let i=0;i<root.children.length;i++){
+        traverseAdd(root.children[i])
+      }
+    }
+  }
+  traverseAdd(scene)
+  console.log(objectList.length)
+
+  function setPickPosition(event) {
+
+    const pickPosition = {x: 0, y: 0};
+    event.preventDefault();
+
+		pickPosition.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		pickPosition.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(pickPosition, camera);
+
+    // get the list of objects the ray intersected
+    const intersectedObjects = raycaster.intersectObjects(objectList);
+
+    if (intersectedObjects.length) {
+      // pick the first object. It's the closest one
+      if(intersectedObjects[0].object.name){
+        // Its the name of the group
+        let name = intersectedObjects[0].object.name
+        let serial = intersectedObjects[0].object.serial
+        name = name.slice(0, name.length - 1)
+        console.log(name, serial)
+
+        // now get the group containig it
+        findGroup(scene, name)
+        if(serial == 1){
+          removeGroup(found)
+        }
+        if(serial == 2){
+          onlyRelatives(found)
+        }
+        if(serial == 3){
+          details(found)
+        }
+        found = 0
+      } else {
+        console.log(intersectedObjects[0].object)
+      }
+    }
+  }
+
+  document.addEventListener('click', setPickPosition);
+
+  let found = 0
+  function findGroup(root, name){
+    if(root.name == name && root.type == "Group"){
+      found = root
+    }
+    if(root.children.length){
+      for(let i=0;i<root.children.length;i++){
+        if(found != 0){
+          return
+        }
+        findGroup(root.children[i], name)
+      }
+    }
+  }
+
+  function removeGroup(group){
+    // removing the CSS2DObject it does not remove when the parent remove itself
+    var object = group.children[1].children[0]
+    object.parent.remove( object )
+    group.parent.remove(group)
+
+    // now update objectlist because its remains same async
+    objectList.splice(0, objectList.length)
+    traverseAdd(scene)
+
+    let number = 0;
+    for(let i=0;i<mols.molecules.length;i++){
+      if(mols.molecules[i].name == group.name){
+        state[i].state = false
+        number = i
+      }
+    }
+
+    for(let i=0;i<arrows.length;i++){
+      if(arrows[i].arrow.to == group.name || arrows[i].arrow.from == group.name){
+        arrows[i].arrow.visible = false
+      }
+    }
+  }
+
+  function contains(array, name){
+    for(let i=0;i<array.length;i++){
+      if(array[i] == name){
+        return true
+      }
+    }
+    return false
+  }
+
+  function onlyRelatives(group){
+    if(secondButtonOn == true){
+      secondButtonOn = false
+      restoreAllMolsAndLinks(mols, root)
+    }
+    else{
+      secondButtonOn = true
+      let stateNo = 0
+      for(let i=0;i<state.length;i++){
+        if(state[i].name == group.name){
+          stateNo = i
+        }
+      }
+
+      console.log("second button clicked", stateNo)
+
+      for(let i=0;i<mols.molecules.length;i++){
+        if(!contains(state[i].linked, group.name)) {
+          found = 0
+          findGroup(scene, state[i].name)
+          if(found.name != group.name){
+            removeGroup(found)
+          }
+        }
+      }
+    }
+  }
+
+  function details(group){
+    console.log("coming soon...")
+  }
+
+</script>
+{% endblock pageSpecificJavascript %}

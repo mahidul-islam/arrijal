@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - interactive cubes</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<style>
+
+		</style>
+	</head>
+	<body>
+		<script type="module">
+    import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r115/build/three.module.js';
+			var container, stats;
+			var camera, scene, raycaster, renderer;
+			var mouse = new THREE.Vector2(), INTERSECTED;
+			var radius = 100, theta = 0;
+			init();
+			animate();
+function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
+				var light = new THREE.DirectionalLight( 0xffffff, 1 );
+				light.position.set( 1, 1, 1 ).normalize();
+				scene.add( light );
+
+        const sphereGeometry = new THREE.SphereBufferGeometry(1, 6, 6);
+        const sunMaterial = new THREE.MeshLambertMaterial({color: 0x2233FF});
+        const nMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
+        nMesh.scale.set(15, 15, 15);
+        scene.add(nMesh);
+
+        const psunMaterial = new THREE.MeshLambertMaterial({color: 'red'});
+        const pMesh = new THREE.Mesh(sphereGeometry, psunMaterial);
+        pMesh.position.x=30;
+        pMesh.scale.set(10, 10, 10);
+        scene.add(pMesh);
+
+//..............
+				raycaster = new THREE.Raycaster();
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				//
+				window.addEventListener( 'resize', onWindowResize, false );
+	}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			function onDocumentMouseMove( event ) {
+				event.preventDefault();
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+			}
+			//
+
+function animate() {
+    	requestAnimationFrame( animate );
+    	render();
+		}
+	function render() {
+				theta += 0.1;
+				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
+				camera.lookAt( scene.position );
+				camera.updateMatrixWorld();
+				// find intersections
+				raycaster.setFromCamera( mouse, camera );
+
+				var intersects = raycaster.intersectObjects( scene.children );
+				if ( intersects.length > 0 ) {
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+						 INTERSECTED.material.emissive.setHex( 0xff0000 );
+            // INTERSECTED.scale.set(30, 30, 30);
+            // scene.remove( INTERSECTED );
+					}
+				} else {
+					if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+					INTERSECTED = null;
+				}
+				renderer.render( scene, camera );
+			}
+		</script>
+	</body>
+</html>

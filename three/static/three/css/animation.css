@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+}
+#c {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+#back-button {
+  position: absolute;
+  left: 1em;
+  top: 1em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#info {
+  position: absolute;
+  left: 1em;
+  top: 4em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera1 {
+  position: absolute;
+  left: 1em;
+  top: 7em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera2 {
+  position: absolute;
+  left: 1em;
+  top: 10em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera3 {
+  position: absolute;
+  left: 1em;
+  top: 13em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#camera4 {
+  position: absolute;
+  left: 1em;
+  top: 16em;
+  background: rgba(0,0,0,.8);
+  padding: .5em;
+  color: white;
+  font-family: monospace;
+}
+#menu {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  color: rgb(255,255,255);
+  background: rgb(25,25,25);
+  border: 0px;
+  padding: 5px 10px;
+  margin: 5px 10px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: rgba(0,255,255,0.5);
+}
+button:active {
+  color: #000000;
+  background-color: rgba(0,255,255,1);
+}
+.label {
+	color: #000;
+	font-family: sans-serif;
+  font-size: 20px;
+	padding: 2px;
+}
+/* .label {
+  text-shadow: -1px 1px 1px rgb(0,0,0);
+  margin-left: 25px;
+  font-size: 20px;
+} */

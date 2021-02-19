@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block pageSpecificJavascript %}
+{% load comment_tags %}
+<!-- Loading the template tag -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+{% include_static %}
+<!-- Include comment.js file only -->
+{% include_bootstrap %}
+{% endblock pageSpecificJavascript %}
+
+{% block content %}
+
+
+
+<div class="blog-post">
+
+
+  {% for item in page.gallery_images.all %}
+
+  {% image item.image fill-400x250 %}
+
+  {% endfor %}
+
+  <h3>{{ page.title }}</h3>
+  <div class="blog-metas">
+    <div class="blog-meta author">
+      <div class="post-author set-bg" data-setbg="{% static 'img/authors/1.jpg' %}"></div>
+      <a href="#">{{page.owner}}</a>
+    </div>
+    {% with categories=page.categories.all %}
+    {% if categories %}
+
+    <div class="blog-meta">
+
+
+      {% for category in categories %}
+
+
+      <a href="{% url 'blog:category-dao' category.pk %}">{{ category.name }}</a>
+
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+    <div class="blog-meta">
+      <a href="#">{{page.date}}</a>
+    </div>
+    {% if user.is_authenticated %}
+    {% if user == page.owner %}
+    <div class="blog-meta">
+      <a href="/cms/pages/{{page.pk}}/edit/">Edit</a>
+    </div>
+    <div class="blog-meta">
+      <a href="/cms/pages/{{page.pk}}/delete/">Delete</a>
+    </div>
+  </div>
+  {% endif %}
+  {% endif %}
+
+  <h3>{{ page.intro }}</h3>
+
+  <p> {{ page.body|richtext }}</p>
+
+  {% if page.tags.all.count %}
+  <div class="sb-widget-item">
+    <div class="tags">
+      {% for tag in page.tags.all %}
+
+      <a href="{% slugurl 'tags' %}?tag={{ tag }}">{{ tag }}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% if page.get_parent.url == '/blog/' %}
+  <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to blog</a></p>
+  {% if page.get_children %}
+  <p>
+    {% for post in page.get_children %}
+    <a href="{% pageurl post %}" class="site-btn readmore">{{ post.title }}</a>
+
+    {% endfor %}
+    {% endif %}
+    {% else %}
+
+    {% if page.get_children %}
+  <p>
+    {% for post in page.get_children %}
+    <a href="{% pageurl post %}" class="site-btn readmore">{{ post.title }}</a>
+
+    {% endfor %}
+
+  <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to parent</a></p>
+  <p><a href="{% url 'blog:blog' %}" class="site-btn readmore"> return to blog</a></p>
+  {% else %}
+  <p> <a href="{{ page.get_parent.url }}" class="site-btn readmore">Return to parent</a></p>
+  <p><a href="{% url 'blog:blog' %}" class="site-btn readmore"> return to blog</a></p>
+
+
+
+  {% endif %}
+  {% endif %}
+
+  {% render_comments page request %}
+</div>
+
+
+{% endblock %}

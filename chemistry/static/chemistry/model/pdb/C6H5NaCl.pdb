@@ -1,0 +1,40 @@
+HETATM    1  C   UNK             3.903   2.620   0.000  0.00  0.00           C  
+HETATM    2  C   UNK             3.037   2.120   0.000  0.00  0.00           C  
+HETATM    3  C   UNK             4.769   2.120   0.000  0.00  0.00           C  
+HETATM    4  C   UNK             3.037   1.120   0.000  0.00  0.00           C  
+HETATM    5  C   UNK             4.769   1.120   0.000  0.00  0.00           C  
+HETATM    6  C   UNK             3.903   0.620   0.000  0.00  0.00           C  
+HETATM    7 Cl   UNK             3.903   3.620   0.000  0.00  0.00          Cl  
+HETATM    8 Na   UNK             0.000   1.560   0.000  0.00  0.00          Na1+
+HETATM    9  H   UNK             2.500   2.430   0.000  0.00  0.00           H  
+HETATM   10  H   UNK             5.306   2.430   0.000  0.00  0.00           H  
+HETATM   11  H   UNK             2.500   0.810   0.000  0.00  0.00           H  
+HETATM   12  H   UNK             5.306   0.810   0.000  0.00  0.00           H  
+HETATM   13  H   UNK             3.903   0.000   0.000  0.00  0.00           H  
+CONECT    1    2
+CONECT    1    2
+CONECT    1    3    7
+CONECT    2    1
+CONECT    2    1
+CONECT    2    4    9
+CONECT    3    1
+CONECT    3    5
+CONECT    3    5
+CONECT    3   10
+CONECT    4    2
+CONECT    4    6
+CONECT    4    6
+CONECT    4   11
+CONECT    5    3
+CONECT    5    3
+CONECT    5    6   12
+CONECT    6    4
+CONECT    6    4
+CONECT    6    5   13
+CONECT    7    1
+CONECT    9    2
+CONECT   10    3
+CONECT   11    4
+CONECT   12    5
+CONECT   13    6
+END
