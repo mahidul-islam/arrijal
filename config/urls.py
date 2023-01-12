@@ -5,7 +5,8 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
-from django.conf.urls import include, re_path
+from django.conf.urls import include
+from django.urls import re_path
 from django.views.generic.base import RedirectView
 from wagtail.core import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
